@@ -326,6 +326,12 @@
         },
         "extensions": {
           "type": "object"
+        },
+        "source_system": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "source_object_id": {
+          "$ref": "#/$defs/Identifier"
         }
       }
     },
@@ -664,6 +670,84 @@
             "revoked",
             "superseded"
           ]
+        },
+        "objects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BusinessObject"
+          }
+        },
+        "current_states": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StateView"
+          }
+        },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WorkEvent"
+          }
+        }
+      }
+    },
+    "StateView": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_id",
+        "property",
+        "assertion_status",
+        "supporting_refs",
+        "conflicts",
+        "unknowns",
+        "evaluated_at",
+        "rule_version"
+      ],
+      "properties": {
+        "object_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "property": {
+          "type": "string"
+        },
+        "value": {},
+        "assertion_status": {
+          "enum": [
+            "confirmed",
+            "observed",
+            "inferred",
+            "disputed",
+            "stale",
+            "unknown"
+          ]
+        },
+        "authority_source": {
+          "type": "string"
+        },
+        "supporting_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Identifier"
+          }
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "unknowns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evaluated_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "rule_version": {
+          "type": "string"
         }
       }
     }
