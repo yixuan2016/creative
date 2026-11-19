@@ -15,7 +15,10 @@ on:
     paths:
       - "prototype/**"
       - "examples/project-delivery-seed-data.json"
+      - "examples/ads-capability-project-risk-triage-v0.1.json"
       - "schemas/ads-work-context-v0.1.schema.json"
+      - "schemas/ads-capability-asset-v0.1.schema.json"
+      - "capabilities/**"
       - "requirements-dev.txt"
       - ".github/workflows/ads-context-prototype.yml"
 
