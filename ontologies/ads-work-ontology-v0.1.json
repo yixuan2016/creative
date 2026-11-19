@@ -761,6 +761,14 @@
       "default_scope": "personal_only",
       "confirmation_required": false,
       "shareability": "review_required"
+    },
+    {
+      "event_type": "project.action_item_created",
+      "event_class": "enterprise.WorkEvent",
+      "description": "经授权投影或企业正式流程确认后，在企业项目范围内创建行动项。",
+      "default_scope": "enterprise",
+      "confirmation_required": true,
+      "shareability": "enterprise_native"
     }
   ],
   "mapping_rules": [
