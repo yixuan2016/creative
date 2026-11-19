@@ -40,7 +40,7 @@
       confirmed: ["已确认", "good"], active: ["进行中", "good"], candidate: ["待确认", "warn"],
       inferred_candidate: ["推断候选", "warn"], proposed: ["待确认", "warn"], needs_review: ["待整理", "warn"],
       processed: ["已整理", "good"], paused: ["已暂停", "muted"], revoked: ["已撤销", "danger"],
-      connected: ["已连接", "good"], available: ["可使用", "muted"], pending: ["待审批", "warn"],
+      connected: ["已连接", "good"], available: ["可使用", "muted"], pending: ["待审批", "warn"], not_required: ["无需审批", "muted"],
       approved: ["已批准", "good"], rejected: ["已拒绝", "muted"], completed: ["已完成", "good"],
       withdrawn: ["已撤回", "muted"], superseded: ["已被修正", "muted"], blocked: ["有阻塞", "danger"],
       on: ["运行中", "good"], off: ["已关闭", "muted"]
