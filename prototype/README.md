@@ -9,6 +9,8 @@
 - `test_contract_schemas.py`：使用 JSON Schema 校验模拟数据和生成的上下文包。
 - `test_capability_asset_schema.py`：校验 Capability Manifest 契约、项目风险初筛样例及关键治理约束。
 - `test_work_ontology_contracts.py`：校验五层本体目录、类与关系引用、个人事件 Schema、企业 WorkEvent 投影和隐私边界。
+- `personal_memory_engine.py`：个人事件追加、幂等、候选记忆、确认/纠正/撤回、上下文过滤和 Agent 审批的内存逻辑原型。
+- `test_personal_memory_contracts.py`：校验个人事件账本、记忆、目标/承诺和 Agent 动作契约，以及用户控制、隐私边界和 L2/L3 审批门禁。
 - `../examples/project-delivery-seed-data.json`：虚构项目交付场景数据。
 
 ## 2. 运行环境
