@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Source Purge Request",
+  "type": "object",
+  "required": [
+    "confirm",
+    "actor_id",
+    "reason"
+  ],
+  "properties": {
+    "confirm": {
+      "const": true
+    },
+    "actor_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 500
+    }
+  },
+  "additionalProperties": false
+}

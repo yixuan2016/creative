@@ -215,3 +215,12 @@
 
 本专题以 Event Ontology V0.1 为事件语义基线，逐步打通个人多源采集、证据定位、事件理解、持续记忆、状态重建和 Agent 上下文。V0.3.2 当前仅实现 PALOS SQLite 只读结构适配预览和单机 Connector Worker；未连接真实 PALOS 数据库，钉钉 DWS CLI 仍待实际版本、帮助信息和脱敏输出核验。
 
+
+
+### 专题 12.1：来源生命周期与证据依赖感知删除（V0.3.3 Alpha）
+
+- [V0.3.3 研发进展](docs/16-AI原生事件智能基础设施V0.3.3研发进展.md)
+- [Source Lifecycle 与 Evidence-aware Purge 规范](docs/17-SourceLifecycle与证据依赖感知删除规范.md)
+- [PALOS / 钉钉 DWS 真实集成资料清单](docs/18-PALOS与钉钉DWS真实集成资料清单.md)
+
+V0.3.3 增加来源删除预览、显式确认、跨来源事件保留、专属事件与证据清理、RDF 投影失效、状态快照失效和上下文包撤销。删除范围仅覆盖 EIL 本地数据库与受控文件目录，不代表远端提供方删除、备份擦除或法律合规认证。当前 PALOS 仍未连接真实数据库，DingTalk DWS CLI 仍处于 blocked 状态。
