@@ -1151,7 +1151,7 @@
     {
       "path": "skills/pdks-personal-knowledge/assets/ontology/0.2.1/ontology-manifest.json",
       "size_bytes": 1703,
-      "sha256": "1eea6afcac0718702e1a02d6cec608fafeb247dc5d7b311af4eb447d5aaf57f9"
+      "sha256": "0f3e3c6bd98e1ec0dfd3b80e06b18941b03036bcf2a0cf653640190f726b3674"
     },
     {
       "path": "skills/pdks-personal-knowledge/assets/ontology/0.2.1/pdks-agent-runtime-ontology-0.2.ttl",
