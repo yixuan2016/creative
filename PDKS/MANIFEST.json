@@ -110,8 +110,8 @@
     },
     {
       "path": "RELEASE_NOTES_0.5.3-preview.md",
-      "size_bytes": 2559,
-      "sha256": "94318bb3011377164ddfe42997d3a9b139d08354e04d33da1f30448c62966c58"
+      "size_bytes": 2630,
+      "sha256": "a3b2ccf374029dca021739bc9d619bee58e4efe7e39a837c7c854d7b48cb29d2"
     },
     {
       "path": "ROADMAP.md",
@@ -740,13 +740,13 @@
     },
     {
       "path": "prototype/pdks_ontology_governance.py",
-      "size_bytes": 10028,
-      "sha256": "34b85ff3f16b5cb27c3d481c9a2f15d32afa672430fef70ee5ef7ca83c8dd7af"
+      "size_bytes": 11163,
+      "sha256": "909dbd840193eadef0fd65e1a8aa995e6f762e23ecbdcc744f4f3914d70adfa4"
     },
     {
       "path": "prototype/pdks_ontology_runtime.py",
-      "size_bytes": 28010,
-      "sha256": "92a5802ed9038fd97e4a15f7a097e10d4a0721d570ce7fe47e291d599fb28f50"
+      "size_bytes": 28008,
+      "sha256": "1505a639e44a2a1794f613e936935cb3a163cf262ab01f8b32541d28f1da84d7"
     },
     {
       "path": "prototype/pdks_ontology_sqlite.py",
@@ -1805,8 +1805,8 @@
     },
     {
       "path": "tests/test_ontology_first_runtime.py",
-      "size_bytes": 15400,
-      "sha256": "d76699183431c5478dffb44fc8c72739f8f26a0a4e26e5ef710b2fd5401c14c0"
+      "size_bytes": 15898,
+      "sha256": "15989359e6b44943787db825cabf949adbbf3967816e65779e5d98ae844f8d79"
     },
     {
       "path": "tests/test_pdks_setup_engine.py",
