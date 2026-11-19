@@ -403,7 +403,7 @@
       showToast(action === "complete-intent" ? "已标记完成。" : "已暂停，不再作为当前优先事项。", "success"); render(); return;
     }
     if (action === "review-action") { showActionReview(id, "approve"); return; }
-    if (action === "view-action") { showActionReview(id, "details"); return;
+    if (action === "view-action") { showActionReview(id, "details"); return; }
     if (action === "reject-action") { showActionReview(id, "details"); openModal("拒绝这项操作？", $("#modal-body").innerHTML + '<p class="micro-note">拒绝后该动作不会执行。</p>', '<button class="btn btn-ghost" data-action="close-modal">返回</button><button class="btn btn-danger" data-action="confirm-action-rejection" data-id="' + esc(id) + '">确认拒绝</button>'); return; }
     if (action === "confirm-action-approval" || action === "confirm-action-rejection") {
       try {
