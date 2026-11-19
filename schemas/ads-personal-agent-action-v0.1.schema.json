@@ -285,5 +285,41 @@
     "extensions": {
       "type": "object"
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "risk_tier": {
+            "enum": [
+              "L2",
+              "L3"
+            ]
+          }
+        },
+        "required": [
+          "risk_tier"
+        ]
+      },
+      "then": {
+        "properties": {
+          "approval": {
+            "properties": {
+              "required": {
+                "const": true
+              },
+              "status": {
+                "enum": [
+                  "pending",
+                  "approved",
+                  "rejected",
+                  "expired"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }
