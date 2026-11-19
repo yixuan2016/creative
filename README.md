@@ -201,3 +201,17 @@
 - [PDKS → ADS 投影示例](examples/pdks-ads-bridge-projection-v0.1.json)
 
 核心议题：PDKS 个人数据统一表达、ADS-WORK-08 语义与授权桥接、ADS-WORK-09 个人事件账本/持续记忆/Intent 运行时、ADS-WORK-10 Personal Assistant OS。PDKS Action 映射为 Intent，不自动生成 Agent Action Proposal；个人侧默认 personal_only，企业投影须独立授权。
+
+### 专题 12：AI 原生事件智能基础设施与个人多源采集运行时
+
+**Event Intelligence Lab：事件本体、PALOS 适配与 Connector Runtime**
+
+- [V0.3.2 研发进展](docs/12-AI原生事件智能基础设施V0.3.2研发进展.md)
+- [PALOS 只读 Adapter 集成契约](docs/13-PALOS只读Adapter集成契约V0.1.md)
+- [Connector Worker 运行与调度机制](docs/14-ConnectorWorker运行与调度机制V0.3.2.md)
+- [PDKS 多源个人采集运行时路线图](docs/15-PDKS多源个人采集运行时V0.3路线图.md)
+- [PALOS Adapter Profile Schema](schemas/palos-adapter-profile-v0.1.schema.json)
+- [PALOS Adapter Profile 模板](examples/palos-adapter-profile.template.json)
+
+本专题以 Event Ontology V0.1 为事件语义基线，逐步打通个人多源采集、证据定位、事件理解、持续记忆、状态重建和 Agent 上下文。V0.3.2 当前仅实现 PALOS SQLite 只读结构适配预览和单机 Connector Worker；未连接真实 PALOS 数据库，钉钉 DWS CLI 仍待实际版本、帮助信息和脱敏输出核验。
+
