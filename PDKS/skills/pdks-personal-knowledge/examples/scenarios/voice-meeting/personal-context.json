@@ -31,8 +31,7 @@
     "verification_status": "inferred",
     "confidence_level": "medium",
     "evidence_refs": [
-      "urn:pdks:example:voice-meeting:event:meeting:001",
-      "urn:pdks:example:voice-meeting:knowledge:001"
+      "urn:pdks:example:voice-meeting:evidence:audio:segment-001"
     ],
     "review_policy": "suggest_update"
   }

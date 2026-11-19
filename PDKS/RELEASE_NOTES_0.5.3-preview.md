@@ -38,3 +38,10 @@ Maturity: Experimental Preview
 - No real DWS tenant capture verification.
 
 Do not use this preview for sensitive personal data.
+
+## Ontology 0.2.1 — non-breaking SHACL conformance corrections
+
+- Align SHACL scheme-membership checks with the actual controlled vocabulary scheme IRI and Event Taxonomy scheme IRI.
+- Broaden `assertedBy` domain to `InformationObject`, because qualified relationships also retain an asserting agent; this prevents RDFS from incorrectly inferring every qualified relationship as an Assertion.
+- Correct the voice-meeting personal-context example so `evidence_refs` point to an EvidenceSegment rather than to an Event and KnowledgeAsset.
+- These are corrective consistency fixes within the frozen Ontology 0.2.1 baseline; no new ontology version or new terms are introduced.
