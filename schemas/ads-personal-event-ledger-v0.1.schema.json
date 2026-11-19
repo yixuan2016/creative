@@ -346,5 +346,100 @@
     "extensions": {
       "type": "object"
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "sharing_policy": {
+            "properties": {
+              "projection_allowed": {
+                "const": true
+              }
+            },
+            "required": [
+              "projection_allowed"
+            ]
+          }
+        },
+        "required": [
+          "sharing_policy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "sharing_policy": {
+            "properties": {
+              "authorization_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "authorized_purposes": {
+                "minItems": 1
+              },
+              "expires_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source_refs": {
+            "contains": {
+              "properties": {
+                "capture_mode": {
+                  "enum": [
+                    "connector_sync",
+                    "voice_capture",
+                    "device_capture"
+                  ]
+                }
+              },
+              "required": [
+                "capture_mode"
+              ]
+            }
+          }
+        },
+        "required": [
+          "source_refs"
+        ]
+      },
+      "then": {
+        "properties": {
+          "source_refs": {
+            "items": {
+              "if": {
+                "properties": {
+                  "capture_mode": {
+                    "enum": [
+                      "connector_sync",
+                      "voice_capture",
+                      "device_capture"
+                    ]
+                  }
+                },
+                "required": [
+                  "capture_mode"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "capture_authorization_ref": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }
