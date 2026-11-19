@@ -110,8 +110,8 @@
     },
     {
       "path": "RELEASE_NOTES_0.5.3-preview.md",
-      "size_bytes": 2561,
-      "sha256": "cfa26e1fe41675bf5eecec988de8fa4a3cd57b8ee468d8d9848371e7a18fcea9"
+      "size_bytes": 2559,
+      "sha256": "94318bb3011377164ddfe42997d3a9b139d08354e04d33da1f30448c62966c58"
     },
     {
       "path": "ROADMAP.md",
@@ -745,8 +745,8 @@
     },
     {
       "path": "prototype/pdks_ontology_runtime.py",
-      "size_bytes": 27926,
-      "sha256": "026ad8334ff80854f3312a627cfa25b147a230c1634eaddd5386f685c48a52c7"
+      "size_bytes": 28010,
+      "sha256": "92a5802ed9038fd97e4a15f7a097e10d4a0721d570ce7fe47e291d599fb28f50"
     },
     {
       "path": "prototype/pdks_ontology_sqlite.py",
@@ -1151,7 +1151,7 @@
     {
       "path": "skills/pdks-personal-knowledge/assets/ontology/0.2.1/ontology-manifest.json",
       "size_bytes": 1703,
-      "sha256": "0f3e3c6bd98e1ec0dfd3b80e06b18941b03036bcf2a0cf653640190f726b3674"
+      "sha256": "ad0bc5b1c5fe06da80488d9a0d72cccf563d955a08160ab3c2eb32f10538d06b"
     },
     {
       "path": "skills/pdks-personal-knowledge/assets/ontology/0.2.1/pdks-agent-runtime-ontology-0.2.ttl",
@@ -1160,8 +1160,8 @@
     },
     {
       "path": "skills/pdks-personal-knowledge/assets/ontology/0.2.1/pdks-core-ontology-0.2.ttl",
-      "size_bytes": 23025,
-      "sha256": "f18a092bbf298bf4ddc9deba5bc86134e82f436106a84081ac37010951890aa4"
+      "size_bytes": 23017,
+      "sha256": "5899066d9f334a8124aeff98489c759d69fa36093dc2f371a6da110d50f2adc8"
     },
     {
       "path": "skills/pdks-personal-knowledge/assets/ontology/0.2.1/pdks-core-shapes-0.2.ttl",
@@ -1805,8 +1805,8 @@
     },
     {
       "path": "tests/test_ontology_first_runtime.py",
-      "size_bytes": 14902,
-      "sha256": "f5f82fc3ff67e611d22ef05a9c3d43278098a6bb04ff350cf1628300ecb3c138"
+      "size_bytes": 15400,
+      "sha256": "d76699183431c5478dffb44fc8c72739f8f26a0a4e26e5ef710b2fd5401c14c0"
     },
     {
       "path": "tests/test_pdks_setup_engine.py",
