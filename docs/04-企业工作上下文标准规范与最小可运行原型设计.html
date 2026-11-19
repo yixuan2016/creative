@@ -66,7 +66,7 @@ ul,ol{padding-left:1.35em}li{margin:5px 0}pre{overflow:auto;background:#17243a;c
   "source_object_id": "PRJ-2026-014",
   "resolution_status": "confirmed"
 }</code></pre>
-<p>object_id 是上下文层稳定标识；source_object_id 是源系统主键。候选匹配不得直接成为确定性业务关系。</p>
+<p>object_id 是上下文层稳定标识；source_object_id 是源系统主键。候选匹配不得直接成为确定性业务关系。 统一 WorkEvent 的 object_refs 使用已解析的上下文 object_id 列表；源系统主键由对象注册表和 SourceRef 保留。ObjectRef 描述源对象到上下文对象的解析结果。</p>
 <h3>3.2 WorkEvent：工作事件</h3><pre><code>{
   "event_id": "evt_project_014_002",
   "tenant_id": "tenant_demo",
@@ -92,7 +92,7 @@ ul,ol{padding-left:1.35em}li{margin:5px 0}pre{overflow:auto;background:#17243a;c
   "ontology_version": "ads-common-0.1/domain-project-0.1",
   "lifecycle_status": "active"
 }</code></pre>
-<h3>3.3 ContextPackage：任务级上下文包</h3><p>上下文包包含 task_id、requester_ref、purpose、scope、included_refs、unresolved_items、allowed_actions、authorization_refs、policy_version、ontology_version、created_at、expires_at 和 lifecycle_status。生成后不应静默改变内容；更新时生成新版本或新 context_id。</p>
+<h3>3.3 ContextPackage：任务级上下文包</h3><p>上下文包包含 task_id、requester_ref、purpose、scope、included_refs、unresolved_items、allowed_actions、authorization_refs、policy_version、ontology_version、created_at、expires_at 和 lifecycle_status。生成后不应静默改变内容；更新时生成新版本或新 context_id。 为支持 Agent 直接消费，规范允许上下文包携带经授权的 objects、current_states 和 timeline 投影；included_refs 保留稳定引用以便追溯。</p>
 <h3>3.4 其他核心实体</h3><p>StateAssertion 表达对象属性的时间化状态；Relation 表达带类型和来源的业务关系；EvidenceRef 指向支持事实的证据位置；AuthorizationGrant 定义主体、目的、范围、分类、动作和有效期。</p>
 </section>
 
