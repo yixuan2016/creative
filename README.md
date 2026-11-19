@@ -68,6 +68,19 @@
 - [基线与验收指标采集表（CSV）](pilot/基线与验收指标采集模板.csv)
 - [Agent 输出人工核验记录（CSV）](pilot/Agent输出人工核验记录模板.csv)
 
+
+### 专题 06：企业运行认知引擎与企业 Agent 协同执行体系
+
+**企业运行认知引擎与企业 Agent 协同执行体系设计**
+
+- [协同执行体系设计（Markdown）](docs/06-企业运行认知引擎与企业Agent协同执行体系设计.md)
+- [协同执行体系设计（HTML 阅读版）](docs/06-企业运行认知引擎与企业Agent协同执行体系设计.html)
+- [Agent Task Envelope JSON Schema](schemas/ads-agent-task-envelope-v0.1.schema.json)
+- [项目交付 Agent 委派示例](examples/ads-agent-project-delivery-review.json)
+- [Agent 协同运行评估模板（CSV）](pilot/Agent协同运行评估模板.csv)
+
+核心议题：ADS Context Plane、Agent Control Plane、Agent Execution Plane、Governance & Observability、Orchestrator、专业 Agent、任务契约、工具网关、动作风险分级、审批绑定、运行状态机、Trace、评测和分阶段实施。
+
 ## 研究主线
 
 本仓库的连续研究主线是：
