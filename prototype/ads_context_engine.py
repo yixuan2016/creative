@@ -88,10 +88,12 @@ class ContextEngine:
         property_name: str,
         allowed_classifications: set[str],
     ) -> list[dict[str, Any]]:
+        owner_type = property_name.split(".", 1)[0] if "." in property_name else None
         return [
             event for event in self.events.values()
             if object_id in event["object_refs"]
             and event["payload"].get("property") == property_name
+            and (owner_type is None or self.objects[object_id]["object_type"] == owner_type)
             and event["classification"] in allowed_classifications
             and event["lifecycle_status"] == "active"
         ]
@@ -224,8 +226,10 @@ class ContextEngine:
             ):
                 property_name = event["payload"].get("property")
                 if property_name:
+                    owner_type = property_name.split(".", 1)[0] if "." in property_name else None
                     for object_id in requested_scope.intersection(event["object_refs"]):
-                        properties_by_object.setdefault(object_id, set()).add(property_name)
+                        if owner_type is None or self.objects[object_id]["object_type"] == owner_type:
+                            properties_by_object.setdefault(object_id, set()).add(property_name)
 
         states = []
         unresolved = []
