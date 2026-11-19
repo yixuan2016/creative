@@ -72,3 +72,24 @@ python -m unittest -v
 这不是生产服务，也不是安全边界。它没有实现真实身份认证、数据库持久化、并发控制、分布式幂等、字段级授权、加密、连接器、缓存撤销、模型调用或生产级审计。上线前必须由 ADS 架构、业务数据责任人、安全和合规团队评审并补齐。
 
 示例项目、事件、角色和数据均为虚构内容。
+
+
+## 7. Personal Assistant OS 交互原型
+
+ADS-WORK-10.1 的浏览器原型位于 `personal-assistant-os/`：
+- `index.html`：五大工作空间；
+- `styles.css`：响应式设计系统；
+- `demo-data.js`：虚构演示数据；
+- `core.js`：记忆、承诺、来源和审批的交互逻辑；
+- `core.test.js`：Node.js 内置逻辑测试；
+- `design-tokens.json`：设计 Token。
+
+完整说明见 [Personal Assistant OS 原型 README](personal-assistant-os/README.md)，验收规范见 [ADS-WORK-10.1](../docs/10.1-个人助理OS可交互原型与研发验收规范.md)。
+
+在仓库根目录运行：
+
+```bash
+python -m http.server 8000
+```
+
+访问 `http://localhost:8000/prototype/personal-assistant-os/`。该原型不连接真实数据源、不调用麦克风、不执行外部写入，刷新页面会恢复样例数据。
