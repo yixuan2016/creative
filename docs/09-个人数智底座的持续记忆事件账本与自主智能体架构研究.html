@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="ADS-WORK-09 个人数智底座持续记忆、事件账本与自主智能体架构研究">
+<title>ADS-WORK-09｜个人持续记忆与自主智能体</title>
+<style>
+:root{--ink:#172b40;--muted:#687c91;--line:#dce5ed;--paper:#fff;--canvas:#f2f5f8;--navy:#10283f;--blue:#286b9f;--teal:#18796e;--violet:#6a58a3;--amber:#a16b20;--red:#a64e4e;--bluebg:#edf5fb;--tealbg:#edf8f5;--violetbg:#f4f1fa;--amberbg:#fff7e9;--redbg:#fff0ef;--shadow:0 12px 32px rgba(24,48,75,.065)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:18px}body{margin:0;background:var(--canvas);color:var(--ink);font:15px/1.78 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.shell{max-width:1480px;margin:auto;padding:22px 24px 60px}
+.hero{position:relative;overflow:hidden;border-radius:27px;padding:48px 52px;color:#fff;background:linear-gradient(118deg,#10243b 0%,#174b70 48%,#16796f 100%);box-shadow:0 22px 50px rgba(13,39,66,.18)}
+.hero:before,.hero:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.14);border-radius:50%;pointer-events:none}
+.hero:before{width:610px;height:610px;right:-150px;top:-390px;box-shadow:0 0 0 54px rgba(255,255,255,.035),0 0 0 110px rgba(255,255,255,.025)}
+.hero:after{width:270px;height:270px;right:260px;bottom:-225px;box-shadow:0 0 0 38px rgba(255,255,255,.035)}
+.kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#c6dce8}
+.hero h1{position:relative;z-index:1;max-width:1000px;margin:16px 0 14px;font-size:clamp(32px,4vw,49px);line-height:1.2;letter-spacing:-.04em}
+.subtitle{position:relative;z-index:1;max-width:970px;color:#e1edf3;font-size:18px;line-height:1.75}
+.meta{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:26px;color:#c9dce7;font-size:12px}
+.tag{display:inline-flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:4px 10px;background:rgba(255,255,255,.08)}
+.hero-insight{position:relative;z-index:1;margin-top:28px;max-width:960px;border-left:3px solid #9ed8c9;padding:10px 16px;background:rgba(255,255,255,.08);border-radius:0 10px 10px 0;font-size:14px;color:#f1f7f8}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:22px;margin-top:22px;align-items:start}
+nav{position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto;padding:18px 16px;background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.nav-title{font-weight:780;font-size:14px;margin-bottom:10px}nav a{display:block;padding:5px 8px;border-radius:7px;color:#4f6278;font-size:12px;line-height:1.5}nav a:hover,nav a.active{background:#edf3f8;color:var(--blue);text-decoration:none}
+.nav-group{margin-top:11px;padding:10px 8px 3px;border-top:1px solid #edf1f5;color:#8b99a8;font-size:10px;letter-spacing:.13em;text-transform:uppercase}
+main{min-width:0}section,.intro{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:29px 32px;margin-bottom:17px;box-shadow:0 5px 18px rgba(25,48,77,.035)}
+h2{font-size:23px;line-height:1.35;margin:0 0 15px;letter-spacing:-.025em}h3{font-size:17px;line-height:1.45;margin:23px 0 8px}h4{font-size:14px;margin:16px 0 6px}p{margin:8px 0}.lead{font-size:17px;line-height:1.82;color:#344b63}.small{font-size:12px;color:var(--muted)}.eyebrow{display:block;font-size:10px;letter-spacing:.17em;color:#8293a6;margin-bottom:7px;text-transform:uppercase}
+.callout{margin:16px 0;padding:14px 17px;border-left:4px solid var(--teal);background:var(--tealbg);border-radius:0 10px 10px 0}.callout.blue{border-left-color:var(--blue);background:var(--bluebg)}.callout.amber{border-left-color:#c28a33;background:var(--amberbg)}.callout.purple{border-left-color:var(--violet);background:var(--violetbg)}.callout.red{border-left-color:var(--red);background:var(--redbg)}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card,.metric{border:1px solid var(--line);border-radius:13px;padding:15px;background:#fff}.card h3{margin:0 0 6px;font-size:15px}.card p{font-size:13px;color:#5d6e82;margin:0}
+.num{font-size:27px;line-height:1.2;font-weight:790;color:var(--navy);letter-spacing:-.04em}.metric .label{font-size:12px;color:var(--muted);margin-top:5px}
+.idx{font-size:10px;color:var(--blue);font-weight:800;letter-spacing:.14em;margin-bottom:7px}
+.pill{display:inline-block;border-radius:99px;padding:3px 9px;font-size:11px;background:#edf1f6;color:#465a72;margin:2px 4px 2px 0}.pill.teal{background:var(--tealbg);color:#17685f}.pill.blue{background:var(--bluebg);color:#245c94}.pill.amber{background:var(--amberbg);color:#8a5a19}.pill.violet{background:var(--violetbg);color:#655198}.pill.red{background:var(--redbg);color:#994848}
+table{width:100%;border-collapse:collapse;margin:13px 0;font-size:12.5px}th,td{border:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}th{background:#eff3f8;color:#34465c;font-weight:740}tbody tr:nth-child(even){background:#fbfcfe}ul,ol{padding-left:1.3em;margin:9px 0}li{margin:5px 0}
+.diagram{border:1px solid var(--line);border-radius:14px;padding:18px;background:#fbfcfe;margin:16px 0;overflow-x:auto}
+.arch-stack{min-width:650px;display:grid;gap:7px}.arch-row{display:grid;grid-template-columns:95px 1fr;gap:10px;align-items:stretch;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:#fff;cursor:pointer;transition:.16s}.arch-row:hover,.arch-row.selected{border-color:#5487b4;box-shadow:0 5px 15px rgba(40,102,156,.1);transform:translateY(-1px)}
+.arch-num{display:flex;flex-direction:column;justify-content:center;align-items:center;background:#eaf2f9;color:#245c88;padding:9px}.arch-num b{font-size:22px;line-height:1.2}.arch-num span{font-size:10px;letter-spacing:.08em}.arch-content{padding:9px 14px}.arch-content strong{display:block;font-size:14px}.arch-content p{font-size:12px;color:#66788c;margin:3px 0}
+.arch-row[data-layer="L2"] .arch-num{background:#e9f6f2;color:#1a756a}.arch-row[data-layer="L3"] .arch-num{background:#f1eff9;color:#62539a}.arch-row[data-layer="L4"] .arch-num{background:#fff5e5;color:#98661f}.arch-row[data-layer="L5"] .arch-num{background:#e9eef5;color:#294c6a}.arch-row[data-layer="L6"] .arch-num{background:#e8f5f5;color:#176f75}.arch-row[data-layer="L7"] .arch-num{background:#f7eef3;color:#8c5275}
+.detail{border:1px solid #cddce9;border-radius:12px;padding:15px 17px;background:#f5f9fc;min-height:105px;margin-top:10px}.detail strong{display:block;color:#1f4566;margin-bottom:5px}.detail p{margin:0;font-size:13px;color:#53677c}
+.flow{display:flex;align-items:stretch;gap:6px;min-width:760px}.step{flex:1;min-width:100px;border:1px solid var(--line);border-radius:10px;padding:11px 8px;background:#fff;text-align:center}.step b{display:block;color:#245f8e;font-size:11px;margin-bottom:5px}.step span{display:block;font-size:10px;line-height:1.45;color:#65788d}.arrow{display:flex;align-items:center;color:#8b9bac}
+.tabs{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.tabs button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 12px;font:inherit;font-size:12px;color:#53667b;cursor:pointer}.tabs button.selected{background:var(--bluebg);border-color:#9dbbd4;color:#245d8e}
+.tab-detail{padding:15px;border:1px solid #d4e1eb;border-radius:12px;background:#f7fafc;min-height:110px}.tab-detail strong{display:block;color:#1d4567;margin-bottom:5px}.tab-detail p{margin:0;color:#586d82;font-size:13px}
+.timeline{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:15px 0}.phase{border:1px solid var(--line);border-radius:10px;padding:11px 10px;min-height:132px;background:#fff}.phase .stepno{font-size:10px;color:var(--blue);font-weight:800;letter-spacing:.1em}.phase strong{display:block;font-size:12px;margin:7px 0}.phase p{font-size:10.5px;color:var(--muted);margin:0}
+.risk-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:14px 0}.risk-tabs button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:11px 8px;cursor:pointer;text-align:left}.risk-tabs button.selected{border-color:#83a9c7;background:var(--bluebg)}.risk-tabs b{display:block;color:#245d8e;font-size:15px}.risk-tabs span{font-size:11px;color:#6a7c90}
+.risk-detail{padding:15px;border:1px solid #d4e1eb;border-radius:12px;background:#f7fafc;min-height:95px}.risk-detail strong{display:block;margin-bottom:5px}.risk-detail p{font-size:13px;color:#53677c;margin:0}
+.guardrails{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:14px 0}.guardrail{border:1px solid var(--line);border-radius:9px;padding:9px 6px;background:#fff;text-align:center}.guardrail b{display:block;font-size:11px;color:var(--teal)}.guardrail span{display:block;font-size:10px;color:#738398;line-height:1.35;margin-top:4px}
+.quote{font-size:19px;line-height:1.7;font-weight:700;color:#1d3b57;padding:8px 0}details{border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:9px 0;background:#fff}summary{cursor:pointer;font-weight:720;color:#2a4058}details p,details ul{font-size:13px;color:#53657a}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.links a{display:inline-flex;border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-size:12px;background:#fff}.footer{text-align:center;color:#8391a3;font-size:12px;padding:22px}
+@media(max-width:1080px){.layout{grid-template-columns:1fr}nav{position:relative;top:auto;max-height:none}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.timeline{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:720px){.shell{padding:11px 10px 32px}.hero{padding:28px 22px;border-radius:17px}.hero h1{font-size:30px}.subtitle{font-size:15px}section,.intro{padding:20px 16px}.g2,.g3,.g4{grid-template-columns:1fr}.risk-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.guardrails{grid-template-columns:repeat(4,minmax(0,1fr))}.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}table{display:block;overflow-x:auto}}
+@media print{body{background:#fff}.shell{max-width:none;padding:0}.hero{border-radius:0;box-shadow:none;print-color-adjust:exact}.layout{display:block}nav{display:none}section,.intro{box-shadow:none;break-inside:avoid}.footer{display:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="hero" id="top">
+ <div class="kicker">ADS · PERSONAL OS · CONTINUOUS MEMORY · AGENT RUNTIME</div>
+ <h1>个人数智底座的<br>持续记忆、事件账本与自主智能体架构</h1>
+ <p class="subtitle">让 AI 不只是回答当下的问题，而是在用户允许的范围内，持续理解一个人的工作、生活、目标与承诺，并以可靠、可纠错、受约束的方式帮助推进重要事情。</p>
+ <div class="meta"><span class="tag">ADS-WORK-09</span><span>V0.1 Research & Architecture Proposal</span><span>2026-11-19</span><span>Personal-first · User-controlled</span></div>
+ <div class="hero-insight"><strong>核心主张：</strong>事件账本负责可追溯，持续记忆负责跨时间理解，个人运行对象负责推进目标，Context Package 负责任务信息组织，Personal Agent 负责受约束行动。</div>
+</header>
+<div class="layout">
+<nav aria-label="专题导航">
+ <div class="nav-title">专题导航</div>
+ <a href="#summary">摘要与核心判断</a>
+ <div class="nav-group">Personal OS Model</div>
+ <a href="#concepts">1. 五类核心对象</a>
+ <a href="#architecture">2. 七层个人底座架构</a>
+ <a href="#memory">3. 持续记忆机制</a>
+ <a href="#intent">4. 个人运行模型</a>
+ <div class="nav-group">Agent & Trust</div>
+ <a href="#agent">5. Personal Agent</a>
+ <a href="#risk">6. 动作风险与审批</a>
+ <a href="#capture">7. 多源感知与多端</a>
+ <a href="#privacy">8. 数据治理与安全</a>
+ <div class="nav-group">Engineering & Pilot</div>
+ <a href="#engineering">9. 工程组件与契约</a>
+ <a href="#example">10. 端到端示例</a>
+ <a href="#evaluation">11. 试点评估</a>
+ <a href="#roadmap">12. 实施路线</a>
+ <a href="#decisions">13. 架构决策</a>
+ <a href="#next">结论与下一专题</a>
+</nav>
+<main>
+<section class="intro" id="summary">
+ <span class="eyebrow">Executive Summary</span><h2>个人数智底座不是更大的个人知识库</h2>
+ <p class="lead">如果 AI 只记住聊天摘要，仍然不知道事情从哪里来、是否被确认、后来是否变化，也不知道下一步要推进什么。个人数智底座必须把记忆和运行结合起来。</p>
+ <div class="callout"><strong>架构判断：</strong>事件账本、记忆视图、目标承诺、任务上下文和 Agent 行动必须分开建模，再通过来源、身份、时间和授权关系连接。</div>
+ <div class="grid g4">
+  <div class="metric"><div class="num">7</div><div class="label">个人数智底座逻辑层</div></div>
+  <div class="metric"><div class="num">8</div><div class="label">持续记忆类型</div></div>
+  <div class="metric"><div class="num">4</div><div class="label">Agent 风险等级</div></div>
+  <div class="metric"><div class="num">4</div><div class="label">核心数据契约</div></div>
+ </div>
+ <h3>本专题的六个关键结论</h3>
+ <div class="grid g3">
+  <div class="card"><div class="idx">01 / LEDGER</div><h3>事件账本是入口</h3><p>每条事件都保留时间、来源、断言状态和纠错关系。</p></div>
+  <div class="card"><div class="idx">02 / MEMORY</div><h3>记忆是可纠错视图</h3><p>候选、确认、冲突、过期和撤回都必须有明确状态。</p></div>
+  <div class="card"><div class="idx">03 / INTENT</div><h3>目标与承诺独立建模</h3><p>记住一件事不等于知道下一步做什么。</p></div>
+  <div class="card"><div class="idx">04 / CONTEXT</div><h3>上下文按任务构建</h3><p>只向模型提供当前任务所需且被授权的信息。</p></div>
+  <div class="card"><div class="idx">05 / AGENT</div><h3>Agent 受风险约束</h3><p>草稿、可逆写入和外部高影响动作使用不同审批门槛。</p></div>
+  <div class="card"><div class="idx">06 / TRUST</div><h3>个人拥有控制权</h3><p>查看、纠正、撤回、导出和删除是基础能力，不是附加功能。</p></div>
+ </div>
+</section>
+
+<section id="concepts">
+ <span class="eyebrow">01 · Core Objects</span><h2>五类对象必须分开：事件、记忆、意图、上下文和行动</h2>
+ <div class="tabs" id="objectTabs">
+  <button class="selected" data-object="event">Personal Event</button>
+  <button data-object="memory">Memory Item</button>
+  <button data-object="intent">Intent Object</button>
+  <button data-object="context">Context Package</button>
+  <button data-object="action">Agent Action</button>
+ </div>
+ <div class="tab-detail" id="objectDetail" aria-live="polite"><strong>Personal Event · 发生了什么？</strong><p>记录发生、观察、表达或状态变化，保留来源、时间、主体、对象和断言状态。它不一定是已经确认的事实。</p></div>
+ <table><thead><tr><th>对象</th><th>回答的问题</th><th>关键约束</th></tr></thead><tbody>
+ <tr><td>Personal Event</td><td>发生了什么？来源在哪里？</td><td>来源可追溯、时间可区分、可纠错</td></tr>
+ <tr><td>Memory Item</td><td>哪些信息值得未来记住？</td><td>必须引用来源、置信度、有效期和用户控制</td></tr>
+ <tr><td>Intent Object</td><td>用户想实现什么、承诺了什么？</td><td>确认状态、负责人、期限和下一步</td></tr>
+ <tr><td>Context Package</td><td>当前任务需要哪些信息？</td><td>最小必要、目的绑定、有效期</td></tr>
+ <tr><td>Agent Action</td><td>Agent 准备或执行什么？</td><td>能力白名单、风险、审批和结果核验</td></tr>
+ </tbody></table>
+ <div class="callout amber">记忆不等于事实；推断不等于确认；建议不等于执行；执行也不等于成功。</div>
+</section>
+
+<section id="architecture">
+ <span class="eyebrow">02 · Seven-Layer Personal OS</span><h2>七层个人数智底座架构</h2>
+ <p>点击任意层查看职责。治理作为横向控制面贯穿所有层。</p>
+ <div class="diagram">
+  <div class="arch-stack">
+   <div class="arch-row" data-layer="L7"><div class="arch-num"><b>L7</b><span>AGENT</span></div><div class="arch-content"><strong>Personal Agent 与执行层</strong><p>Planner · Policy Gate · Approval · Tool Execution · Verification · Feedback</p></div></div>
+   <div class="arch-row" data-layer="L6"><div class="arch-num"><b>L6</b><span>CONTEXT</span></div><div class="arch-content"><strong>个人认知与 Context Plane</strong><p>目标上下文 · 记忆检索 · 时间线 · 冲突 · 未知 · 权限过滤</p></div></div>
+   <div class="arch-row" data-layer="L5"><div class="arch-num"><b>L5</b><span>INTENT</span></div><div class="arch-content"><strong>个人运行模型层</strong><p>Goal · Commitment · Task · Project · Routine · Dependency · Next Action</p></div></div>
+   <div class="arch-row selected" data-layer="L4"><div class="arch-num"><b>L4</b><span>MEMORY</span></div><div class="arch-content"><strong>持续记忆与知识视图层</strong><p>Episodic · Semantic · Procedural · Preference · Relationship · Project Context</p></div></div>
+   <div class="arch-row" data-layer="L3"><div class="arch-num"><b>L3</b><span>SEMANTICS</span></div><div class="arch-content"><strong>身份、时间与语义解析层</strong><p>Person · Project · Object Identity · Time · Ontology Mapping · Conflict</p></div></div>
+   <div class="arch-row" data-layer="L2"><div class="arch-num"><b>L2</b><span>LEDGER</span></div><div class="arch-content"><strong>原始来源与个人事件账本层</strong><p>Source Vault · Personal Event Ledger · Provenance · Correction · Retention</p></div></div>
+   <div class="arch-row" data-layer="L1"><div class="arch-num"><b>L1</b><span>CAPTURE</span></div><div class="arch-content"><strong>多源感知与采集层</strong><p>Manual · Calendar · Task · Document · Mail · Meeting · Voice · Device</p></div></div>
+  </div>
+  <div class="detail" id="archDetail"><strong>L4 · 持续记忆与知识视图层</strong><p>把事件转换为可复核的情景、语义、程序、偏好、关系和项目记忆。记忆可重建、可纠正，不是模型内不可见的事实。</p></div>
+ </div>
+ <div class="callout purple"><strong>横向治理控制面：</strong>身份、授权、隐私分类、加密、留存、撤回、审计、版本、用户控制和数据可携带性。</div>
+ <h3>事件与记忆不是同一条数据管道的同义词</h3>
+ <div class="diagram">
+  <div class="flow">
+   <div class="step"><b>Source Vault</b><span>原始录音<br>文档 / 消息</span></div><div class="arrow">→</div>
+   <div class="step"><b>Event Ledger</b><span>来源、时间<br>事件与断言</span></div><div class="arrow">→</div>
+   <div class="step"><b>Memory Compiler</b><span>候选、确认<br>冲突、过期</span></div><div class="arrow">→</div>
+   <div class="step"><b>Personal OS</b><span>目标、承诺<br>任务、下一步</span></div><div class="arrow">→</div>
+   <div class="step"><b>Agent Runtime</b><span>规划、审批<br>执行、核验</span></div>
+  </div>
+ </div>
+</section>
+
+<section id="memory">
+ <span class="eyebrow">03 · Continuous Memory</span><h2>持续记忆：从事件形成长期理解，而不是堆积摘要</h2>
+ <div class="grid g4">
+  <div class="card"><span class="pill blue">EPISODIC</span><h3>情景记忆</h3><p>一次会议、一次经历、一次关键事件。</p></div>
+  <div class="card"><span class="pill teal">SEMANTIC</span><h3>语义记忆</h3><p>人物、项目、概念和稳定事实。</p></div>
+  <div class="card"><span class="pill violet">PROCEDURAL</span><h3>程序记忆</h3><p>用户如何完成一类工作。</p></div>
+  <div class="card"><span class="pill amber">PREFERENCE</span><h3>偏好记忆</h3><p>用户明确表达的工作与生活偏好。</p></div>
+  <div class="card"><span class="pill blue">GOAL</span><h3>目标记忆</h3><p>长期和阶段性目标。</p></div>
+  <div class="card"><span class="pill teal">COMMITMENT</span><h3>承诺记忆</h3><p>向自己或他人承诺的事项。</p></div>
+  <div class="card"><span class="pill violet">RELATIONSHIP</span><h3>关系记忆</h3><p>人与人、人与项目的关系。</p></div>
+  <div class="card"><span class="pill amber">ROUTINE</span><h3>例程记忆</h3><p>反复发生的周期性活动。</p></div>
+ </div>
+ <h3>记忆生成七步</h3>
+ <div class="diagram">
+  <div class="flow">
+   <div class="step"><b>01 接收</b><span>来源进入<br>受控存储</span></div><div class="arrow">→</div>
+   <div class="step"><b>02 解析</b><span>转写 / OCR<br>结构化抽取</span></div><div class="arrow">→</div>
+   <div class="step"><b>03 候选化</b><span>事件候选<br>记忆候选</span></div><div class="arrow">→</div>
+   <div class="step"><b>04 关联</b><span>人物 / 项目<br>目标 / 任务</span></div><div class="arrow">→</div>
+   <div class="step"><b>05 确认</b><span>用户或权威<br>来源确认</span></div><div class="arrow">→</div>
+   <div class="step"><b>06 整合</b><span>更新认知<br>保留历史</span></div><div class="arrow">→</div>
+   <div class="step"><b>07 复核</b><span>冲突 / 过期<br>纠错 / 撤回</span></div>
+  </div>
+ </div>
+ <h3>记忆生命周期</h3>
+ <div class="tabs" id="memoryTabs">
+  <button class="selected" data-memory="candidate">Candidate</button>
+  <button data-memory="active">Active</button>
+  <button data-memory="stale">Stale / Disputed</button>
+  <button data-memory="superseded">Superseded</button>
+  <button data-memory="withdrawn">Withdrawn / Expired</button>
+ </div>
+ <div class="tab-detail" id="memoryDetail"><strong>Candidate · 候选记忆</strong><p>模型或规则从事件中抽取出的候选认知。保留来源和置信度，但不能被描述成已确认事实；影响较大的内容应向用户确认。</p></div>
+ <div class="callout amber">不能使用“最新一条覆盖旧记忆”或“置信度最高者胜出”。冲突需要保留来源、有效时间和不同断言，无法判断时向用户呈现。</div>
+</section>
+
+<section id="intent">
+ <span class="eyebrow">04 · Personal Operating Model</span><h2>个人运行模型：让记忆转化为持续推进能力</h2>
+ <table><thead><tr><th>对象</th><th>核心问题</th><th>必要信息</th></tr></thead><tbody>
+ <tr><td>Goal</td><td>希望达到什么状态？</td><td>目标、衡量方式、期限、进展</td></tr>
+ <tr><td>Commitment</td><td>向谁承诺了什么？</td><td>承诺主体、对象、期限、确认依据</td></tr>
+ <tr><td>Task</td><td>下一步要做什么？</td><td>动作、负责人、状态、完成条件</td></tr>
+ <tr><td>Routine</td><td>哪些事情需要周期性发生？</td><td>周期、触发条件、例外和暂停</td></tr>
+ <tr><td>Project</td><td>正在持续推进什么？</td><td>目标、范围、阶段、依赖和成果</td></tr>
+ </tbody></table>
+ <div class="diagram">
+  <div class="flow">
+   <div class="step"><b>GOAL</b><span>希望达成的<br>结果状态</span></div><div class="arrow">→</div>
+   <div class="step"><b>PROJECT</b><span>持续推进的<br>工作范围</span></div><div class="arrow">→</div>
+   <div class="step"><b>COMMITMENT</b><span>责任与<br>承诺边界</span></div><div class="arrow">→</div>
+   <div class="step"><b>TASK</b><span>可执行的<br>工作单元</span></div><div class="arrow">→</div>
+   <div class="step"><b>NEXT ACTION</b><span>下一步<br>具体行动</span></div>
+  </div>
+ </div>
+ <div class="callout blue">模型可以提出目标、任务和承诺候选，但不能自动把候选升级为用户已经确认的承诺。用户可以暂停、调整或取消自己的目标。</div>
+ <h3>个人时间线不是只有日历</h3>
+ <p>它要把过去发生的事件、当前目标和承诺状态、下一步行动以及未来可能的时间安排连成可解释的连续视图。</p>
+</section>
+
+<section id="agent">
+ <span class="eyebrow">05 · Personal Agent Runtime</span><h2>Personal Agent 的任务闭环</h2>
+ <div class="diagram">
+  <div class="flow">
+   <div class="step"><b>Trigger</b><span>用户请求<br>或事件触发</span></div><div class="arrow">→</div>
+   <div class="step"><b>Task Contract</b><span>目的、范围<br>有效期</span></div><div class="arrow">→</div>
+   <div class="step"><b>Context</b><span>相关记忆<br>证据与未知</span></div><div class="arrow">→</div>
+   <div class="step"><b>Planner</b><span>计划与<br>动作提案</span></div><div class="arrow">→</div>
+   <div class="step"><b>Policy Gate</b><span>风险与<br>权限检查</span></div><div class="arrow">→</div>
+   <div class="step"><b>Approval</b><span>必要时由<br>用户批准</span></div><div class="arrow">→</div>
+   <div class="step"><b>Execute</b><span>工具调用<br>与核验</span></div>
+  </div>
+ </div>
+ <div class="callout">执行结果必须重新写回事件账本，更新目标和记忆视图。Agent 不应把自己的计划当成已经发生的事实。</div>
+ <h3>个人 Agent 与企业 Agent 的边界</h3>
+ <div class="grid g2">
+  <div class="card"><span class="pill violet">PERSONAL AGENT</span><h3>代表个人利益</h3><p>读取个人授权上下文，帮助个人安排、判断和行动。个人原始记忆由个人控制。</p></div>
+  <div class="card"><span class="pill blue">ENTERPRISE AGENT</span><h3>代表企业业务责任</h3><p>只读取企业侧授权的业务对象、事件和上下文，不通过派生引用读取个人原始记忆。</p></div>
+ </div>
+</section>
+
+<section id="risk">
+ <span class="eyebrow">06 · Risk & Approval</span><h2>Agent 自主程度必须与动作风险匹配</h2>
+ <div class="risk-tabs" id="riskTabs">
+  <button class="selected" data-risk="L0"><b>L0</b><span>只读查询</span></button>
+  <button data-risk="L1"><b>L1</b><span>草稿与建议</span></button>
+  <button data-risk="L2"><b>L2</b><span>可逆写入</span></button>
+  <button data-risk="L3"><b>L3</b><span>外部高影响</span></button>
+ </div>
+ <div class="risk-detail" id="riskDetail"><strong>L0 · 只读查询</strong><p>检索、总结和状态查询。在用户已授权的数据范围内可自动执行，并保留来源引用和任务目的。</p></div>
+ <table><thead><tr><th>风险等级</th><th>典型动作</th><th>默认控制</th></tr></thead><tbody>
+ <tr><td>L0</td><td>只读检索、总结、状态查询</td><td>授权范围内可自动进行</td></tr>
+ <tr><td>L1</td><td>生成草稿、建议、个人提醒草案</td><td>自动准备，用户检查</td></tr>
+ <tr><td>L2</td><td>修改个人日历、任务、文件或其他可逆状态</td><td>执行前明确确认</td></tr>
+ <tr><td>L3</td><td>对外发送、支付、删除、公开发布、修改权限</td><td>逐次明确确认，必要时额外验证</td></tr>
+ </tbody></table>
+ <div class="callout red"><strong>审批必须绑定具体动作：</strong>目标对象、具体字段、工具、预期副作用、计划版本、有效期和回滚方案。计划发生实质变化时，必须重新审批。</div>
+</section>
+
+<section id="capture">
+ <span class="eyebrow">07 · Capture & Multi-device</span><h2>多源感知要追求可靠上下文，不是无边界采集</h2>
+ <div class="grid g3">
+  <div class="card"><span class="pill teal">P0</span><h3>手动记录、日历、任务</h3><p>用户意图清晰、时间和状态明确，适合首期验证。</p></div>
+  <div class="card"><span class="pill blue">P1</span><h3>文档、笔记、沟通</h3><p>补充项目背景、协作事件和经验线索。</p></div>
+  <div class="card"><span class="pill amber">P2</span><h3>会议语音、设备信号</h3><p>作为可选来源，须有清晰告知、授权和暂停能力。</p></div>
+ </div>
+ <h3>语音采集终端的产品要求</h3>
+ <div class="grid g2">
+  <div class="card"><h3>可靠性</h3><p>录音状态、电量、存储、网络、离线缓存和补传状态可见。</p></div>
+  <div class="card"><h3>用户控制</h3><p>一键暂停、停止、删除、同步设置和设备撤销。</p></div>
+  <div class="card"><h3>数据生命周期</h3><p>原始音频、转写、事件和记忆分别设置保留期限。</p></div>
+  <div class="card"><h3>场景合规</h3><p>多人场景尊重参与者告知和同意要求，不以隐蔽录音作为前提。</p></div>
+ </div>
+ <div class="callout amber">本地优先、加密同步、用户可控。云端同步不意味着服务端默认可以读取所有明文；设备丢失时需要撤销设备和保护密钥。</div>
+</section>
+
+<section id="privacy">
+ <span class="eyebrow">08 · Privacy & User Control</span><h2>默认个人私有，跨边界分享必须显式授权</h2>
+ <div class="guardrails">
+  <div class="guardrail"><b>Purpose</b><span>明确目的</span></div>
+  <div class="guardrail"><b>Scope</b><span>限定对象</span></div>
+  <div class="guardrail"><b>Fields</b><span>限定字段</span></div>
+  <div class="guardrail"><b>Recipient</b><span>指定接收者</span></div>
+  <div class="guardrail"><b>Expiry</b><span>有效期限</span></div>
+  <div class="guardrail"><b>Revoke</b><span>撤回授权</span></div>
+  <div class="guardrail"><b>Lineage</b><span>派生追踪</span></div>
+ </div>
+ <div class="diagram">
+  <div class="flow">
+   <div class="step"><b>个人来源</b><span>原始内容<br>完整背景</span></div><div class="arrow">→</div>
+   <div class="step"><b>个人事件</b><span>用户控制<br>个人 ID</span></div><div class="arrow">→</div>
+   <div class="step"><b>用户选择</b><span>目的、字段<br>接收者</span></div><div class="arrow">→</div>
+   <div class="step"><b>授权投影</b><span>最小必要<br>新事件 ID</span></div><div class="arrow">→</div>
+   <div class="step"><b>企业侧</b><span>独立治理<br>独立权限</span></div>
+  </div>
+ </div>
+ <h3>删除和撤回必须沿派生链传播</h3>
+ <p>Source Record → Event → Memory Item → Summary / Index / Context Cache → Agent Output</p>
+ <ol><li>停止相关数据新的检索、推断和投影。</li><li>找到依赖该来源的记忆、摘要、索引和缓存。</li><li>按请求和适用规则删除、限制或替换内容。</li><li>防止后续从仍保留的来源重新生成已删除记忆。</li><li>对必要审计标记设置独立的最小保留规则。</li></ol>
+ <div class="callout red">个人生活信息不因员工身份自动进入企业；企业 Agent 不能通过投影引用反向读取个人原始记录。</div>
+</section>
+
+<section id="engineering">
+ <span class="eyebrow">09 · Engineering Contracts</span><h2>四类核心数据契约与现有 ADS 架构衔接</h2>
+ <div class="grid g2">
+  <div class="card"><h3>Personal Event Ledger</h3><p>个人事件信封：来源、时间、主体、对象、断言状态、授权和留存。</p></div>
+  <div class="card"><h3>Personal Memory Item</h3><p>记忆条目：类型、陈述、来源事件、置信度、有效性、生命周期和用户控制。</p></div>
+  <div class="card"><h3>Personal Intent Object</h3><p>目标、承诺、任务、例程和项目：状态、截止时间、进展与下一步。</p></div>
+  <div class="card"><h3>Personal Agent Action</h3><p>动作提案：风险等级、工具白名单、审批状态、执行结果和核验。</p></div>
+ </div>
+ <h3>首期不必强制引入图数据库</h3>
+ <table><thead><tr><th>存储</th><th>建议用途</th></tr></thead><tbody>
+ <tr><td>关系数据库</td><td>事件元数据、记忆、目标、承诺、授权和状态</td></tr>
+ <tr><td>对象存储</td><td>用户授权保留的音频、文件和多媒体来源</td></tr>
+ <tr><td>全文索引</td><td>受权限过滤的文本检索</td></tr>
+ <tr><td>向量索引</td><td>语义检索辅助，不作为事实主存储</td></tr>
+ <tr><td>事件日志</td><td>追加、重放、审计和派生视图重建</td></tr>
+ </tbody></table>
+ <div class="links">
+  <a href="../schemas/ads-personal-event-ledger-v0.1.schema.json">Event Ledger Schema</a>
+  <a href="../schemas/ads-personal-memory-item-v0.1.schema.json">Memory Item Schema</a>
+  <a href="../schemas/ads-personal-intent-object-v0.1.schema.json">Intent Object Schema</a>
+  <a href="../schemas/ads-personal-agent-action-v0.1.schema.json">Agent Action Schema</a>
+  <a href="../examples/ads-personal-memory-loop-v0.1.json">End-to-end Example</a>
+ </div>
+</section>
+
+<section id="example">
+ <span class="eyebrow">10 · End-to-end Example</span><h2>从一句承诺到个人 Agent 协助推进</h2>
+ <div class="callout blue">用户手动记录：“周五前整理项目风险清单并确认责任人。”</div>
+ <ol>
+  <li>个人事件账本记录承诺事件，保留原始来源、发生时间和记录时间。</li>
+  <li>记忆引擎形成一条可追溯的承诺记忆，标注来源和确认状态。</li>
+  <li>用户确认后建立 Personal Commitment，包含截止时间和下一步行动。</li>
+  <li>Agent 建议创建提醒，但动作处于 L2 待审批状态。</li>
+  <li>用户批准具体提醒内容和时间后，工具才允许执行。</li>
+  <li>执行结果经过核验，新增一条个人事件，更新承诺进展。</li>
+ </ol>
+ <div class="grid g2">
+  <div class="card"><span class="pill violet">PRIVATE EVENT</span><h3>个人生活安排</h3><p>保持 personal_only，不进入企业投影，也不作为员工管理数据。</p></div>
+  <div class="card"><span class="pill teal">WORK COMMITMENT</span><h3>个人工作承诺</h3><p>由本人选择后，才可能通过 ADS-WORK-08 规定的授权投影形成企业记录。</p></div>
+ </div>
+</section>
+
+<section id="evaluation">
+ <span class="eyebrow">11 · Pilot Evaluation</span><h2>试点衡量上下文帮助与用户控制感，不追求采集数量</h2>
+ <div class="grid g3">
+  <div class="card"><h3>Event Precision / Recall</h3><p>按事件类型评估抽取质量。</p></div>
+  <div class="card"><h3>Memory Correctness</h3><p>用户抽查记忆是否准确、有用。</p></div>
+  <div class="card"><h3>Stale Memory Rate</h3><p>过期或失效记忆的比例。</p></div>
+  <div class="card"><h3>Retrieval Utility</h3><p>检索是否真正帮助当前任务。</p></div>
+  <div class="card"><h3>Correction Burden</h3><p>用户纠正和管理记忆的负担。</p></div>
+  <div class="card"><h3>Approval Bypass</h3><p>未经审批执行 L2/L3 的次数，目标为零。</p></div>
+ </div>
+ <div class="callout amber">所有长期记忆可追溯；候选与确认可区分；纠错和删除可传播；个人生活信息不越界；L2/L3 审批绕过次数为零。</div>
+</section>
+
+<section id="roadmap">
+ <span class="eyebrow">12 · Delivery Roadmap</span><h2>先建立可信记忆，再逐步增加自主程度</h2>
+ <div class="timeline">
+  <div class="phase"><div class="stepno">P0 · 1—2 W</div><strong>语义与治理冻结</strong><p>事件、记忆、意图和授权契约。</p></div>
+  <div class="phase"><div class="stepno">P1 · 2—3 W</div><strong>事件账本 MVP</strong><p>手动记录、来源、时间线和导出。</p></div>
+  <div class="phase"><div class="stepno">P2 · 2—3 W</div><strong>记忆引擎 MVP</strong><p>候选、确认、冲突、过期和撤回。</p></div>
+  <div class="phase"><div class="stepno">P3 · 2 W</div><strong>个人运行模型</strong><p>目标、承诺、任务和下一步行动。</p></div>
+  <div class="phase"><div class="stepno">P4 · 2 W</div><strong>只读与草稿 Agent</strong><p>上下文、规划和草稿生成。</p></div>
+  <div class="phase"><div class="stepno">P5+ · 2—4 W</div><strong>受控执行与多端</strong><p>审批、幂等、核验、多设备同步。</p></div>
+ </div>
+ <p class="small">以上为规划估算。多端同步、设备采集和企业协同必须单独通过安全与隐私评审。</p>
+</section>
+
+<section id="decisions">
+ <span class="eyebrow">13 · Architecture Decisions</span><h2>建议冻结的十二项架构决策</h2>
+ <table><thead><tr><th>ADR</th><th>建议决策</th></tr></thead><tbody>
+ <tr><td>01</td><td>个人数智底座以个人为主体，而不是以员工身份为主体。</td></tr>
+ <tr><td>02</td><td>事件账本、记忆、意图对象和 Context Package 分离。</td></tr>
+ <tr><td>03</td><td>事件采用追加式纠错，删除权仍须落实。</td></tr>
+ <tr><td>04</td><td>记忆默认从候选开始，模型不能静默把推断升级为事实。</td></tr>
+ <tr><td>05</td><td>长期记忆必须有来源、置信度、有效性和用户控制入口。</td></tr>
+ <tr><td>06</td><td>目标、承诺和任务是独立运行对象。</td></tr>
+ <tr><td>07</td><td>个人数据默认 personal_only，跨边界必须目的绑定和最小必要授权。</td></tr>
+ <tr><td>08</td><td>Personal Agent 使用能力白名单、风险分级和审批门禁。</td></tr>
+ <tr><td>09</td><td>L2/L3 动作未获得有效审批前禁止执行。</td></tr>
+ <tr><td>10</td><td>Agent 执行结果必须核验并写回事件账本。</td></tr>
+ <tr><td>11</td><td>多设备同步采用本地优先和加密边界。</td></tr>
+ <tr><td>12</td><td>删除、撤回和抑制必须覆盖派生记忆、索引、缓存和后续重建。</td></tr>
+ </tbody></table>
+</section>
+
+<section id="next">
+ <span class="eyebrow">Conclusion & Next Research</span><h2>让 AI 持续理解人，并在用户允许的范围内帮助推进重要事情</h2>
+ <p class="quote">个人数智底座的价值，不在于让 AI 无所不知，而在于让 AI 在用户允许的范围内，可靠地理解重要上下文，并帮助用户把重要事情持续推进。</p>
+ <div class="grid g3">
+  <div class="card"><h3>事件账本</h3><p>让每一条重要信息可追溯、可纠错。</p></div>
+  <div class="card"><h3>持续记忆</h3><p>让 AI 跨时间理解用户，但不把推断当事实。</p></div>
+  <div class="card"><h3>个人 Agent</h3><p>让 AI 从建议走向受约束的行动和反馈。</p></div>
+ </div>
+ <div class="callout"><strong>下一专题 ADS-WORK-10：</strong>《个人数智底座的产品形态、多终端感知入口与个人助理 OS 交互架构》。研究个人助理 OS 的用户入口、手机/电脑/会议/语音终端协同、主动提醒、每日回顾、目标管理、记忆管理、多端同步和个人—企业授权协同。</div>
+ <h3>配套工程文件</h3>
+ <div class="links">
+  <a href="../docs/09-个人数智底座的持续记忆事件账本与自主智能体架构研究.md">研究报告 Markdown</a>
+  <a href="../schemas/ads-personal-event-ledger-v0.1.schema.json">Event Ledger Schema</a>
+  <a href="../schemas/ads-personal-memory-item-v0.1.schema.json">Memory Item Schema</a>
+  <a href="../schemas/ads-personal-intent-object-v0.1.schema.json">Intent Object Schema</a>
+  <a href="../schemas/ads-personal-agent-action-v0.1.schema.json">Agent Action Schema</a>
+  <a href="../examples/ads-personal-memory-loop-v0.1.json">端到端示例</a>
+  <a href="../prototype/personal_memory_engine.py">Python 原型</a>
+  <a href="../prototype/test_personal_memory_contracts.py">合同测试</a>
+ </div>
+ <p class="small">本文件为研究与工程草案。真实个人数据采集、设备录音、第三方连接、加密、删除、员工数据处理和跨组织共享，必须另行经过用户授权、组织制度、安全和适用法律评审。示例均为虚构数据。</p>
+</section>
+</main>
+</div>
+<div class="footer">ADS-WORK-09 · V0.1 Research & Architecture Proposal · 2026-11-19</div>
+</div>
+<script>
+(function(){
+ const arch={
+  L1:["L1 · 多源感知与采集层","手动输入、日历、任务、文档、邮件、会议和设备来源。用户明确启用来源与用途；提供可见状态、暂停和撤销。"],
+  L2:["L2 · 原始来源与个人事件账本层","Source Vault 保存受控原始内容，Event Ledger 保存标准事件、来源引用、时间和断言状态。纠错采用追加式记录，但删除请求和留存规则仍须生效。"],
+  L3:["L3 · 身份、时间与语义解析层","识别人物、项目和对象，解析时区与有效时间。无法唯一确认时保留 candidate、unresolved 和 conflict，不强制合并。"],
+  L4:["L4 · 持续记忆与知识视图层","把事件转换为可复核的情景、语义、程序、偏好、关系和项目记忆。记忆可重建、可纠正，不是模型内不可见的事实。"],
+  L5:["L5 · 个人运行模型层","管理 Goal、Commitment、Task、Project、Routine、Dependency 和 Next Action，让记忆转化为可持续推进的个人工作流。"],
+  L6:["L6 · 个人认知与 Context Plane","围绕具体任务构建最小必要上下文，包含相关记忆、来源、时间线、冲突、未知、允许动作和授权有效期。"],
+  L7:["L7 · Personal Agent 与执行层","规划、工具调用、审批、执行、核验和反馈。动作结果写回事件账本，不能把计划当成事实。"]
+ };
+ document.querySelectorAll(".arch-row").forEach(function(btn){btn.addEventListener("click",function(){
+  document.querySelectorAll(".arch-row").forEach(function(x){x.classList.remove("selected")});btn.classList.add("selected");
+  const v=arch[btn.dataset.layer];document.getElementById("archDetail").innerHTML="<strong>"+v[0]+"</strong><p>"+v[1]+"</p>";
+ });});
+ const objects={
+  event:["Personal Event · 发生了什么？","记录发生、观察、表达或状态变化，保留来源、时间、主体、对象和断言状态。它不一定是已经确认的事实。"],
+  memory:["Memory Item · 哪些信息值得未来记住？","从事件和用户确认中形成的可持续认知，必须有来源、置信度、有效时间、生命周期和用户控制入口。"],
+  intent:["Intent Object · 用户想实现什么？","目标、承诺、任务、例程和个人项目等运行对象。必须区分用户确认、权威系统同步和模型推断候选。"],
+  context:["Context Package · 当前任务需要哪些信息？","按目的、对象、时间和权限筛选出的最小必要信息集合。它不是新的事实源，也不能绕过原始数据权限。"],
+  action:["Agent Action · Agent 准备或执行什么？","有范围、计划、工具、风险、审批和结果核验的动作记录。提案不等于批准，执行不等于成功。"]
+ };
+ document.querySelectorAll("#objectTabs button").forEach(function(btn){btn.addEventListener("click",function(){
+  document.querySelectorAll("#objectTabs button").forEach(function(x){x.classList.remove("selected")});btn.classList.add("selected");
+  const v=objects[btn.dataset.object];document.getElementById("objectDetail").innerHTML="<strong>"+v[0]+"</strong><p>"+v[1]+"</p>";
+ });});
+ const memories={
+  candidate:["Candidate · 候选记忆","模型或规则从事件中抽取出的候选认知。保留来源和置信度，但不能被描述成已确认事实；影响较大的内容应向用户确认。"],
+  active:["Active · 生效记忆","在来源、确认状态和有效期都满足要求时，可进入任务上下文。仍然允许用户纠正、撤回和删除。"],
+  stale:["Stale / Disputed · 过期或争议","可能已失效或与其他来源冲突。应降低自动使用优先级，保留来源并请求复核，不自动覆盖。"],
+  superseded:["Superseded · 已被替代","由新的确认记忆替代。保留必要的历史关系和纠错轨迹，但不再作为当前状态使用。"],
+  withdrawn:["Withdrawn / Expired · 撤回或过期","不再进入普通检索。若用户要求忘记来源，应沿派生链抑制或删除相关记忆、索引和缓存。"]
+ };
+ document.querySelectorAll("#memoryTabs button").forEach(function(btn){btn.addEventListener("click",function(){
+  document.querySelectorAll("#memoryTabs button").forEach(function(x){x.classList.remove("selected")});btn.classList.add("selected");
+  const v=memories[btn.dataset.memory];document.getElementById("memoryDetail").innerHTML="<strong>"+v[0]+"</strong><p>"+v[1]+"</p>";
+ });});
+ const risks={
+  L0:["L0 · 只读查询","检索、总结和状态查询。在用户已授权的数据范围内可自动执行，并保留来源引用和任务目的。"],
+  L1:["L1 · 草稿与建议","生成草稿、建议和个人提醒草案。可以自动准备，但要清楚标记为草稿，不冒充已经发送或已经创建。"],
+  L2:["L2 · 可逆写入","修改个人日历、任务或文件等可逆状态。执行前必须明确确认目标对象、字段和具体副作用。"],
+  L3:["L3 · 外部高影响","对外发送、支付、删除、公开发布或修改权限。每次动作明确确认，必要时增加身份验证或双重审批。"]
+ };
+ document.querySelectorAll("#riskTabs button").forEach(function(btn){btn.addEventListener("click",function(){
+  document.querySelectorAll("#riskTabs button").forEach(function(x){x.classList.remove("selected")});btn.classList.add("selected");
+  const v=risks[btn.dataset.risk];document.getElementById("riskDetail").innerHTML="<strong>"+v[0]+"</strong><p>"+v[1]+"</p>";
+ });});
+ const links=[...document.querySelectorAll("nav a")];const sections=links.map(a=>document.querySelector(a.getAttribute("href"))).filter(Boolean);
+ if("IntersectionObserver" in window){const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){links.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+entry.target.id));}});},{rootMargin:"-15% 0px -75% 0px"});sections.forEach(s=>observer.observe(s));}
+})();
+</script>
+</body>
+</html>
