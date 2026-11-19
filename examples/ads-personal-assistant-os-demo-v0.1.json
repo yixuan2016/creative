@@ -1,0 +1,1146 @@
+{
+  "demo_id": "ads-personal-assistant-os-demo-0.1",
+  "version": "0.1.0",
+  "as_of": "2026-11-19T08:30:00+08:00",
+  "timezone": "Asia/Shanghai",
+  "profile": {
+    "display_name": "周予安",
+    "role": "产品与研究工作者",
+    "description": "虚构演示身份，用于展示个人助理 OS 的连续体验。",
+    "avatar_text": "周"
+  },
+  "sources": [
+    {
+      "source_id": "src-dingtalk",
+      "name": "钉钉工作消息",
+      "kind": "collaboration",
+      "status": "connected",
+      "permission": "read_only",
+      "scope": "用户授权的工作会话与事项",
+      "last_sync_at": "2026-11-19T08:05:00+08:00",
+      "note": "仅展示模拟连接状态，不读取真实钉钉数据。"
+    },
+    {
+      "source_id": "src-calendar",
+      "name": "个人日历",
+      "kind": "calendar",
+      "status": "connected",
+      "permission": "read_only",
+      "scope": "日程标题、时间与状态",
+      "last_sync_at": "2026-11-19T08:02:00+08:00",
+      "note": "只读同步；不代表可以修改真实日历。"
+    },
+    {
+      "source_id": "src-docs",
+      "name": "个人文档空间",
+      "kind": "documents",
+      "status": "connected",
+      "permission": "selected_files",
+      "scope": "用户选择的研究文档",
+      "last_sync_at": "2026-11-18T20:10:00+08:00",
+      "note": "仅模拟用户主动选择的文件范围。"
+    },
+    {
+      "source_id": "src-voice",
+      "name": "语音快速记录",
+      "kind": "voice_capture",
+      "status": "available",
+      "permission": "user_initiated",
+      "scope": "用户主动提交的单条语音转写文本",
+      "last_sync_at": "2026-11-12T16:20:00+08:00",
+      "note": "本原型不调用麦克风；语音内容为虚构示例。"
+    }
+  ],
+  "events": [
+    {
+      "event_id": "evt-001",
+      "occurred_at": "2026-10-21T10:00:00+08:00",
+      "category": "work",
+      "title": "梳理个人数智底座研究主线",
+      "summary": "把个人工作记忆、企业上下文和多源感知整理为一条研究主线。",
+      "source_id": "src-dingtalk",
+      "assertion_status": "confirmed",
+      "confidence": 0.99,
+      "tags": [
+        "研究",
+        "规划"
+      ],
+      "project": "ADS",
+      "day_index": 1
+    },
+    {
+      "event_id": "evt-002",
+      "occurred_at": "2026-10-22T10:00:00+08:00",
+      "category": "work",
+      "title": "团队周例会",
+      "summary": "讨论知识沉淀与工作信息自动理解的边界。",
+      "source_id": "src-dingtalk",
+      "assertion_status": "observed",
+      "confidence": 0.97,
+      "tags": [
+        "会议",
+        "团队"
+      ],
+      "project": "知识沉淀",
+      "day_index": 2
+    },
+    {
+      "event_id": "evt-003",
+      "occurred_at": "2026-10-23T10:00:00+08:00",
+      "category": "work",
+      "title": "整理三层知识沉淀规范",
+      "summary": "形成原始记录、事件理解、可复用知识的初步分层。",
+      "source_id": "src-docs",
+      "assertion_status": "confirmed",
+      "confidence": 0.99,
+      "tags": [
+        "文档",
+        "标准"
+      ],
+      "project": "知识沉淀",
+      "day_index": 3
+    },
+    {
+      "event_id": "evt-004",
+      "occurred_at": "2026-10-24T10:00:00+08:00",
+      "category": "learning",
+      "title": "学习个人知识图谱与本体",
+      "summary": "记录事件、实体、关系和时间维度的学习笔记。",
+      "source_id": "src-voice",
+      "assertion_status": "observed",
+      "confidence": 0.95,
+      "tags": [
+        "学习",
+        "本体"
+      ],
+      "project": "个人成长",
+      "day_index": 4
+    },
+    {
+      "event_id": "evt-005",
+      "occurred_at": "2026-10-25T10:00:00+08:00",
+      "category": "life",
+      "title": "完成一次户外运动",
+      "summary": "在个人日历中记录运动安排。",
+      "source_id": "src-calendar",
+      "assertion_status": "confirmed",
+      "confidence": 0.99,
+      "tags": [
+        "生活",
+        "运动"
+      ],
+      "project": "个人生活",
+      "day_index": 5
+    },
+    {
+      "event_id": "evt-006",
+      "occurred_at": "2026-10-26T10:00:00+08:00",
+      "category": "work",
+      "title": "研究录音设备的使用障碍",
+      "summary": "归纳忘带、没电、未启动和生态割裂等问题。",
+      "source_id": "src-voice",
+      "assertion_status": "observed",
+      "confidence": 0.93,
+      "tags": [
+        "语音",
+        "产品"
+      ],
+      "project": "多源感知",
+      "day_index": 6
+    },
+    {
+      "event_id": "evt-007",
+      "occurred_at": "2026-10-27T10:00:00+08:00",
+      "category": "work",
+      "title": "个人与企业数据边界讨论",
+      "summary": "明确个人信息不能因为采集就自动进入企业工作空间。",
+      "source_id": "src-dingtalk",
+      "assertion_status": "observed",
+      "confidence": 0.96,
+      "tags": [
+        "授权",
+        "边界"
+      ],
+      "project": "ADS",
+      "day_index": 7
+    },
+    {
+      "event_id": "evt-008",
+      "occurred_at": "2026-10-28T10:00:00+08:00",
+      "category": "work",
+      "title": "形成多源感知入口草图",
+      "summary": "将手机、电脑、会议、语音和应用连接器作为互补入口。",
+      "source_id": "src-docs",
+      "assertion_status": "confirmed",
+      "confidence": 0.98,
+      "tags": [
+        "产品",
+        "多端"
+      ],
+      "project": "Personal OS",
+      "day_index": 8
+    },
+    {
+      "event_id": "evt-009",
+      "occurred_at": "2026-10-29T10:00:00+08:00",
+      "category": "work",
+      "title": "项目协同讨论",
+      "summary": "识别一个事项在会议、文档和任务系统中的不同表现。",
+      "source_id": "src-dingtalk",
+      "assertion_status": "observed",
+      "confidence": 0.94,
+      "tags": [
+        "项目",
+        "协同"
+      ],
+      "project": "项目 Alpha",
+      "day_index": 9
+    },
+    {
+      "event_id": "evt-010",
+      "occurred_at": "2026-10-30T10:00:00+08:00",
+      "category": "learning",
+      "title": "学习事件溯源与数据治理",
+      "summary": "整理来源、采集时间、发生时间和授权引用的区别。",
+      "source_id": "src-voice",
+      "assertion_status": "observed",
+      "confidence": 0.96,
+      "tags": [
+        "学习",
+        "数据治理"
+      ],
+      "project": "个人成长",
+      "day_index": 10
+    },
+    {
+      "event_id": "evt-011",
+      "occurred_at": "2026-10-31T10:00:00+08:00",
+      "category": "life",
+      "title": "周末整理个人计划",
+      "summary": "回顾本周重要事项并调整下周安排。",
+      "source_id": "src-calendar",
+      "assertion_status": "confirmed",
+      "confidence": 0.99,
+      "tags": [
+        "生活",
+        "计划"
+      ],
+      "project": "个人生活",
+      "day_index": 11
+    },
+    {
+      "event_id": "evt-012",
+      "occurred_at": "2026-11-01T10:00:00+08:00",
+      "category": "work",
+      "title": "完成一周研究回顾",
+      "summary": "汇总研究进展、未决问题和下周优先事项。",
+      "source_id": "src-docs",
+      "assertion_status": "confirmed",
+      "confidence": 0.99,
+      "tags": [
+        "复盘",
+        "研究"
+      ],
+      "project": "ADS",
+      "day_index": 12
+    },
+    {
+      "event_id": "evt-013",
+      "occurred_at": "2026-11-02T10:00:00+08:00",
+      "category": "work",
+      "title": "讨论个人事件账本",
+      "summary": "将工作与生活事件作为个人上下文的基础表达。",
+      "source_id": "src-dingtalk",
+      "assertion_status": "observed",
+      "confidence": 0.95,
+      "tags": [
+        "事件",
+        "账本"
+      ],
+      "project": "ADS",
+      "day_index": 13
+    },
+    {
+      "event_id": "evt-014",
+      "occurred_at": "2026-11-03T10:00:00+08:00",
+      "category": "work",
+      "title": "梳理个人记忆生命周期",
+      "summary": "区分候选、确认、纠正、过期、撤回和删除。",
+      "source_id": "src-docs",
+      "assertion_status": "confirmed",
+      "confidence": 0.99,
+      "tags": [
+        "记忆",
+        "生命周期"
+      ],
+      "project": "Personal OS",
+      "day_index": 14
+    },
+    {
+      "event_id": "evt-015",
+      "occurred_at": "2026-11-04T10:00:00+08:00",
+      "category": "work",
+      "title": "跨团队产品讨论",
+      "summary": "讨论个人助理与企业 Agent 的授权协作方式。",
+      "source_id": "src-dingtalk",
+      "assertion_status": "observed",
+      "confidence": 0.94,
+      "tags": [
+        "会议",
+        "Agent"
+      ],
+      "project": "ADS",
+      "day_index": 15
+    },
+    {
+      "event_id": "evt-016",
+      "occurred_at": "2026-11-05T10:00:00+08:00",
+      "category": "learning",
+      "title": "学习 Agent 风险分级",
+      "summary": "整理只读、草稿、可逆写入和高影响动作的审批边界。",
+      "source_id": "src-voice",
+      "assertion_status": "observed",
+      "confidence": 0.95,
+      "tags": [
+        "学习",
+        "Agent"
+      ],
+      "project": "个人成长",
+      "day_index": 16
+    },
+    {
+      "event_id": "evt-017",
+      "occurred_at": "2026-11-06T10:00:00+08:00",
+      "category": "work",
+      "title": "形成 Personal Agent 动作草案",
+      "summary": "明确计划哈希、审批、有效期和执行核验。",
+      "source_id": "src-docs",
+      "assertion_status": "confirmed",
+      "confidence": 0.98,
+      "tags": [
+        "架构",
+        "审批"
+      ],
+      "project": "Personal OS",
+      "day_index": 17
+    },
+    {
+      "event_id": "evt-018",
+      "occurred_at": "2026-11-07T10:00:00+08:00",
+      "category": "life",
+      "title": "安排周末休息时间",
+      "summary": "日历中有一段个人休息时间。",
+      "source_id": "src-calendar",
+      "assertion_status": "confirmed",
+      "confidence": 0.99,
+      "tags": [
+        "生活",
+        "日程"
+      ],
+      "project": "个人生活",
+      "day_index": 18
+    },
+    {
+      "event_id": "evt-019",
+      "occurred_at": "2026-11-08T10:00:00+08:00",
+      "category": "learning",
+      "title": "阅读个人助理产品案例",
+      "summary": "记录低打扰、渐进式授权和可解释交互要点。",
+      "source_id": "src-voice",
+      "assertion_status": "observed",
+      "confidence": 0.94,
+      "tags": [
+        "学习",
+        "产品"
+      ],
+      "project": "个人成长",
+      "day_index": 19
+    },
+    {
+      "event_id": "evt-020",
+      "occurred_at": "2026-11-09T10:00:00+08:00",
+      "category": "work",
+      "title": "评审个人记忆数据契约",
+      "summary": "检查来源引用、个人私有默认值和用户纠错字段。",
+      "source_id": "src-docs",
+      "assertion_status": "confirmed",
+      "confidence": 0.99,
+      "tags": [
+        "Schema",
+        "评审"
+      ],
+      "project": "ADS",
+      "day_index": 20
+    },
+    {
+      "event_id": "evt-021",
+      "occurred_at": "2026-11-10T10:00:00+08:00",
+      "category": "work",
+      "title": "项目阶段回顾",
+      "summary": "回顾产品研究进度，明确下一步是进入可交互原型。",
+      "source_id": "src-dingtalk",
+      "assertion_status": "observed",
+      "confidence": 0.96,
+      "tags": [
+        "项目",
+        "复盘"
+      ],
+      "project": "Personal OS",
+      "day_index": 21
+    },
+    {
+      "event_id": "evt-022",
+      "occurred_at": "2026-11-11T10:00:00+08:00",
+      "category": "work",
+      "title": "梳理今日首页信息结构",
+      "summary": "确定今日摘要、接下来、需要关注和待确认区域。",
+      "source_id": "src-docs",
+      "assertion_status": "confirmed",
+      "confidence": 0.99,
+      "tags": [
+        "交互",
+        "首页"
+      ],
+      "project": "Personal OS",
+      "day_index": 22
+    },
+    {
+      "event_id": "evt-023",
+      "occurred_at": "2026-11-12T10:00:00+08:00",
+      "category": "work",
+      "title": "语音记录一个产品想法",
+      "summary": "记录“不要让用户成为 AI 的数据管理员”。",
+      "source_id": "src-voice",
+      "assertion_status": "observed",
+      "confidence": 0.93,
+      "tags": [
+        "语音",
+        "产品原则"
+      ],
+      "project": "Personal OS",
+      "day_index": 23
+    },
+    {
+      "event_id": "evt-024",
+      "occurred_at": "2026-11-13T10:00:00+08:00",
+      "category": "learning",
+      "title": "研究跨端同步和离线策略",
+      "summary": "整理幂等、冲突保留、撤回传播和设备撤销要求。",
+      "source_id": "src-voice",
+      "assertion_status": "observed",
+      "confidence": 0.95,
+      "tags": [
+        "学习",
+        "多端"
+      ],
+      "project": "个人成长",
+      "day_index": 24
+    },
+    {
+      "event_id": "evt-025",
+      "occurred_at": "2026-11-14T10:00:00+08:00",
+      "category": "life",
+      "title": "完成周度个人回顾",
+      "summary": "回顾生活安排并调整下周日历。",
+      "source_id": "src-calendar",
+      "assertion_status": "confirmed",
+      "confidence": 0.99,
+      "tags": [
+        "生活",
+        "回顾"
+      ],
+      "project": "个人生活",
+      "day_index": 25
+    },
+    {
+      "event_id": "evt-026",
+      "occurred_at": "2026-11-15T10:00:00+08:00",
+      "category": "work",
+      "title": "完善五大工作空间",
+      "summary": "确定今日、收集箱、时间线、目标与承诺、我的 AI。",
+      "source_id": "src-docs",
+      "assertion_status": "confirmed",
+      "confidence": 0.99,
+      "tags": [
+        "产品",
+        "信息架构"
+      ],
+      "project": "Personal OS",
+      "day_index": 26
+    },
+    {
+      "event_id": "evt-027",
+      "occurred_at": "2026-11-16T10:00:00+08:00",
+      "category": "work",
+      "title": "产品评审会议",
+      "summary": "讨论 MVP 边界、只读接入和提醒策略。",
+      "source_id": "src-dingtalk",
+      "assertion_status": "observed",
+      "confidence": 0.96,
+      "tags": [
+        "会议",
+        "MVP"
+      ],
+      "project": "Personal OS",
+      "day_index": 27
+    },
+    {
+      "event_id": "evt-028",
+      "occurred_at": "2026-11-17T10:00:00+08:00",
+      "category": "work",
+      "title": "准备原型验收标准",
+      "summary": "整理交互、权限、记忆纠错和 Agent 审批的验收项。",
+      "source_id": "src-docs",
+      "assertion_status": "confirmed",
+      "confidence": 0.99,
+      "tags": [
+        "验收",
+        "原型"
+      ],
+      "project": "Personal OS",
+      "day_index": 28
+    },
+    {
+      "event_id": "evt-029",
+      "occurred_at": "2026-11-18T10:00:00+08:00",
+      "category": "work",
+      "title": "会议中识别一项承诺候选",
+      "summary": "出现“周五前整理项目风险清单”的表述，责任人尚待确认。",
+      "source_id": "src-dingtalk",
+      "assertion_status": "inferred",
+      "confidence": 0.82,
+      "tags": [
+        "承诺",
+        "待确认"
+      ],
+      "project": "项目 Alpha",
+      "day_index": 29
+    },
+    {
+      "event_id": "evt-030",
+      "occurred_at": "2026-11-19T08:30:00+08:00",
+      "category": "work",
+      "title": "个人助理 OS 原型工作日",
+      "summary": "今天有一项产品评审安排，并有一项承诺候选待确认。",
+      "source_id": "src-calendar",
+      "assertion_status": "confirmed",
+      "confidence": 0.99,
+      "tags": [
+        "今日",
+        "产品"
+      ],
+      "project": "Personal OS",
+      "day_index": 30
+    }
+  ],
+  "memories": [
+    {
+      "memory_id": "mem-001",
+      "type": "semantic",
+      "statement": "正在持续研究个人数智底座，并关注个人、企业与领域之间的上下文协同。",
+      "status": "confirmed",
+      "confidence": 0.98,
+      "source_event_refs": [
+        "evt-001",
+        "evt-027"
+      ],
+      "updated_at": "2026-11-17T18:00:00+08:00",
+      "scope": "personal_only",
+      "rationale": "多次研究记录中稳定出现，且用户已确认。"
+    },
+    {
+      "memory_id": "mem-002",
+      "type": "preference",
+      "statement": "偏好先把设计标准建立准确，再让日常使用尽可能简单和自动化。",
+      "status": "confirmed",
+      "confidence": 0.97,
+      "source_event_refs": [
+        "evt-003",
+        "evt-022"
+      ],
+      "updated_at": "2026-11-12T16:30:00+08:00",
+      "scope": "personal_only",
+      "rationale": "来自用户明确表达的产品偏好。"
+    },
+    {
+      "memory_id": "mem-003",
+      "type": "procedural",
+      "statement": "每周回顾一次重要目标、承诺和未完成事项。",
+      "status": "candidate",
+      "confidence": 0.78,
+      "source_event_refs": [
+        "evt-011",
+        "evt-025"
+      ],
+      "updated_at": "2026-11-14T19:00:00+08:00",
+      "scope": "personal_only",
+      "rationale": "系统观察到重复行为，尚未确认是否希望长期采用。"
+    },
+    {
+      "memory_id": "mem-004",
+      "type": "project_context",
+      "statement": "项目 Alpha 的风险清单正在整理中。",
+      "status": "candidate",
+      "confidence": 0.82,
+      "source_event_refs": [
+        "evt-028"
+      ],
+      "updated_at": "2026-11-18T15:30:00+08:00",
+      "scope": "personal_only",
+      "rationale": "从会议表达推断，责任人和当前状态尚未核实。"
+    }
+  ],
+  "intents": [
+    {
+      "intent_id": "int-001",
+      "type": "goal",
+      "title": "完成个人数智底座产品方案",
+      "description": "完成个人助理 OS 产品定义、交互原型与工程验收标准。",
+      "status": "active",
+      "confirmation_status": "user_confirmed",
+      "due_at": "2026-11-30T18:00:00+08:00",
+      "priority": "high",
+      "progress": 0.68,
+      "next_action": "完成五大工作空间原型评审",
+      "source_event_refs": [
+        "evt-015",
+        "evt-026",
+        "evt-027"
+      ],
+      "owner": "本人"
+    },
+    {
+      "intent_id": "int-002",
+      "type": "task",
+      "title": "整理 ADS-WORK-10 原型验收清单",
+      "description": "梳理交互、权限、记忆纠错和 Agent 审批的验收项。",
+      "status": "active",
+      "confirmation_status": "user_confirmed",
+      "due_at": "2026-11-21T18:00:00+08:00",
+      "priority": "high",
+      "progress": 0.45,
+      "next_action": "检查五个页面的关键状态",
+      "source_event_refs": [
+        "evt-027"
+      ],
+      "owner": "本人"
+    },
+    {
+      "intent_id": "int-003",
+      "type": "commitment",
+      "title": "周五前整理项目风险清单",
+      "description": "会议中出现的承诺候选，尚未确认责任人。",
+      "status": "proposed",
+      "confirmation_status": "inferred_candidate",
+      "due_at": "2026-11-20T17:00:00+08:00",
+      "priority": "normal",
+      "progress": 0,
+      "next_action": "确认责任人和交付范围",
+      "source_event_refs": [
+        "evt-028"
+      ],
+      "owner": "待确认"
+    },
+    {
+      "intent_id": "int-004",
+      "type": "routine",
+      "title": "每周五回顾本周承诺",
+      "description": "汇总已完成、未完成和需要重新安排的承诺。",
+      "status": "active",
+      "confirmation_status": "user_confirmed",
+      "due_at": "2026-11-20T17:30:00+08:00",
+      "priority": "normal",
+      "progress": 0.2,
+      "next_action": "生成本周回顾草稿",
+      "source_event_refs": [
+        "evt-011",
+        "evt-025"
+      ],
+      "owner": "本人"
+    }
+  ],
+  "actions": [
+    {
+      "action_id": "act-001",
+      "title": "生成项目评审准备清单",
+      "summary": "基于已授权的会议记录和项目文档，生成一份仅供查看的准备清单。",
+      "risk_tier": "L1",
+      "action_class": "draft_only",
+      "target": "个人工作区草稿",
+      "content_preview": "1. 回顾上次会议的风险项\\n2. 检查未确认责任人\\n3. 准备需要决策的问题",
+      "approval_required": false,
+      "approval_status": "not_required",
+      "execution_status": "draft_ready",
+      "side_effects": [
+        "仅生成当前演示页面中的草稿"
+      ],
+      "rollback": "关闭草稿即可；不会写入外部系统。",
+      "source_event_refs": [
+        "evt-016",
+        "evt-027"
+      ],
+      "expires_at": "2026-11-19T12:00:00+08:00"
+    },
+    {
+      "action_id": "act-002",
+      "title": "在个人任务列表创建风险清单任务",
+      "summary": "拟创建一个个人任务，截止时间为 11 月 20 日 17:00。",
+      "risk_tier": "L2",
+      "action_class": "reversible_write",
+      "target": "个人任务列表（模拟）",
+      "content_preview": "任务：整理项目风险清单\\n截止：2026-11-20 17:00\\n负责人：本人（需用户确认）",
+      "approval_required": true,
+      "approval_status": "pending",
+      "execution_status": "not_started",
+      "side_effects": [
+        "将新增一条个人任务（如果连接真实系统）"
+      ],
+      "rollback": "真实连接后应支持撤销；本演示不执行写入。",
+      "source_event_refs": [
+        "evt-028"
+      ],
+      "expires_at": "2026-11-19T18:00:00+08:00"
+    },
+    {
+      "action_id": "act-003",
+      "title": "向项目群发送风险清单进度",
+      "summary": "拟向多人发送项目进度说明。",
+      "risk_tier": "L3",
+      "action_class": "external_communication",
+      "target": "项目协作群（模拟）",
+      "content_preview": "项目风险清单正在整理，预计周五前形成初稿。责任人与范围待最终确认。",
+      "approval_required": true,
+      "approval_status": "pending",
+      "execution_status": "not_started",
+      "side_effects": [
+        "向外部接收人发送消息",
+        "形成可见的组织沟通记录"
+      ],
+      "rollback": "消息发送后通常无法完全撤回；必须逐次确认。",
+      "source_event_refs": [
+        "evt-028"
+      ],
+      "expires_at": "2026-11-19T18:00:00+08:00"
+    }
+  ],
+  "automations": [
+    {
+      "automation_id": "auto-001",
+      "title": "工作日早间简报",
+      "description": "汇总日程、重要变化和待确认事项。",
+      "cadence": "工作日 08:30",
+      "trigger": "工作日开始",
+      "status": "on",
+      "next_run": "2026-11-20T08:30:00+08:00",
+      "notification_mode": "digest"
+    },
+    {
+      "automation_id": "auto-002",
+      "title": "已确认承诺提醒",
+      "description": "只提醒已确认且临近截止的承诺；候选责任不触发催办。",
+      "cadence": "按截止时间",
+      "trigger": "确认承诺临近截止",
+      "status": "on",
+      "next_run": "2026-11-20T09:00:00+08:00",
+      "notification_mode": "in_app"
+    },
+    {
+      "automation_id": "auto-003",
+      "title": "每周五回顾",
+      "description": "生成本周目标、承诺和未完成事项的回顾草稿。",
+      "cadence": "每周五 17:30",
+      "trigger": "周五下班前",
+      "status": "on",
+      "next_run": "2026-11-20T17:30:00+08:00",
+      "notification_mode": "digest"
+    }
+  ],
+  "inbox": [
+    {
+      "inbox_id": "inbox-001",
+      "source_id": "src-voice",
+      "source_label": "语音快速记录（模拟）",
+      "received_at": "2026-11-19T08:10:00+08:00",
+      "type": "voice_transcript",
+      "title": "关于个人助理 OS 的一个想法",
+      "content": "不要让用户成为 AI 的数据管理员。日常整理应该由系统自动完成，用户只处理关键确认和纠错。",
+      "status": "needs_review",
+      "suggested_type": "preference",
+      "confidence": 0.94,
+      "source_event_refs": [
+        "evt-022"
+      ]
+    },
+    {
+      "inbox_id": "inbox-002",
+      "source_id": "src-dingtalk",
+      "source_label": "钉钉工作消息（模拟）",
+      "received_at": "2026-11-18T15:30:00+08:00",
+      "type": "meeting_note",
+      "title": "项目风险清单承诺候选",
+      "content": "会议中提到：周五前整理项目风险清单。当前无法确认具体负责人。",
+      "status": "needs_review",
+      "suggested_type": "commitment_candidate",
+      "confidence": 0.82,
+      "source_event_refs": [
+        "evt-028"
+      ]
+    },
+    {
+      "inbox_id": "inbox-003",
+      "source_id": "src-docs",
+      "source_label": "个人文档空间（模拟）",
+      "received_at": "2026-11-17T18:20:00+08:00",
+      "type": "document",
+      "title": "Personal Assistant OS 原型验收清单",
+      "content": "验收范围包括五大工作空间、记忆纠错、来源权限、主动提醒和 Agent 审批。",
+      "status": "processed",
+      "suggested_type": "project_context",
+      "confidence": 0.98,
+      "source_event_refs": [
+        "evt-027"
+      ]
+    }
+  ],
+  "journey": [
+    {
+      "day_index": 1,
+      "date": "2026-10-21",
+      "headline": "首次记录",
+      "summary": "第一次快速记录：把最近在做的事交给助理。",
+      "event_refs": [
+        "evt-001"
+      ],
+      "milestone": "首次记录",
+      "activity_level": "active"
+    },
+    {
+      "day_index": 2,
+      "date": "2026-10-22",
+      "headline": "连接日历",
+      "summary": "连接个人日历，只读同步下一步安排。",
+      "event_refs": [
+        "evt-002"
+      ],
+      "milestone": "连接日历",
+      "activity_level": "active"
+    },
+    {
+      "day_index": 3,
+      "date": "2026-10-23",
+      "headline": "持续理解中",
+      "summary": "AI 形成第一条事件候选，用户检查来源。",
+      "event_refs": [
+        "evt-003"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 4,
+      "date": "2026-10-24",
+      "headline": "持续理解中",
+      "summary": "补充研究文档，自动关联同一主题。",
+      "event_refs": [
+        "evt-004"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 5,
+      "date": "2026-10-25",
+      "headline": "持续理解中",
+      "summary": "第一次看到个人时间线。",
+      "event_refs": [
+        "evt-005"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 6,
+      "date": "2026-10-26",
+      "headline": "持续理解中",
+      "summary": "确认一条稳定的工作偏好。",
+      "event_refs": [
+        "evt-006"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 7,
+      "date": "2026-10-27",
+      "headline": "第一次周回顾",
+      "summary": "完成第一周回顾，发现遗漏事项。",
+      "event_refs": [
+        "evt-007"
+      ],
+      "milestone": "第一次周回顾",
+      "activity_level": "active"
+    },
+    {
+      "day_index": 8,
+      "date": "2026-10-28",
+      "headline": "持续理解中",
+      "summary": "从会议记录中识别项目讨论。",
+      "event_refs": [
+        "evt-008"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 9,
+      "date": "2026-10-29",
+      "headline": "持续理解中",
+      "summary": "将讨论关联到项目 Alpha。",
+      "event_refs": [
+        "evt-009"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 10,
+      "date": "2026-10-30",
+      "headline": "持续理解中",
+      "summary": "学习并补充来源可信度规则。",
+      "event_refs": [
+        "evt-010"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 11,
+      "date": "2026-10-31",
+      "headline": "持续理解中",
+      "summary": "个人生活事件与工作事件分开呈现。",
+      "event_refs": [
+        "evt-011"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 12,
+      "date": "2026-11-01",
+      "headline": "持续理解中",
+      "summary": "形成目标候选，等待用户确认。",
+      "event_refs": [
+        "evt-012"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 13,
+      "date": "2026-11-02",
+      "headline": "记忆纠错",
+      "summary": "用户纠正一条过时的项目状态。",
+      "event_refs": [
+        "evt-013"
+      ],
+      "milestone": "记忆纠错",
+      "activity_level": "active"
+    },
+    {
+      "day_index": 14,
+      "date": "2026-11-03",
+      "headline": "持续理解中",
+      "summary": "记忆保留来源，不覆盖历史。",
+      "event_refs": [
+        "evt-014"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 15,
+      "date": "2026-11-04",
+      "headline": "第二周回顾",
+      "summary": "第二周回顾：提醒开始围绕承诺组织。",
+      "event_refs": [
+        "evt-015"
+      ],
+      "milestone": "第二周回顾",
+      "activity_level": "active"
+    },
+    {
+      "day_index": 16,
+      "date": "2026-11-05",
+      "headline": "持续理解中",
+      "summary": "识别跨应用的同一事项。",
+      "event_refs": [
+        "evt-016"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 17,
+      "date": "2026-11-06",
+      "headline": "持续理解中",
+      "summary": "发现任务缺少负责人。",
+      "event_refs": [
+        "evt-017"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 18,
+      "date": "2026-11-07",
+      "headline": "持续理解中",
+      "summary": "把模糊讨论放入待确认，而不是正式任务。",
+      "event_refs": [
+        "evt-018"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 19,
+      "date": "2026-11-08",
+      "headline": "持续理解中",
+      "summary": "查看 AI 为什么提出这条提醒。",
+      "event_refs": [
+        "evt-019"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 20,
+      "date": "2026-11-09",
+      "headline": "持续理解中",
+      "summary": "用户选择忽略一条低价值建议。",
+      "event_refs": [
+        "evt-020"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 21,
+      "date": "2026-11-10",
+      "headline": "第三周回顾",
+      "summary": "第三周回顾：提醒频率降低。",
+      "event_refs": [
+        "evt-021"
+      ],
+      "milestone": "第三周回顾",
+      "activity_level": "active"
+    },
+    {
+      "day_index": 22,
+      "date": "2026-11-11",
+      "headline": "持续理解中",
+      "summary": "增加语音快速记录入口。",
+      "event_refs": [
+        "evt-022"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 23,
+      "date": "2026-11-12",
+      "headline": "持续理解中",
+      "summary": "将语音转写关联到既有项目。",
+      "event_refs": [
+        "evt-023"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 24,
+      "date": "2026-11-13",
+      "headline": "持续理解中",
+      "summary": "形成新的产品原则候选。",
+      "event_refs": [
+        "evt-024"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 25,
+      "date": "2026-11-14",
+      "headline": "持续理解中",
+      "summary": "用户确认长期偏好。",
+      "event_refs": [
+        "evt-025"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 26,
+      "date": "2026-11-15",
+      "headline": "持续理解中",
+      "summary": "检查数据来源和授权范围。",
+      "event_refs": [
+        "evt-026"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 27,
+      "date": "2026-11-16",
+      "headline": "持续理解中",
+      "summary": "暂停一个不再需要的来源。",
+      "event_refs": [
+        "evt-027"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 28,
+      "date": "2026-11-17",
+      "headline": "承诺待确认",
+      "summary": "会议中识别承诺，但不擅自分配负责人。",
+      "event_refs": [
+        "evt-028"
+      ],
+      "milestone": "承诺待确认",
+      "activity_level": "active"
+    },
+    {
+      "day_index": 29,
+      "date": "2026-11-18",
+      "headline": "持续理解中",
+      "summary": "生成一个任务草稿，等待审批。",
+      "event_refs": [
+        "evt-029"
+      ],
+      "milestone": null,
+      "activity_level": "active"
+    },
+    {
+      "day_index": 30,
+      "date": "2026-11-19",
+      "headline": "30 天回顾",
+      "summary": "完成 30 天回顾，检查记忆、目标与权限。",
+      "event_refs": [
+        "evt-030"
+      ],
+      "milestone": "30 天回顾",
+      "activity_level": "active"
+    }
+  ],
+  "policy": {
+    "context_default": "personal_only",
+    "enterprise_projection": false,
+    "notification_mode": "digest_only",
+    "quiet_hours_enabled": true,
+    "sensitive_content_hidden": true,
+    "auto_recording": false,
+    "retention_note": "按来源类型、用户选择和适用规则分别确定；本演示不实施真实数据保留。"
+  }
+}
