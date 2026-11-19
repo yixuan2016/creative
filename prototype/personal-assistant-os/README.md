@@ -4,17 +4,17 @@ ADS-WORK-10.1 浏览器交互原型。所有演示数据均为虚构内容，所
 
 ## 快速体验
 
-直接打开 \`index.html\`，或在仓库根目录启动一个静态 HTTP 服务：
+直接打开 `index.html`，或在仓库根目录启动一个静态 HTTP 服务：
 
-\`\`\`bash
+```bash
 python -m http.server 8000
-\`\`\`
+```
 
 然后访问：
 
-\`\`\`
+```
 http://localhost:8000/prototype/personal-assistant-os/
-\`\`\`
+```
 
 无需 npm install、外部前端库、API Key 或账号连接。
 
@@ -34,24 +34,24 @@ http://localhost:8000/prototype/personal-assistant-os/
 
 ## 工程结构
 
-- \`index.html\`：语义化页面结构；
-- \`styles.css\`：响应式视觉设计；
-- \`demo-data.js\`：与 examples 下 JSON fixture 一致的虚构数据；
-- \`core.js\`：无网络副作用的交互领域逻辑；
-- \`core.test.js\`：Node.js 内置测试。
+- `index.html`：语义化页面结构；
+- `styles.css`：响应式视觉设计；
+- `demo-data.js`：与 examples 下 JSON fixture 一致的虚构数据；
+- `core.js`：无网络副作用的交互领域逻辑；
+- `core.test.js`：Node.js 内置测试。
 
 ## 运行测试
 
 在仓库根目录：
 
-\`\`\`bash
+```bash
 python -m pip install -r requirements-dev.txt
 python -m unittest discover -s prototype -v
 node --check prototype/personal-assistant-os/core.js
 node --check prototype/personal-assistant-os/app.js
 node --check prototype/personal-assistant-os/demo-data.js
 node --test prototype/personal-assistant-os/core.test.js
-\`\`\`
+```
 
 ## 明确限制
 
