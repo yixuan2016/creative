@@ -53,8 +53,8 @@ class PersonalMemoryContractTests(unittest.TestCase):
         self.assertTrue(memory["derivation"]["human_review_required"])
         invalid = json.loads(json.dumps(memory))
         invalid["derivation"]["human_review_required"] = False
-        with self.assertRaises(AssertionError):
-            self.assertTrue(invalid["derivation"]["human_review_required"])
+        with self.assertRaises(ValidationError):
+            self.validators["memory"].validate(invalid)
 
     def test_candidate_memory_is_not_confirmed_fact(self):
         memory = json.loads(json.dumps(EXAMPLE["memory_items"][0]))
@@ -68,22 +68,28 @@ class PersonalMemoryContractTests(unittest.TestCase):
         memory["sharing_policy"].update({
             "shareable": True, "authorization_ref": None, "authorized_purposes": [], "expires_at": None
         })
-        policy = memory["sharing_policy"]
-        self.assertTrue(policy["shareable"])
-        self.assertFalse(bool(policy["authorization_ref"] and policy["authorized_purposes"] and policy["expires_at"]))
+        with self.assertRaises(ValidationError):
+            self.validators["memory"].validate(memory)
 
     def test_l2_action_requires_approval(self):
         action = json.loads(json.dumps(EXAMPLE["agent_action_proposal"]))
         action["approval"]["required"] = False
-        self.assertIn(action["risk_tier"], {"L2", "L3"})
-        self.assertFalse(action["approval"]["required"])
+        with self.assertRaises(ValidationError):
+            self.validators["action"].validate(action)
 
     def test_connector_capture_requires_authorization_reference(self):
         event = json.loads(json.dumps(EXAMPLE["event_ledger"][0]))
         event["source_refs"][0]["capture_mode"] = "connector_sync"
         event["source_refs"][0]["capture_authorization_ref"] = None
-        self.assertIn(event["source_refs"][0]["capture_mode"], {"connector_sync", "voice_capture", "device_capture"})
-        self.assertIsNone(event["source_refs"][0]["capture_authorization_ref"])
+        with self.assertRaises(ValidationError):
+            self.validators["event"].validate(event)
+
+    def test_inferred_intent_cannot_be_active_without_confirmation(self):
+        intent = json.loads(json.dumps(EXAMPLE["intent_objects"][0]))
+        intent["confirmation_status"] = "inferred_candidate"
+        intent["status"] = "active"
+        with self.assertRaises(ValidationError):
+            self.validators["intent"].validate(intent)
 
     def _engine_with_event(self):
         engine = PersonalMemoryEngine("person-demo-001")
