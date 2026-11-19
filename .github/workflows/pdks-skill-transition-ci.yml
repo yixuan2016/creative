@@ -1,0 +1,21 @@
+name: PDKS Transitional Skill CI
+on:
+  push:
+    branches:
+      - pdks-skill-0.4.2-transition
+  pull_request:
+    branches:
+      - pdks-skill-0.4.2-transition
+  workflow_dispatch:
+jobs:
+  stage-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate transitional stage profile
+        run: python skill-development/0.3.2-transition/scripts/validate_skill_stage.py --json
+      - name: Run stage contract tests
+        run: python -m unittest discover -s tests -p test_transition_stage_contract.py -v

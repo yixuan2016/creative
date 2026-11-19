@@ -1,0 +1,67 @@
+{
+  "profile_name": "PDKS Transitional Skill Development Stage",
+  "profile_version": "0.1.0",
+  "project": "PDKS",
+  "release": {
+    "runtime_track": "0.4.2",
+    "skill_version": "0.3.2",
+    "pdks_standard_version": "0.1.0",
+    "record_schema": "0.1.x",
+    "ontology_version": "0.2.1",
+    "event_taxonomy_version": "0.1.0"
+  },
+  "development_stage": "transitional_skill_development",
+  "maturity": "experimental",
+  "release_channel": "preview",
+  "current_goal": "Validate PDKS as a portable Agent Skill and reference workflow for personal work-context and knowledge structuring. This is not a final personal digital foundation platform or enterprise platform.",
+  "capability_claim_policy": {
+    "host_capabilities_must_be_discovered": true,
+    "skill_installation_grants_permissions": false,
+    "must_report_actual_execution_receipts": true,
+    "required_status_vocabulary": [
+      "available_in_skill",
+      "prototype_local",
+      "prototype_partial",
+      "host_dependent",
+      "not_implemented",
+      "future_research"
+    ]
+  },
+  "capability_matrix": {
+    "analyze_user_supplied_text": "available_in_skill",
+    "draft_pdks_records": "available_in_skill",
+    "read_authorized_local_files": "host_dependent",
+    "write_local_records_and_bundles": "prototype_local",
+    "sqlite_record_persistence": "prototype_local",
+    "ontology_mapping_and_rdf_projection": "prototype_local",
+    "shacl_validation": "host_dependent",
+    "connected_app_capture": "host_dependent",
+    "dingtalk_native_connector": "not_implemented",
+    "dedicated_recorder_or_device_integration": "not_implemented",
+    "background_or_continuous_capture": "not_implemented",
+    "production_consent_policy_service": "not_implemented",
+    "production_key_management_and_encryption": "not_implemented",
+    "cross_system_migration": "prototype_partial",
+    "enterprise_center_ontology_runtime": "future_research"
+  },
+  "frozen_baselines": {
+    "pdks_standard": "0.1.0",
+    "record_schema": "0.1.x",
+    "ontology": "0.2.1",
+    "event_taxonomy": "0.1.0"
+  },
+  "ontology_layering": {
+    "status": "research_proposal_only",
+    "may_change_published_core": false,
+    "personal_enterprise_center_runtime": "not_implemented",
+    "principle": "shared semantic core + scope-specific extensions + separate governance and policy boundaries"
+  },
+  "out_of_scope": [
+    "production readiness",
+    "enterprise platform",
+    "automatic capture without authorized host connector",
+    "native DingTalk or recorder integration",
+    "production consent and key management",
+    "automatic personal-to-enterprise/center data sharing"
+  ]
+}
