@@ -1,0 +1,671 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ads/schemas/ads-work-context-v0.1.schema.json",
+  "title": "ADS Work Context Canonical Schemas",
+  "description": "Reusable canonical data contracts for ADS enterprise work context. Replace example.invalid with the approved schema registry URI before production use.",
+  "$defs": {
+    "Timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "Identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "ObjectRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_type",
+        "tenant_id",
+        "source_system",
+        "source_object_id",
+        "resolution_status"
+      ],
+      "properties": {
+        "object_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "object_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "source_system": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "source_object_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "resolution_status": {
+          "enum": [
+            "exact",
+            "alias",
+            "candidate",
+            "unresolved",
+            "confirmed"
+          ]
+        }
+      }
+    },
+    "ActorRef": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "actor_type",
+        "actor_id"
+      ],
+      "properties": {
+        "actor_type": {
+          "enum": [
+            "person",
+            "role",
+            "system",
+            "agent",
+            "unknown"
+          ]
+        },
+        "actor_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "organization_id": {
+          "$ref": "#/$defs/Identifier"
+        }
+      }
+    },
+    "SourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_system",
+        "native_record_id"
+      ],
+      "properties": {
+        "source_system": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "native_record_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "record_version": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "content_hash": {
+          "type": "string"
+        },
+        "mapping_version": {
+          "type": "string"
+        }
+      }
+    },
+    "EvidenceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "source_ref",
+        "locator",
+        "verification_status"
+      ],
+      "properties": {
+        "evidence_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "source_ref": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "supports_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Identifier"
+          }
+        },
+        "verification_status": {
+          "enum": [
+            "unverified",
+            "verified",
+            "disputed",
+            "invalid"
+          ]
+        },
+        "verified_by": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "verified_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "integrity_hash": {
+          "type": "string"
+        },
+        "classification": {
+          "type": "string"
+        }
+      }
+    },
+    "WorkEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "tenant_id",
+        "event_type",
+        "event_schema_version",
+        "occurred_at",
+        "observed_at",
+        "recorded_at",
+        "object_refs",
+        "payload",
+        "source_ref",
+        "assertion_status",
+        "classification",
+        "purpose_tags",
+        "ontology_version",
+        "lifecycle_status"
+      ],
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "event_type": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*\\.[a-z][a-z0-9_-]*$"
+        },
+        "event_schema_version": {
+          "type": "string"
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "observed_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "recorded_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "actor_ref": {
+          "$ref": "#/$defs/ActorRef"
+        },
+        "object_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/Identifier"
+          }
+        },
+        "payload": {
+          "type": "object"
+        },
+        "source_ref": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          }
+        },
+        "assertion_status": {
+          "enum": [
+            "confirmed",
+            "observed",
+            "inferred",
+            "disputed",
+            "rejected",
+            "stale",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "classification": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose_tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authorization_ref": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "ontology_version": {
+          "type": "string"
+        },
+        "correction_of": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "lifecycle_status": {
+          "enum": [
+            "active",
+            "superseded",
+            "withdrawn",
+            "expired",
+            "archived"
+          ]
+        },
+        "extensions": {
+          "type": "object"
+        }
+      }
+    },
+    "BusinessObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_id",
+        "tenant_id",
+        "object_type",
+        "canonical_name",
+        "domain_id",
+        "lifecycle_status"
+      ],
+      "properties": {
+        "object_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "object_type": {
+          "type": "string"
+        },
+        "canonical_name": {
+          "type": "string"
+        },
+        "domain_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "authority_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          }
+        },
+        "owner_ref": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "classification": {
+          "type": "string"
+        },
+        "lifecycle_status": {
+          "enum": [
+            "active",
+            "inactive",
+            "merged",
+            "split",
+            "archived"
+          ]
+        },
+        "valid_from": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "valid_to": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "ontology_version": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      }
+    },
+    "StateAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assertion_id",
+        "subject_ref",
+        "property",
+        "value",
+        "recorded_at",
+        "source_refs",
+        "assertion_status"
+      ],
+      "properties": {
+        "assertion_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "subject_ref": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "property": {
+          "type": "string"
+        },
+        "value": {},
+        "valid_from": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "valid_to": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "observed_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "recorded_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "authority_ref": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          }
+        },
+        "assertion_status": {
+          "enum": [
+            "confirmed",
+            "observed",
+            "inferred",
+            "disputed",
+            "stale",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "supersedes": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "rule_version": {
+          "type": "string"
+        }
+      }
+    },
+    "Relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "relation_id",
+        "subject_ref",
+        "predicate",
+        "object_ref",
+        "source_refs",
+        "assertion_status"
+      ],
+      "properties": {
+        "relation_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "subject_ref": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "predicate": {
+          "type": "string"
+        },
+        "object_ref": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "direction": {
+          "enum": [
+            "directed",
+            "symmetric"
+          ]
+        },
+        "valid_from": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "valid_to": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "recorded_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          }
+        },
+        "assertion_status": {
+          "enum": [
+            "confirmed",
+            "observed",
+            "inferred",
+            "disputed",
+            "rejected",
+            "stale"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "owner_ref": {
+          "$ref": "#/$defs/Identifier"
+        }
+      }
+    },
+    "AuthorizationGrant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "grant_id",
+        "subject_ref",
+        "tenant_id",
+        "purposes",
+        "scope_object_ids",
+        "allowed_classifications",
+        "allowed_actions",
+        "expires_at",
+        "status"
+      ],
+      "properties": {
+        "grant_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "subject_ref": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "purposes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "scope_object_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Identifier"
+          }
+        },
+        "allowed_classifications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "valid_from": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "status": {
+          "enum": [
+            "active",
+            "revoked",
+            "expired",
+            "suspended"
+          ]
+        },
+        "policy_version": {
+          "type": "string"
+        }
+      }
+    },
+    "ContextPackage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "context_id",
+        "task_id",
+        "requester_ref",
+        "purpose",
+        "scope",
+        "included_refs",
+        "unresolved_items",
+        "allowed_actions",
+        "authorization_refs",
+        "policy_version",
+        "ontology_version",
+        "created_at",
+        "expires_at",
+        "lifecycle_status"
+      ],
+      "properties": {
+        "context_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "task_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "requester_ref": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "object",
+          "required": [
+            "object_ids"
+          ],
+          "properties": {
+            "object_ids": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/Identifier"
+              }
+            },
+            "time_window": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "$ref": "#/$defs/Timestamp"
+                },
+                "to": {
+                  "$ref": "#/$defs/Timestamp"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "included_refs": {
+          "type": "object",
+          "properties": {
+            "object_ids": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Identifier"
+              }
+            },
+            "event_ids": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Identifier"
+              }
+            },
+            "evidence_ids": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Identifier"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "unresolved_items": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "approval_required_for": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authorization_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/Identifier"
+          }
+        },
+        "policy_version": {
+          "type": "string"
+        },
+        "ontology_version": {
+          "type": "string"
+        },
+        "source_snapshot": {
+          "type": "object"
+        },
+        "created_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "integrity_hash": {
+          "type": "string"
+        },
+        "lifecycle_status": {
+          "enum": [
+            "active",
+            "expired",
+            "revoked",
+            "superseded"
+          ]
+        }
+      }
+    }
+  }
+}
