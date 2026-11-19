@@ -226,6 +226,15 @@ class OntologyFirstRuntimeTests(unittest.TestCase):
         self.assertEqual(report["status"],"breaking")
         self.assertTrue(any(x["kind"]=="domain_constraint_tightened" and x["term"].endswith("#ownedBy") for x in report["breaking_changes"]))
 
+    def test_relationship_attribution_does_not_infer_assertion(self):
+        records=load_scenario("voice-meeting")
+        relationship=next(x for x in records if x["object_type"]=="relationship")
+        graph=self.runtime.project_record(relationship)
+        subject=URIRef(relationship["object_id"])
+        actor=URIRef(relationship["payload"]["asserted_by_ref"])
+        self.assertIn((subject,PDKS.attributedTo,actor),graph)
+        self.assertNotIn((subject,PDKS.assertedBy,actor),graph)
+
     def test_shacl_runtime_status_and_conformance(self):
         records=load_scenario("voice-meeting")
         result=self.runtime.validate_shacl(self.runtime.project_records(records))

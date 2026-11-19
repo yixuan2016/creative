@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "pdks-core-ontology-0.2.ttl",
-      "size_bytes": 23025,
-      "sha256": "f18a092bbf298bf4ddc9deba5bc86134e82f436106a84081ac37010951890aa4"
+      "size_bytes": 23017,
+      "sha256": "5899066d9f334a8124aeff98489c759d69fa36093dc2f371a6da110d50f2adc8"
     },
     {
       "path": "pdks-governance-ontology-0.2.ttl",

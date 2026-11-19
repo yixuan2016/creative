@@ -74,7 +74,7 @@ pdks:hasSourceReference a owl:ObjectProperty ; rdfs:label "来源引用"@zh .
 pdks:derivedFrom a owl:ObjectProperty ; rdfs:subPropertyOf prov:wasDerivedFrom ; rdfs:label "推导自"@zh .
 pdks:generatedBy a owl:ObjectProperty ; rdfs:subPropertyOf prov:wasGeneratedBy ; rdfs:label "由处理活动生成"@zh .
 pdks:attributedTo a owl:ObjectProperty ; rdfs:subPropertyOf prov:wasAttributedTo ; rdfs:label "归因于"@zh .
-pdks:assertedBy a owl:ObjectProperty ; rdfs:domain pdks:InformationObject ; rdfs:range pdks:Agent ; rdfs:label "表达者/主张者"@zh .
+pdks:assertedBy a owl:ObjectProperty ; rdfs:domain pdks:Assertion ; rdfs:range pdks:Agent ; rdfs:label "表达者/主张者"@zh .
 pdks:hasEpistemicStatus a owl:ObjectProperty ; rdfs:domain pdks:Assertion ; rdfs:range skos:Concept ; rdfs:label "认知状态"@zh .
 pdks:hasAssertionType a owl:ObjectProperty ; rdfs:domain pdks:Assertion ; rdfs:range skos:Concept ; rdfs:label "表达类型"@zh .
 pdks:hasOutcome a owl:ObjectProperty ; rdfs:domain pdks:Event ; rdfs:range pdks:InformationObject ; rdfs:label "产生结果"@zh .

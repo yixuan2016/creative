@@ -457,7 +457,8 @@ class OntologyRuntime:
                     self._add_literal(g, assignment, PDKS.identityStatus, participant.get("identity_status"))
         elif typ == "assertion":
             self._add_literal(g, subject, PDKS.content, payload.get("content"))
-            self._add_ref(g, subject, PDKS.assertedBy, payload.get("asserted_by_ref"))
+            # A qualified relationship is an InformationObject, not an Assertion.
+            self._add_ref(g, subject, PDKS.attributedTo, payload.get("asserted_by_ref"))
             self._add_literal(g, subject, PDKS.assertionAt, payload.get("assertion_at"), XSD.dateTimeStamp)
             for field, prop in (("assertion_type",PDKS.hasAssertionType),("epistemic_status",PDKS.hasEpistemicStatus)):
                 concept = self._concept(payload.get(field))
