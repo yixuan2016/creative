@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "pdks-core-ontology-0.2.ttl",
-      "size_bytes": 23017,
-      "sha256": "5899066d9f334a8124aeff98489c759d69fa36093dc2f371a6da110d50f2adc8"
+      "size_bytes": 23025,
+      "sha256": "f18a092bbf298bf4ddc9deba5bc86134e82f436106a84081ac37010951890aa4"
     },
     {
       "path": "pdks-governance-ontology-0.2.ttl",
@@ -29,8 +29,8 @@
     },
     {
       "path": "pdks-core-shapes-0.2.ttl",
-      "size_bytes": 6708,
-      "sha256": "1eb77c0540a50308e3410d72ef96213ab5c302f9fbe1620693ac5c2ee839888d"
+      "size_bytes": 6711,
+      "sha256": "c8e759ab70cee2ee73a4326ff89a5de292430e50a9957df064ae049b6bf98970"
     },
     {
       "path": "pdks-jsonld-context-0.2.1.json",
