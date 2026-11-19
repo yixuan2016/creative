@@ -1,0 +1,310 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ads/schemas/ads-personal-memory-item-v0.1.schema.json",
+  "title": "ADS Personal Memory Item",
+  "description": "A derived, reviewable personal memory claim with provenance, confidence, validity and owner controls.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "memory_id",
+    "subject_ref",
+    "memory_type",
+    "claim",
+    "source_event_refs",
+    "assertion_status",
+    "confidence",
+    "classification",
+    "memory_lifecycle",
+    "created_at",
+    "updated_at",
+    "derivation",
+    "review_policy",
+    "user_controls",
+    "sharing_policy",
+    "ontology_version"
+  ],
+  "properties": {
+    "memory_id": {
+      "type": "string"
+    },
+    "subject_ref": {
+      "type": "string"
+    },
+    "memory_type": {
+      "enum": [
+        "episodic",
+        "semantic",
+        "procedural",
+        "preference",
+        "goal",
+        "commitment",
+        "relationship",
+        "routine",
+        "project_context"
+      ]
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "statement"
+      ],
+      "properties": {
+        "statement": {
+          "type": "string"
+        },
+        "subject_ref": {
+          "type": "string"
+        },
+        "predicate": {
+          "type": "string"
+        },
+        "object_ref": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object"
+        }
+      }
+    },
+    "source_event_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assertion_status": {
+      "enum": [
+        "candidate",
+        "confirmed",
+        "disputed",
+        "stale",
+        "unknown"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "classification": {
+      "enum": [
+        "personal",
+        "personal_sensitive",
+        "restricted"
+      ]
+    },
+    "valid_time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "to": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "last_confirmed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "review_after": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "memory_lifecycle": {
+      "enum": [
+        "candidate",
+        "active",
+        "stale",
+        "disputed",
+        "superseded",
+        "withdrawn",
+        "expired",
+        "archived"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "derivation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "algorithm_version",
+        "generated_at",
+        "human_review_required"
+      ],
+      "properties": {
+        "method": {
+          "enum": [
+            "user_declared",
+            "rule_based",
+            "model_assisted",
+            "human_curated",
+            "event_consolidation"
+          ]
+        },
+        "algorithm_version": {
+          "type": "string"
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "human_review_required": {
+          "type": "boolean"
+        },
+        "reviewer_ref": {
+          "type": "string"
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "review_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "update_policy",
+        "conflict_policy",
+        "review_frequency_days"
+      ],
+      "properties": {
+        "update_policy": {
+          "enum": [
+            "user_confirmed",
+            "event_reinforced",
+            "periodic_review",
+            "immutable_snapshot"
+          ]
+        },
+        "conflict_policy": {
+          "enum": [
+            "preserve_and_surface",
+            "ask_owner",
+            "supersede_after_confirmation"
+          ]
+        },
+        "review_frequency_days": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "user_controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "can_confirm",
+        "can_correct",
+        "can_withdraw",
+        "can_export"
+      ],
+      "properties": {
+        "can_confirm": {
+          "type": "boolean"
+        },
+        "can_correct": {
+          "type": "boolean"
+        },
+        "can_withdraw": {
+          "type": "boolean"
+        },
+        "can_export": {
+          "type": "boolean"
+        }
+      }
+    },
+    "sharing_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_scope",
+        "shareable",
+        "authorized_purposes",
+        "authorization_ref",
+        "expires_at"
+      ],
+      "properties": {
+        "default_scope": {
+          "const": "personal_only"
+        },
+        "shareable": {
+          "type": "boolean"
+        },
+        "authorized_purposes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authorization_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "expires_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "supersedes": {
+      "type": "string"
+    },
+    "suppression_key": {
+      "type": "string"
+    },
+    "ontology_version": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object"
+    }
+  }
+}
