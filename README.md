@@ -238,3 +238,25 @@ V0.3.3 增加来源删除预览、显式确认、跨来源事件保留、专属�
 - [Event Fusion Decision JSON Schema](schemas/event-fusion-decision-v0.1.schema.json)
 
 V0.4.0 增加跨来源事件融合候选和本地 Pull-only Agent Runtime。融合分数仅用于候选排序，必须人工裁决；确认后只建立 EventRelation，不自动合并 Event。Agent 仅能在用途、敏感度和有效期约束下拉取已确认的个人域事件。PALOS 真实 Schema 与钉钉官方 DWS CLI 仍未接入；个人数据不自动投影到企业域。
+
+
+### 专题 14：Personal Cognitive Runtime V0.5.0 Alpha
+
+**从个人事件账本走向持续记忆、状态与意图运行时**
+
+- [V0.5.0 研发进展](docs/24-PersonalCognitiveRuntimeV0.5.0研发进展.md)
+- [Event / Memory / State / Intent 语义边界](docs/25-EventMemoryStateIntent语义边界V0.1.md)
+- [PALOS / DWS / Agent 集成边界](docs/26-PALOS-DWS-Agent集成边界V0.5.md)
+- [交互式架构总览](docs/27-PersonalCognitiveRuntime架构总览V0.5.html)
+- [Memory / Intent / Agent API 示例](docs/28-PersonalCognitiveRuntimeAPI示例V0.5.md)
+- [V0.5 测试报告](docs/29-PersonalCognitiveRuntime测试报告V0.5.md)
+- [Personal Memory Item Schema](schemas/ads-personal-memory-item-v0.2.schema.json)
+- [Personal Intent Object Schema](schemas/ads-personal-intent-object-v0.2.schema.json)
+- [Intent Transition Schema](schemas/ads-personal-intent-transition-v0.1.schema.json)
+- [Reflection Run Schema](schemas/ads-personal-reflection-run-v0.1.schema.json)
+- [Personal Runtime 增量迁移](migrations/005_v050_personal_memory_intent_runtime.sql)
+- [Agent Personal Context 客户端示例](examples/agent-personal-context-client-v0.5.py)
+
+V0.5 增加 Memory、State、Intent、Reflection 四个个人认知运行时引擎。Reflection 仅从已确认的个人域事件生成待审核候选；Memory 可追溯来源、有效时间和修订历史；Intent 默认 proposed，只有用户显式激活后才进入 Agent 上下文；Agent 只读访问授权范围内的记忆、意图和状态。来源失效会触发派生对象复核，不自动推断人格、心理状态或执行外部动作。
+
+验证：96 automated tests passed；fresh ZIP extraction test 96 passed；Python compileall passed；UI JavaScript node --check passed；FastAPI OpenAPI 55 paths。完整 Python MVP 作为独立研发 ZIP 交付，不在本 PR 中提交全部运行时代码。

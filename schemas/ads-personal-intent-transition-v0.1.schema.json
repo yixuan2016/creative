@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ADS Personal Intent Transition V0.1",
+  "type": "object",
+  "required": [
+    "action",
+    "reason"
+  ],
+  "properties": {
+    "action": {
+      "enum": [
+        "activate",
+        "block",
+        "pause",
+        "resume",
+        "complete",
+        "cancel",
+        "reopen",
+        "revalidate"
+      ]
+    },
+    "actor_id": {
+      "type": "string",
+      "default": "local-user"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 1000
+    }
+  },
+  "additionalProperties": false
+}
