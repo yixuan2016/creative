@@ -148,7 +148,7 @@ ul,ol{padding-left:1.35em}li{margin:5px 0}pre{overflow:auto;background:#17243a;c
 <h3>8.3 本地运行</h3><p>要求 Python 3.10 或以上版本，不依赖第三方 Python 包。</p><pre><code>cd prototype
 python ads_context_engine.py
 python -m unittest -v</code></pre>
-<h3>8.4 原型限制</h3><p>原型不连接真实企业系统，不执行真实写回。它不是生产安全边界；生产环境还需补充身份认证、字段级权限、密钥管理、持久化、并发控制、分布式幂等、加密、备份、监控和渗透测试。</p>
+<h3>8.4 原型限制</h3><p>原型不连接真实企业系统，不执行真实写回。它不是生产安全边界；生产环境还需补充身份认证、字段级权限、密钥管理、持久化、并发控制、分布式幂等、加密、备份、监控和渗透测试。</p><h3>8.5 持续集成</h3><p>仓库已配置 <a href="../.github/workflows/ads-context-prototype.yml">GitHub Actions 工作流</a>，在原型代码、模拟数据、Schema 或工作流定义变更时自动执行 Python 单元测试和端到端演示。该工作流验证原型逻辑，不代表生产部署验收。</p>
 </section>
 
 <section id="scenario"><h2>9. 项目交付模拟场景</h2>
