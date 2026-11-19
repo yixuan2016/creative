@@ -2,6 +2,8 @@
 
 > PDKS-RUNTIME-003 · Runtime Prototype 0.3.0 · 2026-11-19  
 > 关联：PDKS 0.1.0 / PDKS Agent Skill 0.2.0 / ADS-WORK-08 / ADS-WORK-09 / ADS-WORK-10
+>
+> **仓库同步说明：** 当前分支已同步本设计文档、HTML 阅读版和 README 索引；可执行原型源码及测试随独立 0.3.0 开发包交付，尚未逐文件合入 creative/prototype。
 
 ## 核心结论
 
@@ -98,7 +100,7 @@ Ledger               + Candidate Intent
 
 ## 6. CLI 运行方式
 
-在仓库根目录安装测试依赖：
+在完整 0.3.0 开发包根目录安装测试依赖；若在 creative 仓库运行，需先将开发包 prototype/ 下的新增模块和测试文件复制到仓库 prototype/：
 
 ~~~bash
 python -m pip install -r requirements-dev.txt
