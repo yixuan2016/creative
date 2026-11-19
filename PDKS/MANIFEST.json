@@ -1151,7 +1151,7 @@
     {
       "path": "skills/pdks-personal-knowledge/assets/ontology/0.2.1/ontology-manifest.json",
       "size_bytes": 1703,
-      "sha256": "ad0bc5b1c5fe06da80488d9a0d72cccf563d955a08160ab3c2eb32f10538d06b"
+      "sha256": "0f3e3c6bd98e1ec0dfd3b80e06b18941b03036bcf2a0cf653640190f726b3674"
     },
     {
       "path": "skills/pdks-personal-knowledge/assets/ontology/0.2.1/pdks-agent-runtime-ontology-0.2.ttl",
@@ -1160,8 +1160,8 @@
     },
     {
       "path": "skills/pdks-personal-knowledge/assets/ontology/0.2.1/pdks-core-ontology-0.2.ttl",
-      "size_bytes": 23017,
-      "sha256": "5899066d9f334a8124aeff98489c759d69fa36093dc2f371a6da110d50f2adc8"
+      "size_bytes": 23025,
+      "sha256": "f18a092bbf298bf4ddc9deba5bc86134e82f436106a84081ac37010951890aa4"
     },
     {
       "path": "skills/pdks-personal-knowledge/assets/ontology/0.2.1/pdks-core-shapes-0.2.ttl",
