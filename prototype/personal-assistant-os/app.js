@@ -37,7 +37,7 @@
   }
   function statusPill(status) {
     const map = {
-      confirmed: ["已确认", "good"], active: ["进行中", "good"], candidate: ["待确认", "warn"],
+      confirmed: ["已确认", "good"], observed: ["来源记录", "muted"], inferred: ["系统推断", "warn"], disputed: ["存在冲突", "danger"], active: ["进行中", "good"], candidate: ["待确认", "warn"],
       inferred_candidate: ["推断候选", "warn"], proposed: ["待确认", "warn"], needs_review: ["待整理", "warn"],
       processed: ["已整理", "good"], paused: ["已暂停", "muted"], revoked: ["已撤销", "danger"],
       connected: ["已连接", "good"], available: ["可使用", "muted"], pending: ["待审批", "warn"], not_required: ["无需审批", "muted"],
@@ -50,6 +50,12 @@
   }
   function categoryLabel(category) {
     return ({ work: "工作", life: "生活", learning: "学习", goal: "目标", task: "任务", commitment: "承诺", routine: "习惯" })[category] || category || "其他";
+  }
+  function memoryTypeLabel(type) {
+    return ({ episodic: "经历", semantic: "长期了解", procedural: "做事方法", preference: "个人偏好", goal: "目标", commitment: "承诺", relationship: "关系", routine: "习惯", project_context: "项目上下文" })[type] || "个人记忆";
+  }
+  function suggestionTypeLabel(type) {
+    return ({ preference: "可能是个人偏好", commitment_candidate: "承诺候选", task_or_commitment_candidate: "待办或承诺候选", personal_note: "个人记录", project_context: "项目背景" })[type] || "待理解内容";
   }
   function sourceName(sourceId) {
     const source = state.sources.find((x) => x.source_id === sourceId);
@@ -94,7 +100,7 @@
     const nextEvent = state.events.find((x) => x.event_id === "evt-030");
     const activeGoals = state.intents.filter((x) => ["goal", "project"].includes(x.type) && x.status === "active");
     const pendingActions = state.actions.filter((x) => x.approval_status === "pending");
-    const actionsToShow = state.actions.filter((x) => x.approval_status === "pending" || x.execution_status === "draft_ready");
+    const actionsToShow = state.actions;
     const upcoming = state.events.filter((x) => x.occurred_at.slice(0, 10) === "2026-11-19").slice(-2);
     return '<div class="welcome-row"><div><div class="eyebrow">THURSDAY · 19 NOVEMBER 2026</div><h2>早上好，' + esc(state.profile.display_name) + '。</h2><p>今天有几件值得关注的事。其余信息已经为你整理好，不需要逐条处理。</p></div><div class="welcome-mark">✳</div></div>' +
       '<div class="stat-grid">' +
@@ -130,7 +136,8 @@
     if (!actions.length) return emptyState("目前没有待审批动作", "当 AI 准备执行需要授权的操作时，会先在这里向你说明。");
     return actions.map((a) => {
       const needsApproval = a.approval_required && a.approval_status === "pending";
-      return '<div class="action-card"><div class="action-card-top"><span class="risk-tag ' + a.risk_tier.toLowerCase() + '">' + a.risk_tier + " · " + (a.risk_tier === "L3" ? "高影响" : a.risk_tier === "L2" ? "可逆写入" : "草稿") + '</span>' + statusPill(a.approval_status) + '</div><h3>' + esc(a.title) + '</h3><p>' + esc(a.summary) + '</p><div class="action-target">操作对象：' + esc(a.target) + '</div><div class="button-row"><button class="btn btn-primary btn-small" data-action="' + (needsApproval ? "review-action" : "view-action") + '" data-id="' + esc(a.action_id) + '">' + (needsApproval ? "查看并审批" : "查看草稿") + '</button>' + (needsApproval ? '<button class="btn btn-ghost btn-small" data-action="reject-action" data-id="' + esc(a.action_id) + '">拒绝</button>' : "") + '</div></div>';
+      const buttonLabel = needsApproval ? "查看并审批" : a.approval_status === "approved" ? "查看审批记录" : a.execution_status === "draft_ready" ? "查看草稿" : "查看记录";
+      return '<div class="action-card"><div class="action-card-top"><span class="risk-tag ' + a.risk_tier.toLowerCase() + '">' + a.risk_tier + " · " + (a.risk_tier === "L3" ? "高影响" : a.risk_tier === "L2" ? "可逆写入" : "草稿") + '</span>' + statusPill(a.approval_status) + '</div><h3>' + esc(a.title) + '</h3><p>' + esc(a.summary) + '</p><div class="action-target">操作对象：' + esc(a.target) + '</div><div class="button-row"><button class="btn btn-primary btn-small" data-action="' + (needsApproval ? "review-action" : "view-action") + '" data-id="' + esc(a.action_id) + '">' + buttonLabel + '</button>' + (needsApproval ? '<button class="btn btn-ghost btn-small" data-action="reject-action" data-id="' + esc(a.action_id) + '">拒绝</button>' : "") + '</div></div>';
     }).join("");
   }
 
@@ -141,7 +148,7 @@
       '<textarea id="inbox-capture" class="compose-input" rows="3" placeholder="写下一段想法、会议结论、待办或生活记录……"></textarea>' +
       '<div class="compose-footer"><div class="micro-note">支持文字、分享内容和用户主动提交的语音转写。</div><div class="button-row"><button class="btn btn-ghost" data-action="voice-sample-inbox">◉ 语音示例</button><button class="btn btn-primary" data-action="add-inbox">加入收集箱 <span>→</span></button></div></div></section>' +
       '<div class="section-heading"><div><h2>需要理解 <span class="count-badge">' + pending.length + '</span></h2><p>系统先整理候选内容；未经确认的推断不会变成正式事实。</p></div><span class="subtle-chip">自动理解 · 模拟</span></div>' +
-      (pending.length ? '<div class="inbox-list">' + pending.map((x) => '<article class="inbox-card"><div class="inbox-card-top"><span class="inbox-source">◈ ' + esc(x.source_label) + '</span><span class="inbox-time">' + dateLabel(x.received_at) + " · " + timeLabel(x.received_at) + '</span></div><h3>' + esc(x.title) + '</h3><p>' + esc(x.content) + '</p><div class="inbox-ai"><span>AI 判断：' + esc(x.suggested_type) + '</span><span>置信度 ' + Math.round(x.confidence * 100) + '%</span></div><div class="button-row"><button class="btn btn-primary btn-small" data-action="process-inbox" data-id="' + esc(x.inbox_id) + '">理解并形成事件</button><button class="btn btn-ghost btn-small" data-action="dismiss-inbox" data-id="' + esc(x.inbox_id) + '">暂不处理</button></div></article>').join("") + '</div>' : emptyState("收集箱已经清空", "新的记录、分享内容和已授权来源会出现在这里。")) +
+      (pending.length ? '<div class="inbox-list">' + pending.map((x) => '<article class="inbox-card"><div class="inbox-card-top"><span class="inbox-source">◈ ' + esc(x.source_label) + '</span><span class="inbox-time">' + dateLabel(x.received_at) + " · " + timeLabel(x.received_at) + '</span></div><h3>' + esc(x.title) + '</h3><p>' + esc(x.content) + '</p><div class="inbox-ai"><span>AI 判断：' + esc(suggestionTypeLabel(x.suggested_type)) + '</span><span>置信度 ' + Math.round(x.confidence * 100) + '%</span></div><div class="button-row"><button class="btn btn-primary btn-small" data-action="process-inbox" data-id="' + esc(x.inbox_id) + '">理解并形成事件</button><button class="btn btn-ghost btn-small" data-action="dismiss-inbox" data-id="' + esc(x.inbox_id) + '">暂不处理</button></div></article>').join("") + '</div>' : emptyState("收集箱已经清空", "新的记录、分享内容和已授权来源会出现在这里。")) +
       '<section class="panel processed-panel">' + panelTitle("最近已整理", "已形成事件的内容可以继续沉淀为记忆。") +
       (done.length ? done.map((x) => '<div class="processed-row"><div class="processed-icon">✓</div><div class="processed-main"><strong>' + esc(x.title) + '</strong><span>' + esc(x.source_label) + ' · ' + (x.status === "processed" ? "已整理" : "已忽略") + '</span></div>' + (x.status === "processed" ? '<button class="text-button" data-action="save-inbox-memory" data-id="' + esc(x.inbox_id) + '">沉淀为记忆 →</button>' : "") + '</div>').join("") : emptyState("还没有已整理内容", "完成一条记录的理解后，它会出现在这里。")) + '</section>';
   }
@@ -185,7 +192,7 @@
     const active = state.memories.filter((x) => !["withdrawn", "superseded"].includes(x.status));
     const history = state.memories.filter((x) => ["withdrawn", "superseded"].includes(x.status));
     return '<div class="memory-summary"><div><strong>' + active.length + '</strong><span>当前记忆</span></div><div><strong>' + active.filter((x) => x.status === "candidate").length + '</strong><span>等待确认</span></div><div><strong>' + history.length + '</strong><span>历史版本</span></div></div>' +
-      '<div class="memory-list">' + active.map((m) => '<article class="memory-card"><div class="memory-card-head"><span class="memory-type">' + esc(categoryLabel(m.type)) + '</span>' + statusPill(m.status) + '</div><h3>' + esc(m.statement) + '</h3><p>' + esc(m.rationale) + '</p><div class="memory-source"><span>来源：' + esc(m.source_event_refs.map((id) => { const e = state.events.find((x) => x.event_id === id); return e ? e.title : id; }).join("、")) + '</span><span>置信度 ' + Math.round(m.confidence * 100) + '%</span><span>仅个人</span></div><div class="button-row">' +
+      '<div class="memory-list">' + active.map((m) => '<article class="memory-card"><div class="memory-card-head"><span class="memory-type">' + esc(memoryTypeLabel(m.type)) + '</span>' + statusPill(m.status) + '</div><h3>' + esc(m.statement) + '</h3><p>' + esc(m.rationale) + '</p><div class="memory-source"><span>来源：' + esc(m.source_event_refs.map((id) => { const e = state.events.find((x) => x.event_id === id); return e ? e.title : id; }).join("、")) + '</span><span>置信度 ' + Math.round(m.confidence * 100) + '%</span><span>仅个人</span></div><div class="button-row">' +
       (m.status === "candidate" ? '<button class="btn btn-primary btn-small" data-action="confirm-memory" data-id="' + esc(m.memory_id) + '">确认记忆</button>' : "") +
       '<button class="btn btn-ghost btn-small" data-action="correct-memory" data-id="' + esc(m.memory_id) + '">纠正</button><button class="btn btn-ghost btn-small danger-text" data-action="withdraw-memory" data-id="' + esc(m.memory_id) + '">不再使用</button></div></article>').join("") + '</div>' +
       (history.length ? '<details class="history-details"><summary>查看已撤回或被修正的历史版本（' + history.length + '）</summary>' + history.map((m) => '<div class="history-row"><span>' + esc(m.statement) + '</span>' + statusPill(m.status) + '</div>').join("") + '</details>' : "");
@@ -244,12 +251,14 @@
     $("#modal-body").innerHTML = body;
     $("#modal-footer").innerHTML = footer || '<button class="btn btn-ghost" data-action="close-modal">关闭</button>';
     $("#modal-backdrop").classList.add("open");
+    $("#modal-backdrop").setAttribute("aria-hidden", "false");
     $("#modal").setAttribute("aria-hidden", "false");
     const first = $("#modal-footer button") || $("#modal-body button");
     if (first) first.focus();
   }
   function closeModal() {
     $("#modal-backdrop").classList.remove("open");
+    $("#modal-backdrop").setAttribute("aria-hidden", "true");
     $("#modal").setAttribute("aria-hidden", "true");
   }
 
