@@ -145,10 +145,10 @@ ul,ol{padding-left:1.35em}li{margin:5px 0}pre{overflow:auto;background:#17243a;c
 <h3>8.1 原型验证内容</h3><ol><li>接收并校验标准事件；</li><li>使用幂等键避免重复事件；</li><li>根据权威来源规则重建状态；</li><li>保留非权威来源冲突线索；</li><li>根据授权范围生成任务级上下文包。</li></ol>
 <h3>8.2 组件与生产替换方向</h3><table><thead><tr><th>组件</th><th>本地原型</th><th>生产方向</th></tr></thead><tbody>
 <tr><td>Event Ingest</td><td>Python 函数</td><td>API Gateway + Connector</td></tr><tr><td>Event Ledger</td><td>内存字典 / JSON</td><td>追加式事件存储</td></tr><tr><td>Object Registry</td><td>JSON 映射</td><td>身份解析服务</td></tr><tr><td>Authority Registry</td><td>本地配置</td><td>领域规则目录</td></tr><tr><td>State Engine</td><td>确定性规则</td><td>可重放状态投影</td></tr><tr><td>Policy Gate</td><td>简化 grant</td><td>IAM / ABAC / Policy Engine</td></tr><tr><td>Context Builder</td><td>JSON 上下文包</td><td>上下文服务</td></tr><tr><td>Audit</td><td>本地记录</td><td>集中审计</td></tr></tbody></table>
-<h3>8.3 本地运行</h3><p>要求 Python 3.10 或以上版本，不依赖第三方 Python 包。</p><pre><code>cd prototype
+<h3>8.3 本地运行</h3><p>要求 Python 3.10 或以上版本。引擎运行只依赖 Python 标准库；Schema 合同测试使用根目录 requirements-dev.txt 中的 jsonschema 开发依赖。</p><pre><code>cd prototype
 python ads_context_engine.py
 python -m unittest -v</code></pre>
-<h3>8.4 原型限制</h3><p>原型不连接真实企业系统，不执行真实写回。它不是生产安全边界；生产环境还需补充身份认证、字段级权限、密钥管理、持久化、并发控制、分布式幂等、加密、备份、监控和渗透测试。</p><h3>8.5 持续集成</h3><p>仓库已配置 <a href="../.github/workflows/ads-context-prototype.yml">GitHub Actions 工作流</a>，在原型代码、模拟数据、Schema 或工作流定义变更时自动执行 Python 单元测试和端到端演示。该工作流验证原型逻辑，不代表生产部署验收。</p>
+<h3>8.4 原型限制</h3><p>原型不连接真实企业系统，不执行真实写回。它不是生产安全边界；生产环境还需补充身份认证、字段级权限、密钥管理、持久化、并发控制、分布式幂等、加密、备份、监控和渗透测试。</p><h3>8.5 持续集成</h3><p>仓库已配置 <a href="../.github/workflows/ads-context-prototype.yml">GitHub Actions 工作流</a>，在原型代码、模拟数据、Schema 或工作流定义变更时自动执行 12 项测试（7 项引擎行为测试、5 项 Schema 合同测试）和端到端演示。该工作流验证原型逻辑，不代表生产部署验收。</p>
 </section>
 
 <section id="scenario"><h2>9. 项目交付模拟场景</h2>
