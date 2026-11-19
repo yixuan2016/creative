@@ -25,6 +25,8 @@ on:
       - "ontologies/**"
       - "examples/ads-personal-to-enterprise-event-projection-v0.1.json"
       - "pilot/工作本体与事件映射评估模板.csv"
+      - "pilot/个人助理OS30天试点评估模板.csv"
+      - "pilot/个人助理OS用户访谈提纲.md"
       - "docs/08-企业工作本体与事件驱动的个人企业领域协同标准研究.md"
       - "docs/08-企业工作本体与事件驱动的个人企业领域协同标准研究.html"
       - "capabilities/**"
