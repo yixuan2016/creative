@@ -5,13 +5,14 @@
 ## 1. 目录内容
 
 - `ads_context_engine.py`：事件接入、幂等去重、权威状态重建、冲突保留、授权校验、上下文包生成。
-- `test_ads_context_engine.py`：自动化测试。
+- `test_ads_context_engine.py`：原型行为测试。
+- `test_contract_schemas.py`：使用 JSON Schema 校验模拟数据和生成的上下文包。
 - `../examples/project-delivery-seed-data.json`：虚构项目交付场景数据。
 
 ## 2. 运行环境
 
 - Python 3.10 或以上版本
-- 无第三方依赖
+- 引擎运行无第三方依赖；完整测试需安装根目录 requirements-dev.txt 中的 jsonschema。
 
 ## 3. 运行演示
 
@@ -32,6 +33,7 @@ python ads_context_engine.py
 ## 4. 运行测试
 
 ~~~bash
+python -m pip install -r ../requirements-dev.txt
 python -m unittest -v
 ~~~
 
@@ -42,7 +44,9 @@ python -m unittest -v
 - 对象范围授权；
 - 处理目的授权；
 - 未知对象引用拒绝；
-- 租户边界检查。
+- 租户边界检查；
+- JSON Schema 定义本身有效；
+- 模拟事件、业务对象、授权记录及生成的上下文包符合 Schema。
 
 ## 5. 核心规则
 
