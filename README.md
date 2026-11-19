@@ -195,4 +195,4 @@
 
 核心议题：SQLite 本地持久化、owner 分区、revision 乐观并发、幂等写入、来源撤回传播、元数据追加审计、PDKS Event / Knowledge / Personal Context / Action 到 ADS Event Ledger / Memory / Intent 的保守映射。设备与连接器采集必须通过可信授权门禁；Agent 只能导入候选 Memory / Intent；PDKS Action 不自动创建 Agent Action Proposal；个人侧默认 personal_only。
 
-本阶段是单机本地参考原型，不代表已具备数据库加密、身份认证、正式授权服务、钉钉/录音连接器、多端同步或物理删除能力。
+本阶段是单机本地参考原型，不代表已具备数据库加密、身份认证、正式授权服务、钉钉/录音连接器、多端同步或物理删除能力。当前分支先同步设计文档与 HTML；可执行原型源码和测试随 PDKS × ADS Runtime 0.3.0 独立开发包交付，待评审后再逐文件合入本仓库 prototype/。
