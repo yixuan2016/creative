@@ -215,5 +215,29 @@
     "extensions": {
       "type": "object"
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "confirmation_status": {
+            "const": "inferred_candidate"
+          }
+        },
+        "required": [
+          "confirmation_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "enum": [
+              "proposed",
+              "paused"
+            ]
+          }
+        }
+      }
+    }
+  ]
 }
