@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="ADS-WORK-05 企业运行认知基础设施试点实施方案，以项目交付为例，定义业务场景、数据接入、技术架构、十周计划、指标和治理。">
+<title>ADS-WORK-05｜企业运行认知基础设施试点实施方案</title>
+<style>
+:root{
+ --ink:#17263b;--muted:#607087;--line:#dbe4ee;--paper:#fff;--canvas:#f2f5f9;
+ --navy:#102944;--blue:#28639e;--teal:#17796f;--violet:#6755a6;--amber:#9a641e;
+ --blue-bg:#edf4fc;--teal-bg:#edf8f5;--violet-bg:#f3f0fa;--amber-bg:#fff7e9;
+ --shadow:0 10px 30px rgba(25,48,77,.07)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:22px}
+body{margin:0;background:var(--canvas);color:var(--ink);font:15px/1.78 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.shell{max-width:1380px;margin:0 auto;padding:24px 24px 58px}
+.hero{position:relative;overflow:hidden;border-radius:24px;padding:44px 48px;color:#fff;background:linear-gradient(120deg,#10243d 0%,#16466a 56%,#16756e 100%);box-shadow:0 20px 48px rgba(13,39,66,.17)}
+.hero:after{content:"";position:absolute;width:420px;height:420px;border:1px solid rgba(255,255,255,.12);border-radius:50%;right:-100px;top:-210px;box-shadow:0 0 0 45px rgba(255,255,255,.035),0 0 0 90px rgba(255,255,255,.025)}
+.kicker{font-size:11px;letter-spacing:.19em;text-transform:uppercase;color:#b9d4e5}
+.hero h1{position:relative;z-index:1;max-width:940px;margin:15px 0 13px;font-size:clamp(30px,4vw,46px);line-height:1.24;letter-spacing:-.025em}
+.subtitle{position:relative;z-index:1;max-width:900px;font-size:18px;color:#e0ebf4;line-height:1.7}
+.hero-meta{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:27px;font-size:12px;color:#c6d8e6}
+.hero-tag{display:inline-flex;align-items:center;border:1px solid rgba(255,255,255,.22);border-radius:99px;padding:4px 10px;background:rgba(255,255,255,.08)}
+.layout{display:grid;grid-template-columns:265px minmax(0,1fr);gap:24px;margin-top:24px;align-items:start}
+nav{position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto;padding:19px 18px;background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+nav .nav-title{font-weight:750;font-size:14px;margin-bottom:12px}
+nav a{display:block;padding:5px 7px;border-radius:7px;font-size:12px;color:#4c5e74;line-height:1.5}
+nav a:hover{background:#f0f4f8;text-decoration:none;color:var(--blue)}
+nav .nav-group{margin-top:11px;padding-top:10px;border-top:1px solid #edf1f5;color:#8a98a9;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding-left:7px}
+main{min-width:0}
+section,.intro{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:29px 31px;margin-bottom:17px;box-shadow:0 5px 20px rgba(25,48,77,.035)}
+h2{font-size:23px;line-height:1.35;margin:0 0 16px;letter-spacing:-.02em}
+h3{font-size:17px;line-height:1.45;margin:24px 0 8px}
+h4{font-size:14px;margin:17px 0 6px}
+p{margin:9px 0}
+.lead{font-size:17px;line-height:1.8;color:#344a63}
+.muted{color:var(--muted)}
+.small{font-size:12px;color:var(--muted)}
+.section-kicker{display:block;font-size:10px;letter-spacing:.16em;color:#8392a5;margin-bottom:7px;text-transform:uppercase}
+.callout{margin:17px 0;padding:15px 18px;border-left:4px solid var(--teal);background:var(--teal-bg);border-radius:0 11px 11px 0}
+.warning{border-left-color:#c58a31;background:var(--amber-bg)}
+.blue-callout{border-left-color:var(--blue);background:var(--blue-bg)}
+.purple-callout{border-left-color:var(--violet);background:var(--violet-bg)}
+.grid{display:grid;gap:12px}
+.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.metric,.tile{border:1px solid var(--line);border-radius:13px;padding:16px;background:#fff}
+.metric .num{font-size:26px;font-weight:760;line-height:1.25;color:var(--navy);letter-spacing:-.03em}
+.metric .label{font-size:12px;color:var(--muted);margin-top:5px}
+.tile h3{margin:0 0 7px;font-size:15px}
+.tile p{font-size:13px;color:#5d6c80;margin:0}
+.tile .index{font-size:10px;color:var(--blue);letter-spacing:.12em;font-weight:750;margin-bottom:8px}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+th,td{border:1px solid var(--line);padding:10px 11px;text-align:left;vertical-align:top}
+th{background:#eff3f8;color:#34465c;font-weight:700}
+tbody tr:nth-child(even){background:#fbfcfe}
+ul,ol{padding-left:1.3em;margin:10px 0}
+li{margin:5px 0}
+.pill{display:inline-block;border-radius:99px;padding:3px 9px;font-size:11px;margin:2px 4px 2px 0;background:#edf1f6;color:#465a72}
+.pill.teal{background:var(--teal-bg);color:#17685f}.pill.blue{background:var(--blue-bg);color:#245c94}.pill.amber{background:var(--amber-bg);color:#8a5a19}.pill.violet{background:var(--violet-bg);color:#655198}
+.diagram{border:1px solid var(--line);border-radius:14px;padding:18px;background:#fbfcfe;margin:17px 0;overflow-x:auto}
+.flow{min-width:620px;display:flex;align-items:center;flex-direction:column;gap:7px}
+.flow-node{width:min(100%,850px);border:1px solid #cddaea;background:var(--blue-bg);padding:11px 16px;border-radius:10px;text-align:center}
+.flow-node.teal{background:var(--teal-bg);border-color:#c7e4dc}
+.flow-node.violet{background:var(--violet-bg);border-color:#ded5f0}
+.flow-node.dark{background:#203c59;color:#fff;border-color:#203c59}
+.flow-arrow{font-size:18px;color:#8b9aab;line-height:1}
+.flow-caption{font-size:11px;color:#75859a;margin-top:4px}
+.two-lane{min-width:660px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lane{border:1px solid var(--line);border-radius:11px;padding:13px;background:#fff}
+.lane strong{display:block;margin-bottom:8px}
+.lane .step{background:#f2f6fa;border-radius:7px;padding:8px 10px;margin:6px 0;font-size:12px}
+.timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:17px 0}
+.phase{position:relative;border:1px solid var(--line);border-radius:12px;padding:13px 12px;background:#fff;min-height:140px}
+.phase .week{font-size:10px;color:var(--blue);font-weight:800;letter-spacing:.1em}
+.phase strong{display:block;margin:7px 0;font-size:13px}
+.phase p{font-size:11px;color:var(--muted);margin:0}
+.phase:after{content:"";position:absolute;right:-9px;top:23px;width:8px;height:1px;background:#aab8c8}
+.phase:nth-child(5n):after{display:none}
+details{border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin:10px 0;background:#fff}
+summary{cursor:pointer;font-weight:700;color:#2a4058}
+details p,details ul{font-size:13px;color:#53657a}
+.check{list-style:none;padding:0}
+.check li{position:relative;padding-left:24px}
+.check li:before{content:"✓";position:absolute;left:0;top:0;color:var(--teal);font-weight:800}
+.bar{height:7px;background:#e9eef4;border-radius:99px;overflow:hidden;margin-top:9px}
+.bar span{display:block;height:100%;background:linear-gradient(90deg,#28639e,#1a8a7b);border-radius:99px}
+.quote{font-size:19px;line-height:1.7;font-weight:650;color:#1e3b57;padding:10px 0}
+.footer{text-align:center;color:#8290a2;font-size:12px;padding:22px}
+.toplink{font-size:11px;float:right;color:#8b99a9}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}nav{position:relative;top:auto;max-height:none}.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.shell{padding:12px 10px 36px}.hero{padding:28px 22px;border-radius:17px}.hero h1{font-size:30px}.subtitle{font-size:15px}section,.intro{padding:21px 17px}.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.timeline{grid-template-columns:1fr 1fr}.phase:nth-child(5n):after{display:block}.phase:nth-child(2n):after{display:none}table{display:block;overflow-x:auto;white-space:normal}}
+@media print{body{background:#fff}.shell{max-width:none;padding:0}.hero{border-radius:0;box-shadow:none;print-color-adjust:exact}.layout{display:block}nav{display:none}section,.intro{box-shadow:none;break-inside:avoid}.footer{display:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="hero" id="top">
+ <div class="kicker">ADS · ENTERPRISE WORK CONTEXT · PILOT PROGRAM</div>
+ <h1>企业运行认知基础设施<br>试点实施方案</h1>
+ <p class="subtitle">以项目交付为例，把统一上下文、运行认知引擎和企业 Agent 放进真实业务流程，用可核验的数据和指标决定是否规模化。</p>
+ <div class="hero-meta">
+  <span class="hero-tag">ADS-WORK-05</span><span>V0.1-Pilot Proposal</span><span>2026-11-19</span><span>建议周期：10 周</span><span>1 个团队 · 1 个样板项目 · 3—5 个验证项目</span>
+ </div>
+</header>
+<div class="layout">
+<nav aria-label="专题导航">
+ <div class="nav-title">专题导航</div>
+ <a href="#summary">摘要与核心判断</a>
+ <div class="nav-group">Pilot Design</div>
+ <a href="#hypothesis">1. 试点定位与假设</a>
+ <a href="#selection">2. 项目选择与准入</a>
+ <a href="#scenario">3. 首个业务场景</a>
+ <a href="#sources">4. 数据接入策略</a>
+ <a href="#architecture">5. 技术架构与数据流</a>
+ <a href="#workflow">6. Agent 业务闭环</a>
+ <div class="nav-group">Execution</div>
+ <a href="#roadmap">7. 十周实施计划</a>
+ <a href="#roles">8. 组织分工与投入</a>
+ <a href="#metrics">9. 指标与验收</a>
+ <a href="#governance">10. 治理、安全与信任</a>
+ <a href="#tests">11. 验收测试集</a>
+ <a href="#risks">12. 风险登记</a>
+ <div class="nav-group">Scale & Decision</div>
+ <a href="#decision">13. Go / No-Go</a>
+ <a href="#scale">14. 企业能力演进</a>
+ <a href="#ads">15. ADS 三级底座关系</a>
+ <a href="#actions">16. 立项前决策与两周准备</a>
+ <a href="#templates">附录：执行模板</a>
+ <a href="#conclusion">结论</a>
+</nav>
+<main>
+<section class="intro" id="summary">
+ <span class="section-kicker">Executive Summary</span>
+ <h2>这次试点究竟要证明什么？</h2>
+ <p class="lead">前四份专题完成了从工作感知、企业运行认知、统一数据模型到工程原型的连续研究。第五份专题把研究带入真实业务：验证 ADS 能否准确理解项目状态、解释状态依据、识别不确定性，并帮助团队以更低成本采取下一步行动。</p>
+ <div class="callout"><strong>核心主张：</strong>试点成功不等于 AI 能写出漂亮周报，而是系统能在正确权限和可核验证据下呈现项目真实状态，让团队更快发现阻塞、确认责任和推进工作。</div>
+ <div class="grid grid-4">
+  <div class="metric"><div class="num">1</div><div class="label">端到端样板项目</div></div>
+  <div class="metric"><div class="num">3—5</div><div class="label">扩展验证项目</div></div>
+  <div class="metric"><div class="num">10 周</div><div class="label">建议试点周期</div></div>
+  <div class="metric"><div class="num">0</div><div class="label">未经批准的高风险写回</div></div>
+ </div>
+ <p class="small">规模和周期为方案假设，需根据系统接口、业务资源、数据质量和治理审批调整。</p>
+ <h3>五个核心交付</h3>
+ <div class="grid grid-3">
+  <div class="tile"><div class="index">01 / BUSINESS</div><h3>试点章程</h3><p>场景、范围、项目选择、责任人、资源与阶段门。</p></div>
+  <div class="tile"><div class="index">02 / DATA</div><h3>数据与权威矩阵</h3><p>来源、字段、责任人、分类、接入和用途边界。</p></div>
+  <div class="tile"><div class="index">03 / ENGINEERING</div><h3>运行上下文闭环</h3><p>事件接入、对象关联、状态重建、证据和上下文包。</p></div>
+  <div class="tile"><div class="index">04 / EVALUATION</div><h3>指标与验收</h3><p>基线、样本、口径、业务收益和 Go / No-Go。</p></div>
+  <div class="tile"><div class="index">05 / GOVERNANCE</div><h3>治理与安全</h3><p>最小权限、用途限定、人工责任、撤回和审计。</p></div>
+  <div class="tile"><div class="index">06 / SCALE</div><h3>复用验证</h3><p>从一个项目到多个项目，再评估跨团队复制。</p></div>
+ </div>
+</section>
+
+<section id="hypothesis">
+ <span class="section-kicker">01 · Pilot Design</span><h2>试点定位：验证企业基础能力，而不是只做一个 Agent</h2>
+ <p>试点要回答三个层次的问题：上下文是否可信、业务工作是否改善、能力是否能够复制。</p>
+ <table><thead><tr><th>假设</th><th>可验证问题</th><th>证据</th></tr></thead><tbody>
+ <tr><td>H1 多源信息可形成一致上下文</td><td>项目、任务、决策、风险、依赖和交付物能否正确关联？</td><td>对象关联准确率、证据引用完整率</td></tr>
+ <tr><td>H2 权威来源与协同线索可共存</td><td>会议观点与项目状态冲突时，是否保留冲突而非覆盖？</td><td>冲突识别与人工确认记录</td></tr>
+ <tr><td>H3 上下文包减少重复提示</td><td>Agent 能否在任务上下文中完成状态和下一步分析？</td><td>任务评测、人工修改率</td></tr>
+ <tr><td>H4 辅助能力降低协作成本</td><td>状态汇总、信息查找和风险跟进是否更快？</td><td>基线对比、遗漏和返工记录</td></tr>
+ <tr><td>H5 标准可跨项目复用</td><td>新项目是否主要通过配置而非重写代码接入？</td><td>接入工时、组件和规则复用率</td></tr>
+ <tr><td>H6 治理可伴随能力运行</td><td>授权、证据、撤回和审计是否有效？</td><td>权限测试、撤回演练、审计日志</td></tr>
+ </tbody></table>
+ <div class="callout blue-callout"><strong>边界：</strong>第一阶段只读。Agent 可以摘要、分析、提示和草拟跟进，但不自动修改项目状态、任务负责人、交付日期或客户承诺。</div>
+ <h3>纳入 / 不纳入</h3>
+ <div class="grid grid-2">
+  <div class="tile"><h3><span class="pill teal">纳入</span> 项目运行必要上下文</h3><ul><li>项目、任务、里程碑和负责人</li><li>正式决策、风险、问题和依赖</li><li>交付物、验收证据及版本</li><li>经批准的会议纪要和项目协同记录</li><li>Agent 输出和人工反馈</li></ul></div>
+  <div class="tile"><h3><span class="pill amber">不纳入</span> 无差别采集和自动决策</h3><ul><li>全员全群全量聊天抓取</li><li>默认持续录音或屏幕监控</li><li>个人记忆自动转为企业资产</li><li>未经批准的正式业务写回</li><li>自动批准决策、合同或验收</li></ul></div>
+ </div>
+</section>
+
+<section id="selection">
+ <span class="section-kicker">02 · Pilot Scope</span><h2>项目选择：先做一个样板，再扩展验证</h2>
+ <div class="diagram"><div class="flow">
+  <div class="flow-node dark">1 个样板项目 · 打通端到端流程</div><div class="flow-arrow">↓</div>
+  <div class="flow-node teal">2—4 个扩展项目 · 验证配置复用和复杂场景</div><div class="flow-arrow">↓</div>
+  <div class="flow-node violet">1 个交付团队 · 项目经理、交付负责人、技术负责人和执行角色</div>
+ </div></div>
+ <table><thead><tr><th>准入维度</th><th>优先条件</th><th>不建议进入首批</th></tr></thead><tbody>
+ <tr><td>业务代表性</td><td>有明确目标、里程碑、跨角色协作和风险</td><td>极特殊且无法代表其他项目</td></tr>
+ <tr><td>数据可用性</td><td>稳定对象 ID、状态、任务和更新时间</td><td>关键内容仅有口头信息且无法授权</td></tr>
+ <tr><td>责任清晰</td><td>有项目经理和数据责任人</td><td>无人对状态和字段质量负责</td></tr>
+ <tr><td>参与意愿</td><td>团队愿意参与基线采集和结果评审</td><td>团队认为试点是个人绩效监控</td></tr>
+ <tr><td>风险可控</td><td>数据分类和客户信息边界明确</td><td>敏感数据无批准的处理机制</td></tr>
+ <tr><td>可比较性</td><td>有历史周报、评审或可采集基线</td><td>无法建立可信基线</td></tr>
+ </tbody></table>
+ <div class="callout warning"><strong>不要为了规模牺牲质量。</strong>若授权、数据质量或业务资源不足，缩小范围把一个项目做实，不以扩大覆盖率掩盖问题。</div>
+</section>
+
+<section id="scenario">
+ <span class="section-kicker">03 · First Business Scenario</span><h2>首个场景：项目交付状态评审与风险跟进</h2>
+ <h3>当前工作方式</h3>
+ <ol><li>打开项目系统查看项目和任务状态；</li><li>搜索钉钉群、会议纪要和邮件了解变化；</li><li>查找决策记录、问题单和交付物；</li><li>向任务负责人逐一确认状态；</li><li>手工整理进展、阻塞、风险和待办；</li><li>形成周报或评审材料，会议后再分散录入行动项。</li></ol>
+ <h3>试点后的目标方式</h3>
+ <div class="diagram"><div class="flow">
+  <div class="flow-node">选择项目与评审时间范围</div><div class="flow-arrow">↓</div>
+  <div class="flow-node">ADS 检索授权项目、任务、决策、风险、依赖与证据</div><div class="flow-arrow">↓</div>
+  <div class="flow-node teal">认知引擎重建状态，标注来源、时间、冲突和未知</div><div class="flow-arrow">↓</div>
+  <div class="flow-node violet">Agent 生成摘要、关键变化、阻塞链和跟进草稿</div><div class="flow-arrow">↓</div>
+  <div class="flow-node">项目经理确认 / 修正 / 驳回</div><div class="flow-arrow">↓</div>
+  <div class="flow-node teal">反馈入账；正式变更仍由授权人员在原系统完成</div>
+ </div></div>
+ <h3>每次评审应交付的运行视图</h3>
+ <div class="grid grid-2">
+  <div class="tile"><h3>01 · 项目概览</h3><p>目标、阶段、正式状态、负责人和里程碑。</p></div>
+  <div class="tile"><h3>02 · 本期变化</h3><p>状态变化、任务变化和重要决策。</p></div>
+  <div class="tile"><h3>03 · 交付进展</h3><p>已完成、进行中、逾期、阻塞的关键任务和证据。</p></div>
+  <div class="tile"><h3>04 · 风险与依赖</h3><p>影响对象、责任人、依赖路径和下一步动作。</p></div>
+  <div class="tile"><h3>05 · 决策链</h3><p>已提出、待确认、已批准和已撤回的决策。</p></div>
+  <div class="tile"><h3>06 · 未知与冲突</h3><p>缺少确认、来源不一致和过期的信息。</p></div>
+ </div>
+</section>
+
+<section id="sources">
+ <span class="section-kicker">04 · Data Integration</span><h2>数据接入：先接权威数据，再补充协同上下文</h2>
+ <table><thead><tr><th>数据源</th><th>首批用途</th><th>权威程度</th><th>建议接入</th><th>首批边界</th></tr></thead><tbody>
+ <tr><td>项目管理系统</td><td>项目、任务、负责人、计划、状态</td><td>对正式字段权威</td><td>只读 API / Webhook / 增量同步</td><td>仅试点项目和必要字段</td></tr>
+ <tr><td>OA / 审批系统</td><td>正式决策和变更审批</td><td>对审批结果权威</td><td>只读 API / 事件订阅</td><td>仅项目相关审批</td></tr>
+ <tr><td>文档 / 知识系统</td><td>交付物、方案、验收证据</td><td>按版本和审批规则确认</td><td>元数据 + 受控引用</td><td>优先引用，不复制整份文档</td></tr>
+ <tr><td>风险 / 缺陷系统</td><td>风险、问题、严重度、责任人</td><td>对正式风险记录权威</td><td>API / 事件订阅</td><td>仅项目关联记录</td></tr>
+ <tr><td>钉钉项目群 / 会议纪要</td><td>变化线索、原因和待确认事项</td><td>默认是线索</td><td>批准范围内的纪要或人工提交</td><td>不全量抓取个人聊天</td></tr>
+ <tr><td>个人工作感知</td><td>补充个人记忆或遗漏线索</td><td>未经确认不构成企业事实</td><td>单独评估后再考虑</td><td>非第一阶段依赖</td></tr>
+ </tbody></table>
+ <h3>权威字段矩阵示例</h3>
+ <table><thead><tr><th>属性</th><th>权威来源示例</th><th>协同线索作用</th><th>冲突处理</th></tr></thead><tbody>
+ <tr><td>project.status</td><td>项目管理系统</td><td>会议纪要提示变化</td><td>保留正式状态，发起人工确认</td></tr>
+ <tr><td>task.assignee</td><td>项目 / 任务系统</td><td>群聊提示实际执行人变化</td><td>待正式分配记录确认</td></tr>
+ <tr><td>milestone.due_at</td><td>已批准计划</td><td>会议提出调整建议</td><td>未批准前不改变基线</td></tr>
+ <tr><td>decision.status</td><td>OA 审批 / 正式决策记录</td><td>会议讨论属于 proposed</td><td>正式审批后才标记 approved</td></tr>
+ <tr><td>deliverable.acceptance</td><td>验收系统 / 正式记录</td><td>文档评论补充证据</td><td>不以模型判断替代验收</td></tr>
+ </tbody></table>
+ <div class="callout blue-callout">权威性按“对象类型 + 属性 + 领域”配置，不给某个系统贴一个全局权威标签。上表只是示例，真实矩阵必须由业务和系统责任人逐字段确认。</div>
+ <h3>接入顺序</h3>
+ <ol><li>项目管理系统：建立 Project、Task 和 Milestone。</li><li>OA / 审批：补齐正式 Decision 和变更审批。</li><li>文档系统：补齐 Deliverable 和 EvidenceRef。</li><li>风险 / 缺陷系统：补齐 Risk、Issue 和 Dependency。</li><li>会议纪要：范围获批后作为线索来源。</li><li>个人感知来源：不作为第一阶段前置依赖。</li></ol>
+</section>
+
+<section id="architecture">
+ <span class="section-kicker">05 · Reference Architecture</span><h2>目标技术架构：让可信上下文成为 Agent 的工作环境</h2>
+ <div class="diagram"><div class="flow">
+  <div class="flow-node dark">业务系统与授权协同来源<br><span class="flow-caption" style="color:#d5e3ee">项目系统 · OA 审批 · 文档 · 风险 · 指定会议纪要</span></div>
+  <div class="flow-arrow">↓</div><div class="flow-node">连接器与访问控制 · 增量同步 · 失败重试 · 数据分类</div>
+  <div class="flow-arrow">↓</div><div class="flow-node">标准事件接入与事件账本</div>
+  <div class="flow-arrow">↓</div><div class="flow-node teal">对象注册表 + 共同本体 / 项目领域本体</div>
+  <div class="flow-arrow">↓</div><div class="flow-node teal">权威字段规则 + 状态重建引擎</div>
+  <div class="flow-arrow">↓</div><div class="flow-node violet">冲突识别 · 证据引用 · 未知项 · 新鲜度</div>
+  <div class="flow-arrow">↓</div><div class="flow-node violet">授权校验与任务级 Context Package</div>
+  <div class="flow-arrow">↓</div><div class="flow-node">项目交付 Agent / API</div>
+  <div class="flow-arrow">↓</div><div class="flow-node teal">人工确认、修正、驳回 · 反馈事件 · 审计与评估</div>
+ </div></div>
+ <h3>分层责任边界</h3>
+ <table><thead><tr><th>能力层</th><th>试点责任</th><th>不承担的责任</th></tr></thead><tbody>
+ <tr><td>连接与接入</td><td>读取授权数据、增量同步、标准化</td><td>不决定业务事实</td></tr>
+ <tr><td>事件与对象</td><td>保存变化、解析对象、关联来源</td><td>不擅自合并不确定对象</td></tr>
+ <tr><td>语义与规则</td><td>字段含义、权威来源、状态计算</td><td>不由大模型自由覆盖规则</td></tr>
+ <tr><td>认知与上下文</td><td>项目状态视图、冲突和未知</td><td>不替代正式业务记录</td></tr>
+ <tr><td>Agent 应用</td><td>解释、摘要、提示、草拟跟进</td><td>不绕过审批执行正式动作</td></tr>
+ <tr><td>治理与评估</td><td>授权、审计、质量、指标和撤回</td><td>不把安全检查留给提示词</td></tr>
+ </tbody></table>
+ <h3>Context Package 关键字段</h3>
+ <pre style="white-space:pre-wrap;overflow:auto;background:#17283d;color:#e7eff7;border-radius:11px;padding:17px;font-size:12px;line-height:1.6"><code>{
+  "context_id": "ctx-project-review-001",
+  "task_id": "prepare_project_status_review",
+  "purpose": "project_delivery_status_review",
+  "scope": {"object_ids": ["project-014"]},
+  "current_states": [{
+    "property": "project.status",
+    "value": "blocked",
+    "assertion_status": "confirmed",
+    "supporting_refs": ["event-1024"]
+  }],
+  "unresolved_items": [
+    {"type": "state_conflict", "description": "会议观点与系统状态不一致"},
+    {"type": "business_unknown", "description": "客户验收日期尚未确认"}
+  ],
+  "allowed_actions": ["summarize", "identify_missing_information", "draft_follow_up"],
+  "approval_required_for": ["update_project_status", "send_customer_commitment"],
+  "authorization_refs": ["grant-project-review-001"],
+  "policy_version": "context-policy-0.1",
+  "lifecycle_status": "active"
+}</code></pre>
+ <p class="small">示例 ID 和数据均为虚构。真实上下文包必须由授权服务生成，Agent 不得自行扩大对象、字段或用途范围。</p>
+</section>
+
+<section id="workflow">
+ <span class="section-kicker">06 · Agent Workflow</span><h2>让 Agent 进入工作流程，而不是另建一个聊天窗口</h2>
+ <div class="grid grid-3">
+  <div class="tile"><div class="index">TASK A</div><h3>项目状态评审准备</h3><p>项目概览、本期变化、关键任务、里程碑、风险、决策、未知和证据索引。</p></div>
+  <div class="tile"><div class="index">TASK B</div><h3>阻塞与依赖分析</h3><p>阻塞原因、上游依赖、受影响任务和里程碑、责任人及待确认问题。</p></div>
+  <div class="tile"><div class="index">TASK C</div><h3>会议后行动项整理</h3><p>候选决策、行动项、负责人候选、截止时间候选和关联对象。</p></div>
+ </div>
+ <h3>人工确认状态</h3>
+ <div class="grid grid-4">
+  <div class="tile"><span class="pill teal">accepted</span><h3>接受</h3><p>人工确认，形成后续正式操作建议。</p></div>
+  <div class="tile"><span class="pill blue">corrected</span><h3>修正</h3><p>保留原建议和修正内容。</p></div>
+  <div class="tile"><span class="pill amber">rejected</span><h3>驳回</h3><p>记录驳回原因，供规则复盘。</p></div>
+  <div class="tile"><span class="pill violet">deferred</span><h3>待补充</h3><p>信息不足，等待后续证据。</p></div>
+ </div>
+ <div class="callout">优先嵌入团队已有的项目系统或工作台入口。若只能使用 Web 原型，也必须绑定真实项目对象和权限，不做脱离业务系统的聊天演示。</div>
+</section>
+
+<section id="roadmap">
+ <span class="section-kicker">07 · 10-Week Delivery Plan</span><h2>十周实施计划：每一阶段都有交付物和阶段门</h2>
+ <div class="timeline">
+  <div class="phase"><div class="week">WEEK 01</div><strong>立项与场景确认</strong><p>试点章程、RACI、项目清单</p><span class="pill blue">M1</span></div>
+  <div class="phase"><div class="week">WEEK 02</div><strong>数据与治理盘点</strong><p>数据源、权威矩阵、审批</p><span class="pill blue">M2</span></div>
+  <div class="phase"><div class="week">WEEK 03—04</div><strong>只读连接与对象映射</strong><p>连接器、对象映射、事件接入</p><span class="pill blue">M3</span></div>
+  <div class="phase"><div class="week">WEEK 05</div><strong>状态与上下文</strong><p>状态视图、冲突、未知、Context</p><span class="pill blue">M4</span></div>
+  <div class="phase"><div class="week">WEEK 06</div><strong>Agent 影子运行</strong><p>评测记录、错误分类</p><span class="pill blue">M5</span></div>
+  <div class="phase"><div class="week">WEEK 07</div><strong>人工确认试用</strong><p>真实评审、反馈闭环</p><span class="pill teal">M6</span></div>
+  <div class="phase"><div class="week">WEEK 08</div><strong>扩展项目验证</strong><p>2—4 个项目、复用性</p><span class="pill teal">M7</span></div>
+  <div class="phase"><div class="week">WEEK 09</div><strong>价值与治理评估</strong><p>基线对比、审计、异常演练</p><span class="pill teal">M8</span></div>
+  <div class="phase"><div class="week">WEEK 10</div><strong>复盘与决策</strong><p>试点总结、Go / No-Go</p><span class="pill violet">M9</span></div>
+ </div>
+ <table><thead><tr><th>阶段门</th><th>完成标准</th></tr></thead><tbody>
+ <tr><td>M1</td><td>试点章程和责任人确认</td></tr><tr><td>M2</td><td>数据源、字段权威矩阵和治理边界批准</td></tr><tr><td>M3</td><td>样板项目数据接入、对象关联可追溯</td></tr><tr><td>M4</td><td>状态视图可追溯，冲突与未知正确展示</td></tr><tr><td>M5—M6</td><td>Agent 影子运行并完成真实人工确认闭环</td></tr><tr><td>M7—M8</td><td>扩展项目验证和指标报告完成</td></tr><tr><td>M9</td><td>业务、架构、安全和评估负责人完成决策</td></tr>
+ </tbody></table>
+ <details><summary>出现哪些情况必须暂停？</summary><ul><li>数据用途或授权尚未获批；</li><li>对象无法可靠识别，错误关联可能影响业务结论；</li><li>权威字段责任人未明确；</li><li>高影响事实频繁错误且无法解释；</li><li>出现未授权数据暴露或审计缺失；</li><li>Agent 产生未经批准的写回或客户承诺。</li></ul></details>
+</section>
+
+<section id="roles">
+ <span class="section-kicker">08 · Operating Model</span><h2>组织分工：业务、系统、架构和治理共同负责</h2>
+ <table><thead><tr><th>角色</th><th>主要职责</th><th>建议投入</th></tr></thead><tbody>
+ <tr><td>业务发起人</td><td>确认目标、资源和业务价值</td><td>阶段性评审</td></tr>
+ <tr><td>试点业务负责人 / 项目经理</td><td>项目范围、状态确认、流程和使用反馈</td><td>每周 2—4 小时</td></tr>
+ <tr><td>ADS 产品 / 架构负责人</td><td>试点设计、范围、架构和阶段门</td><td>每周 2—3 天</td></tr>
+ <tr><td>后端 / 数据工程</td><td>连接器、事件、对象映射、状态服务</td><td>1—2 人</td></tr>
+ <tr><td>Agent / 应用工程</td><td>任务设计、上下文消费、评测和交互</td><td>1 人</td></tr>
+ <tr><td>系统责任人</td><td>API、字段语义、权限和源系统问题</td><td>按需</td></tr>
+ <tr><td>安全 / 数据治理</td><td>数据分类、授权、审计和撤回</td><td>阶段性投入</td></tr>
+ <tr><td>评估负责人</td><td>基线、样本、指标和最终评估</td><td>每周 0.5—1 天</td></tr>
+ </tbody></table>
+ <p class="small">投入为规划假设，不是已确认的人力承诺。业务确认、安全审批和技术实现不应全部由同一人代替。</p>
+ <h3>RACI 摘要</h3>
+ <table><thead><tr><th>工作</th><th>业务发起人</th><th>项目经理</th><th>ADS 研发</th><th>系统责任人</th><th>安全 / 治理</th><th>评估</th></tr></thead><tbody>
+ <tr><td>目标和范围</td><td>A</td><td>R</td><td>C</td><td>C</td><td>C</td><td>C</td></tr>
+ <tr><td>字段权威确认</td><td>I</td><td>A/R</td><td>C</td><td>R</td><td>C</td><td>I</td></tr>
+ <tr><td>授权与数据分类</td><td>I</td><td>C</td><td>C</td><td>C</td><td>A/R</td><td>I</td></tr>
+ <tr><td>连接器与模型</td><td>I</td><td>C</td><td>A/R</td><td>R</td><td>C</td><td>I</td></tr>
+ <tr><td>基线与评估</td><td>I</td><td>C</td><td>C</td><td>I</td><td>C</td><td>A/R</td></tr>
+ <tr><td>Go / No-Go</td><td>A</td><td>R</td><td>C</td><td>C</td><td>C</td><td>R</td></tr>
+ </tbody></table>
+ <p class="small">A = 最终负责；R = 执行负责；C = 咨询；I = 知会。</p>
+</section>
+
+<section id="metrics">
+ <span class="section-kicker">09 · Measurement & Acceptance</span><h2>指标体系：把“好用”变成可验证结果</h2>
+ <p>指标分为数据质量、认知质量、使用效果、业务价值、治理安全和复用能力六组。下表是建议阈值，不是已验证结果或企业现行标准；第 2 周完成基线后共同冻结。</p>
+ <div class="grid grid-3">
+  <div class="metric"><div class="num">≥98%</div><div class="label">关键对象关联准确率 · 建议</div></div>
+  <div class="metric"><div class="num">≥95%</div><div class="label">关键状态准确率 · 建议</div></div>
+  <div class="metric"><div class="num">≥95%</div><div class="label">关键结论证据可追溯率 · 建议</div></div>
+  <div class="metric"><div class="num">≥95%</div><div class="label">数据新鲜度达标率 · 建议</div></div>
+  <div class="metric"><div class="num">≥30%</div><div class="label">状态评审准备时间降低 · 建议</div></div>
+  <div class="metric"><div class="num">0</div><div class="label">未授权访问成功 / 高风险未审批写回</div></div>
+ </div>
+ <table><thead><tr><th>指标</th><th>计算口径</th><th>暂定目标</th><th>责任人</th></tr></thead><tbody>
+ <tr><td>对象关联准确率</td><td>正确关联数 / 已接受关联总数</td><td>≥98%</td><td>数据工程 + 业务核验</td></tr>
+ <tr><td>关键状态准确率</td><td>与人工裁定一致的状态断言 / 抽样断言</td><td>≥95%</td><td>项目经理</td></tr>
+ <tr><td>证据可追溯率</td><td>有有效来源引用的关键结论 / 全部关键结论</td><td>≥95%</td><td>Agent 负责人</td></tr>
+ <tr><td>数据新鲜度达标率</td><td>时限内到达事件 / 应到达事件</td><td>≥95%</td><td>连接器负责人</td></tr>
+ <tr><td>冲突显式呈现率</td><td>正确标记冲突 / 抽样真实冲突</td><td>≥95%</td><td>认知引擎负责人</td></tr>
+ <tr><td>未知项识别率</td><td>正确标记未知 / 抽样未知项</td><td>≥90%</td><td>Agent + 业务核验</td></tr>
+ <tr><td>评审准备时间</td><td>试点后中位耗时相对基线变化</td><td>降低 ≥30%</td><td>评估负责人</td></tr>
+ <tr><td>人工修改率</td><td>被修改关键结论 / 审核关键结论</td><td>观察趋势，稳定后争取 ≤20%</td><td>Agent 负责人</td></tr>
+ <tr><td>审计覆盖率</td><td>可关联主体、用途、对象、时间、结果的访问 / 全部访问</td><td>100%</td><td>安全 / 平台</td></tr>
+ <tr><td>未授权访问成功次数</td><td>确认的越权访问成功事件数</td><td>0</td><td>安全负责人</td></tr>
+ <tr><td>未审批高风险写回</td><td>未经审批发生的高风险写回次数</td><td>0</td><td>平台负责人</td></tr>
+ </tbody></table>
+ <h3>基线怎么采集？</h3>
+ <ul><li>第 1—2 周至少记录两周现状；</li><li>选择不少于 3 次状态评审或同类管理任务；</li><li>记录准备人、参与人数、准备时间、查找时间和会后修正时间；</li><li>记录状态遗漏、负责人遗漏、日期错误和重复确认次数；</li><li>区分项目复杂度、阶段和团队规模，避免简单比较。</li></ul>
+ <h3>评测样本建议</h3>
+ <div class="grid grid-3">
+  <div class="tile"><div class="num" style="font-size:25px;font-weight:750">≥100</div><h3>状态 / 事件关联记录</h3><p>抽样人工核验。</p></div>
+  <div class="tile"><div class="num" style="font-size:25px;font-weight:750">≥30</div><h3>任务 / 依赖关系</h3><p>检查影响链和责任映射。</p></div>
+  <div class="tile"><div class="num" style="font-size:25px;font-weight:750">一组</div><h3>异常与权限测试</h3><p>冲突、过期、缺失、撤回和越权。</p></div>
+ </div>
+ <div class="callout warning">样本量是设计建议。真实业务样本不足时必须披露限制，不能用合成数据冒充真实业务准确率。合成数据只用于边界测试。</div>
+ <h3>业务收益计算</h3>
+ <div class="grid grid-2">
+  <div class="tile"><h3>时间收益</h3><p>节省工时 = 基线任务总工时 − 试点后任务总工时</p></div>
+  <div class="tile"><h3>质量收益</h3><p>遗漏改善率 = (基线遗漏率 − 试点遗漏率) / 基线遗漏率</p></div>
+ </div>
+ <p>协同收益则比较跨角色确认次数、阻塞发现到责任人确认的时间、会后行动项录入时间和重复沟通次数。折算经济价值时，工时成本口径和可归因比例需由财务或业务负责人确认。</p>
+</section>
+
+<section id="governance">
+ <span class="section-kicker">10 · Trust, Privacy & Control</span><h2>治理、安全与员工信任：先建立边界，再扩大感知</h2>
+ <div class="grid grid-3">
+  <div class="tile"><h3>目的限定</h3><p>每个数据源都说明为何需要、服务哪个任务。</p></div>
+  <div class="tile"><h3>最小必要</h3><p>只接试点项目、必要字段和有限时间范围。</p></div>
+  <div class="tile"><h3>权威分层</h3><p>正式记录、人工确认、线索和推断分开标识。</p></div>
+  <div class="tile"><h3>原始数据留源</h3><p>优先保存受控引用，不默认复制全文。</p></div>
+  <div class="tile"><h3>可撤回可纠错</h3><p>授权撤回和源数据更正影响派生上下文。</p></div>
+  <div class="tile"><h3>审计可追溯</h3><p>记录主体、用途、对象、策略、时间和结果。</p></div>
+ </div>
+ <h3>个人工作感知的特殊边界</h3>
+ <div class="callout warning"><strong>本试点不以录音卡、手机或桌面采集作为必要条件。</strong>若未来评估此类来源，必须先明确采集目的、知情与自愿机制、敏感信息过滤、原始数据留存、访问范围、撤回删除和适用制度审查。不得通过隐蔽录音、无差别聊天抓取或个人绩效监控来获得上下文。</div>
+ <h3>Agent 与人工责任</h3>
+ <table><thead><tr><th>事项</th><th>Agent 可以做</th><th>必须由人 / 正式系统完成</th></tr></thead><tbody>
+ <tr><td>项目状态</td><td>汇总并引用证据</td><td>正式状态由责任人 / 权威系统确认</td></tr>
+ <tr><td>风险识别</td><td>提出候选风险和影响分析</td><td>风险定级和接受由责任人确认</td></tr>
+ <tr><td>决策整理</td><td>区分 proposed / approved 线索</td><td>正式批准走审批流程</td></tr>
+ <tr><td>任务建议</td><td>生成任务草稿和跟进建议</td><td>正式分配由授权人员执行</td></tr>
+ <tr><td>客户沟通</td><td>草拟内部审核材料</td><td>客户承诺由授权人员确认并发送</td></tr>
+ <tr><td>交付验收</td><td>汇总验收证据</td><td>验收结论由正式责任人确认</td></tr>
+ </tbody></table>
+</section>
+
+<section id="tests">
+ <span class="section-kicker">11 · Acceptance Test Suite</span><h2>验收测试：不只看答案，还要看证据、权限和副作用</h2>
+ <table><thead><tr><th>编号</th><th>测试场景</th><th>预期结果</th><th>类型</th></tr></thead><tbody>
+ <tr><td>P-01</td><td>项目系统状态与任务状态一致</td><td>正确重建并引用源记录</td><td>功能</td></tr>
+ <tr><td>P-02</td><td>会议纪要与正式状态冲突</td><td>保留权威值并呈现冲突</td><td>认知</td></tr>
+ <tr><td>P-03</td><td>会议讨论被误识别为正式决策</td><td>标记 proposed / unconfirmed</td><td>认知</td></tr>
+ <tr><td>P-04</td><td>同名项目或任务有歧义</td><td>不自动合并，要求确认</td><td>数据质量</td></tr>
+ <tr><td>P-05</td><td>延期任务影响里程碑</td><td>展示依赖路径和证据，不夸大因果</td><td>认知</td></tr>
+ <tr><td>P-06</td><td>文档更新产生新版本</td><td>引用正确版本，旧版本可追溯</td><td>证据</td></tr>
+ <tr><td>P-07 / P-08</td><td>重复投递、晚到或乱序事件</td><td>幂等处理、按规则重算并保留记录</td><td>工程</td></tr>
+ <tr><td>P-09</td><td>数据源不可用</td><td>标记延迟或不完整，不伪装最新</td><td>可靠性</td></tr>
+ <tr><td>P-10 / P-11</td><td>对象范围或字段分类越权</td><td>拒绝或裁剪，并记录审计</td><td>安全</td></tr>
+ <tr><td>P-12</td><td>授权到期或撤回</td><td>上下文和缓存按策略失效</td><td>安全</td></tr>
+ <tr><td>P-13 / P-14</td><td>Agent 请求改状态或发送客户承诺</td><td>只产生提议或进入审批，不直接执行</td><td>动作治理</td></tr>
+ <tr><td>P-15</td><td>项目经理修正 Agent 输出</td><td>保留原建议、修正、操作者和时间</td><td>反馈</td></tr>
+ <tr><td>P-16 / P-17</td><td>无证据结论、过期上下文</td><td>标记未知或拒绝使用旧包</td><td>质量</td></tr>
+ <tr><td>P-18</td><td>跨项目访问</td><td>仅返回当前授权项目范围</td><td>范围隔离</td></tr>
+ </tbody></table>
+</section>
+
+<section id="risks">
+ <span class="section-kicker">12 · Risk Register</span><h2>主要风险与应对</h2>
+ <table><thead><tr><th>风险</th><th>影响</th><th>预防措施</th><th>触发后处理</th></tr></thead><tbody>
+ <tr><td>源字段定义不一致</td><td>状态误判</td><td>字段字典和权威矩阵评审</td><td>暂停相关推断，人工核验</td></tr>
+ <tr><td>对象映射错误</td><td>项目 / 任务串线</td><td>精确 ID 优先、候选审核</td><td>撤销关系并重放</td></tr>
+ <tr><td>会议线索被当成事实</td><td>错误管理结论</td><td>来源和断言状态分层</td><td>更正事件并检查下游输出</td></tr>
+ <tr><td>数据更新不及时</td><td>使用过期状态</td><td>新鲜度指标和失效标记</td><td>标记 stale，提示回源</td></tr>
+ <tr><td>Agent 幻觉或遗漏证据</td><td>错误建议</td><td>引用约束、评测集、人工审核</td><td>停用对应任务模板并修正</td></tr>
+ <tr><td>权限配置过宽</td><td>敏感数据暴露</td><td>最小权限和字段级授权</td><td>撤权、调查和事件响应</td></tr>
+ <tr><td>员工信任不足</td><td>抵触、参与度低</td><td>公开目的、范围和反馈机制</td><td>暂停争议数据源并重评</td></tr>
+ <tr><td>单项目成功但不可复用</td><td>无法规模化</td><td>多项目扩展验证</td><td>缩小适用范围或调整模型</td></tr>
+ <tr><td>价值无法归因</td><td>无法决定是否投资</td><td>先采基线、设评估负责人</td><td>延长测量或停止扩展</td></tr>
+ </tbody></table>
+</section>
+
+<section id="decision">
+ <span class="section-kicker">13 · Go / No-Go</span><h2>什么时候可以扩大试点？</h2>
+ <div class="grid grid-2">
+  <div class="tile"><h3><span class="pill teal">GO</span> 扩大</h3><ul class="check"><li>关键质量指标达到冻结阈值</li><li>真实团队完成完整人工确认闭环</li><li>业务指标出现可重复改善</li><li>没有未解决重大治理问题</li><li>撤回、过期和高风险动作测试通过</li><li>多个项目可复用主要模型和规则</li></ul></div>
+  <div class="tile"><h3><span class="pill amber">NO-GO</span> 暂停或重构</h3><ul><li>关键状态准确率不达标且原因不明</li><li>关键结论缺少可核验证据</li><li>权限和撤回机制未通过</li><li>大量人工补录，无法证明更省事</li><li>团队不愿使用或感知为监控工具</li><li>每个项目都需要重写模型和逻辑</li></ul></div>
+ </div>
+ <div class="callout purple-callout"><strong>结果分类：</strong>Go（扩大）；Conditional Go（限定场景，先补缺口）；No-Go（停止扩展，保留研究结论并调整场景或假设）。按计划完成开发不是 Go 的充分条件。</div>
+</section>
+
+<section id="scale">
+ <span class="section-kicker">14 · Capability Evolution</span><h2>试点成功后，如何演进为企业能力</h2>
+ <div class="diagram"><div class="flow">
+  <div class="flow-node">A · 单团队、多项目<br><span class="flow-caption">验证同一项目领域本体、事件映射和上下文服务</span></div><div class="flow-arrow">↓</div>
+  <div class="flow-node teal">B · 跨团队、同类交付流程<br><span class="flow-caption">验证规则是否依赖某个核心员工经验</span></div><div class="flow-arrow">↓</div>
+  <div class="flow-node violet">C · 跨领域复用<br><span class="flow-caption">客户服务、产品研发、运营等领域分别定义语义</span></div><div class="flow-arrow">↓</div>
+  <div class="flow-node dark">D · 企业级运行上下文服务<br><span class="flow-caption" style="color:#d5e3ee">连接器目录 · 对象注册表 · 领域本体 · 策略服务 · Context API · 评测体系</span></div><div class="flow-arrow">↓</div>
+  <div class="flow-node">E · 受控 Agent 执行<br><span class="flow-caption">只在只读准确性、权限、审计和收益充分验证后逐步引入</span></div>
+ </div></div>
+ <div class="callout">跨领域不能只复制项目模型。通用对象和领域专属语义要分离，并由领域责任人定义字段含义、权威来源和治理规则。</div>
+</section>
+
+<section id="ads">
+ <span class="section-kicker">15 · ADS Three-Layer Foundation</span><h2>与 ADS 三级数智底座的关系</h2>
+ <div class="grid grid-3">
+  <div class="tile"><span class="pill blue">个人数智底座</span><h3>个人工作记忆</h3><p>个人可自主沉淀工作记忆；只有在明确授权后，提供完成企业任务所需的必要线索。</p></div>
+  <div class="tile"><span class="pill teal">企业数智底座</span><h3>企业运行上下文</h3><p>接入企业正式系统，形成标准业务数据、项目运行上下文和企业 Agent 服务。</p></div>
+  <div class="tile"><span class="pill violet">业务领域中心数智底座</span><h3>共同语义与联邦治理</h3><p>提供共同语义、领域标准、联邦目录和跨域治理协同。</p></div>
+ </div>
+ <div class="callout blue-callout">本试点建设的是企业数智底座内部的“项目交付运行上下文”能力，不是新增第四级底座，也不是用采集更多员工行为代替业务系统建设。</div>
+</section>
+
+<section id="actions">
+ <span class="section-kicker">16 · Decisions & First Two Weeks</span><h2>立项前十项决策</h2>
+ <ol>
+ <li>由哪个业务部门作为试点发起方？</li>
+ <li>哪个项目作为样板，哪些项目作为扩展样本？</li>
+ <li>项目管理、OA、文档和风险系统分别由谁负责？</li>
+ <li>哪些字段的权威来源和业务责任人已经明确？</li>
+ <li>哪些会议纪要或协同信息允许接入，范围如何限定？</li>
+ <li>试点部署在什么环境，哪些数据允许进入？</li>
+ <li>安全、数据治理和适用制度审批由谁完成？</li>
+ <li>项目经理愿意投入多少时间参与状态核验和试用？</li>
+ <li>基线指标和验收阈值由谁签字冻结？</li>
+ <li>试点结束后由谁决定扩大、调整或停止？</li>
+ </ol>
+ <h3>两周准备动作</h3>
+ <div class="grid grid-2">
+  <div class="tile"><div class="index">WEEK 01</div><h3>把业务场景和责任人定下来</h3><ul><li>召开 90 分钟启动工作坊</li><li>确定业务发起人和试点负责人</li><li>选 1 个样板和 2—4 个候选项目</li><li>梳理现状评审流程与耗时</li><li>确认首批三个 Agent 任务和非目标</li></ul></div>
+  <div class="tile"><div class="index">WEEK 02</div><h3>把数据、权限和验收口径定下来</h3><ul><li>完成系统字段和接口盘点</li><li>逐字段确认权威来源与分类</li><li>完成安全 / 数据治理评审</li><li>采集基线并冻结指标口径</li><li>评审资源和阶段门</li></ul></div>
+ </div>
+ <div class="callout warning"><strong>两周准备的准入条件：</strong>必须形成经责任人确认的《试点章程》《数据源与权威字段矩阵》《数据授权与风险评审记录》《基线与验收指标表》。缺少这些，不进入真实数据接入。</div>
+</section>
+
+<section id="templates">
+ <span class="section-kicker">Appendix · Working Templates</span><h2>可直接用于启动会的执行模板</h2>
+ <details open><summary>附录 A · 试点章程</summary>
+ <table><tbody><tr><th>试点名称</th><td>项目交付运行上下文试点</td></tr><tr><th>业务发起人 / 负责人</th><td>待指定</td></tr><tr><th>样板项目 / 扩展项目</th><td>待选择</td></tr><tr><th>试点团队</th><td>待指定</td></tr><tr><th>试点周期</th><td>建议 10 周</td></tr><tr><th>首批数据源</th><td>待系统盘点与审批</td></tr><tr><th>首批 Agent 任务</th><td>状态评审、阻塞分析、会议行动项</td></tr><tr><th>不在范围内</th><td>全员监控、默认录音、自动写回、自动客户承诺</td></tr><tr><th>成功指标 / 决策人</th><td>第 2 周冻结 / 待指定</td></tr></tbody></table>
+ </details>
+ <details><summary>附录 B · 数据源盘点</summary>
+ <table><thead><tr><th>数据源</th><th>责任人</th><th>对象 / 字段</th><th>权威性</th><th>分类</th><th>接入方式</th><th>审批状态</th></tr></thead><tbody><tr><td>项目系统</td><td>待填写</td><td>Project / Task</td><td>待确认</td><td>待分类</td><td>API / Webhook</td><td>待审批</td></tr><tr><td>OA / 审批</td><td>待填写</td><td>Decision / Change</td><td>待确认</td><td>待分类</td><td>API</td><td>待审批</td></tr><tr><td>文档系统</td><td>待填写</td><td>Deliverable / Evidence</td><td>待确认</td><td>待分类</td><td>元数据 / 引用</td><td>待审批</td></tr><tr><td>风险系统</td><td>待填写</td><td>Risk / Issue</td><td>待确认</td><td>待分类</td><td>API</td><td>待审批</td></tr><tr><td>会议纪要</td><td>待填写</td><td>Meeting / Action</td><td>默认线索</td><td>待分类</td><td>批准后接入</td><td>待审批</td></tr></tbody></table>
+ </details>
+ <details><summary>附录 C · Agent 结论人工评审</summary>
+ <table><tbody><tr><th>context_id</th><td>上下文包标识</td></tr><tr><th>结论内容 / 类型</th><td>关键结论；confirmed / observed / inferred / disputed / unknown</td></tr><tr><th>证据引用</th><td>supporting_refs</td></tr><tr><th>人工结论</th><td>accepted / corrected / rejected / deferred</td></tr><tr><th>修正内容 / 责任人</th><td>确认或修正结果、确认人员</td></tr><tr><th>确认时间 / 后续动作</th><td>时间戳；无 / 跟进 / 进入正式系统</td></tr></tbody></table>
+ </details>
+ <details><summary>附录 D · 最终评审报告目录</summary>
+ <ol><li>目标与范围、项目和团队样本</li><li>数据源、字段和授权范围</li><li>技术架构与实际接入情况</li><li>数据质量和认知质量指标</li><li>Agent 使用效果和人工反馈</li><li>业务收益与成本估算</li><li>安全、隐私、审计和异常记录</li><li>跨项目复用情况</li><li>未解决问题和风险</li><li>Go / Conditional Go / No-Go 建议</li></ol>
+ </details>
+</section>
+
+<section id="conclusion">
+ <span class="section-kicker">Conclusion</span><h2>用真实业务结果决定是否建设企业运行认知基础设施</h2>
+ <p class="quote">以项目交付为切入口，以一个样板项目打通闭环，以多个项目验证复用，以真实指标决定是否扩大。</p>
+ <p>企业运行认知基础设施的价值不在于把所有数据集中起来，也不在于让 Agent 代替项目经理，而在于让企业在正确权限下，把分散在系统、任务、决策、风险和协同过程中的信息组织成可信的运行上下文。</p>
+ <div class="callout"><strong>最终检验标准：</strong>真实项目团队愿不愿意持续使用，业务负责人能不能看到可核验的收益，数据和安全责任人能不能放心让它进入企业工作流程。</div>
+ <h3>研究专题连续主线</h3>
+ <div class="grid grid-2">
+  <div class="tile"><h3>ADS-WORK-01</h3><p><a href="01-基于多源工作感知的个人与企业数智资产生成及协同机制研究.md">多源工作感知与个人—企业数智资产协同</a></p></div>
+  <div class="tile"><h3>ADS-WORK-02</h3><p><a href="02-企业工作上下文基础设施与企业运行认知体系研究.md">企业工作上下文基础设施与运行认知</a></p></div>
+  <div class="tile"><h3>ADS-WORK-03</h3><p><a href="03-企业工作上下文统一数据模型与运行认知引擎架构设计.md">统一数据模型与运行认知引擎</a></p></div>
+  <div class="tile"><h3>ADS-WORK-04</h3><p><a href="04-企业工作上下文标准规范与最小可运行原型设计.md">标准规范与最小可运行原型</a></p></div>
+ </div>
+ <p class="small">本文件为试点建议稿，不代表已获得项目、系统、数据或人力审批。所有目标阈值、数据范围、技术路径和责任分工须由实际责任人评审确认。</p>
+</section>
+</main>
+</div>
+<div class="footer">ADS-WORK-05 · V0.1-Pilot Proposal · 2026-11-19 · 企业运行认知基础设施研究</div>
+</div>
+</body>
+</html>
