@@ -86,3 +86,12 @@ jobs:
         run: python -m unittest discover -s prototype -v
       - name: Run end-to-end demo
         run: python prototype/ads_context_engine.py
+      - name: Package Personal Assistant OS prototype
+        run: zip -r ads-personal-assistant-os-v0.1.zip prototype/personal-assistant-os docs/10.1-个人助理OS可交互原型与研发验收规范.md schemas/ads-personal-assistant-os-demo-v0.1.schema.json examples/ads-personal-assistant-os-demo-v0.1.json pilot/个人助理OS30天试点评估模板.csv pilot/个人助理OS用户访谈提纲.md
+      - name: Upload Personal Assistant OS bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: ads-personal-assistant-os-v0.1
+          path: ads-personal-assistant-os-v0.1.zip
+          if-no-files-found: error
+          retention-days: 30
