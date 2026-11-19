@@ -1,0 +1,30 @@
+name: ADS Work Context Prototype Tests
+
+on:
+  push:
+    paths:
+      - "prototype/**"
+      - "examples/project-delivery-seed-data.json"
+      - "schemas/ads-work-context-v0.1.schema.json"
+      - ".github/workflows/ads-context-prototype.yml"
+  pull_request:
+    paths:
+      - "prototype/**"
+      - "examples/project-delivery-seed-data.json"
+      - "schemas/ads-work-context-v0.1.schema.json"
+      - ".github/workflows/ads-context-prototype.yml"
+
+jobs:
+  prototype-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run prototype acceptance tests
+        run: python -m unittest discover -s prototype -v
+      - name: Run end-to-end demo
+        run: python prototype/ads_context_engine.py
