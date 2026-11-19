@@ -1,4 +1,4 @@
-name: ADS Work Context Prototype Tests
+name: ADS Work Context and Capability Asset Tests
 
 on:
   push:
@@ -6,6 +6,9 @@ on:
       - "prototype/**"
       - "examples/project-delivery-seed-data.json"
       - "schemas/ads-work-context-v0.1.schema.json"
+      - "schemas/ads-capability-asset-v0.1.schema.json"
+      - "examples/ads-capability-project-risk-triage-v0.1.json"
+      - "capabilities/**"
       - "requirements-dev.txt"
       - ".github/workflows/ads-context-prototype.yml"
   pull_request:
@@ -17,7 +20,7 @@ on:
       - ".github/workflows/ads-context-prototype.yml"
 
 jobs:
-  prototype-tests:
+  contract-and-prototype-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
