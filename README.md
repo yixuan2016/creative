@@ -81,11 +81,25 @@
 
 核心议题：ADS Context Plane、Agent Control Plane、Agent Execution Plane、Governance & Observability、Orchestrator、专业 Agent、任务契约、工具网关、动作风险分级、审批绑定、运行状态机、Trace、评测和分阶段实施。
 
+
+### 专题 07：企业 Agent 能力资产化与跨业务复用
+
+**企业 Agent 能力资产化、任务经验沉淀与跨业务复用机制研究**
+
+- [研究报告（Markdown）](docs/07-企业Agent能力资产化与跨业务复用机制研究.md)
+- [交互式 HTML 阅读版](docs/07-企业Agent能力资产化与跨业务复用机制研究.html)
+- [Capability Asset JSON Schema](schemas/ads-capability-asset-v0.1.schema.json)
+- [项目风险初筛能力样例](examples/ads-capability-project-risk-triage-v0.1.json)
+- [跨人跨岗位复用评估模板（CSV）](pilot/能力资产跨人跨岗位复用评估模板.csv)
+- [Capability Registry 目录与治理说明](capabilities/README.md)
+
+核心议题：Capability Asset、个人经验授权与抽象、Skill / Rule / Playbook / Workflow 边界、Capability Manifest、Registry、能力生命周期、P0—P5 跨人跨岗位复用验证、对照评测、迁移损失、能力运营和反馈治理。
+
 ## 研究主线
 
 本仓库的连续研究主线是：
 
-**多源工作感知 → 个人工作记忆 → 授权与语义映射 → 企业数智资产 → 企业工作上下文 → 统一数据模型与运行认知引擎 → 标准数据契约与上下文服务 → 企业 Agent 协同与持续改进。**
+**多源工作感知 → 个人工作记忆 → 授权与语义映射 → 企业数智资产 → 企业工作上下文 → 统一数据模型与运行认知引擎 → 标准数据契约与上下文服务 → 企业 Agent 协同 → 能力资产化与跨人跨岗位复用验证 → 企业能力持续改进。**
 
 其中，个人数智底座负责个人工作信息的自主沉淀；企业数智底座融合企业既有业务系统、知识和经授权的协同信息，并形成标准业务数据、运行上下文和能力资产；业务领域中心数智底座通过共同语义、联邦资产目录、授权协调和跨域治理提供支撑。工作上下文基础设施与运行认知引擎是企业数智底座内部的能力体系，不是新增的第四级底座，也不是员工持续监控系统。
 
@@ -96,6 +110,7 @@
 3. 使用一个真实项目交付流程开展只读试点。
 4. 建立人工确认、纠错、授权撤回和质量反馈闭环。
 5. 在第二个项目或团队中独立验证复用价值，再评估受控写回与规模化。
+6. 将经过授权和独立验证的任务方法沉淀为 Capability Asset，开展跨人员、跨团队、跨岗位的对照评测。
 
 ## 架构基线
 
