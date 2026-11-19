@@ -92,6 +92,7 @@
 - [项目风险初筛能力样例](examples/ads-capability-project-risk-triage-v0.1.json)
 - [跨人跨岗位复用评估模板（CSV）](pilot/能力资产跨人跨岗位复用评估模板.csv)
 - [Capability Registry 目录与治理说明](capabilities/README.md)
+- [Capability Manifest 合同测试](prototype/test_capability_asset_schema.py)
 
 核心议题：Capability Asset、个人经验授权与抽象、Skill / Rule / Playbook / Workflow 边界、Capability Manifest、Registry、能力生命周期、P0—P5 跨人跨岗位复用验证、对照评测、迁移损失、能力运营和反馈治理。
 
