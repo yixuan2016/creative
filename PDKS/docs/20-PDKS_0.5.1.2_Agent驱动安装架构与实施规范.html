@@ -1,0 +1,120 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDKS 0.5.1.2｜Agent 驱动安装</title><style>
+:root{--ink:#17243b;--muted:#66758d;--line:#dce4ef;--blue:#2859d8;--teal:#0e766e}*{box-sizing:border-box}body{margin:0;background:#f2f5fa;color:var(--ink);font:15px/1.85 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}header{padding:64px max(22px,calc((100vw - 1080px)/2));background:radial-gradient(circle at 82% 0,#427b9c 0,transparent 35%),linear-gradient(125deg,#111b31,#1e3e69 65%,#125b5a);color:white}.eyebrow{font-size:12px;letter-spacing:.18em;color:#b9d4ff;font-weight:800}header h1{font-size:clamp(34px,5vw,54px);line-height:1.16;max-width:900px;margin:16px 0}header p{color:#d8e6fa;font-size:18px;max-width:850px}.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.tag{border:1px solid #ffffff55;border-radius:24px;padding:4px 12px;font-size:12px}main{max-width:1080px;margin:auto;padding:30px 22px 72px}.warning{background:#fff7ed;border-left:4px solid #d97706;padding:16px 20px;border-radius:0 12px 12px 0;margin-bottom:18px;color:#754314}article{background:#fff;border:1px solid var(--line);border-radius:18px;padding:clamp(20px,4vw,38px);box-shadow:0 8px 30px #1c2c4508}h1,h2,h3{line-height:1.35}article h1{font-size:29px;margin-top:0}article h2{font-size:23px;margin-top:36px;border-bottom:1px solid var(--line);padding-bottom:9px}article h3{font-size:18px;color:#244f9c;margin-top:25px}p,li{color:#34445c}li{margin:5px 0}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;margin:15px 0;font-size:13px}th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}th{background:#eff4fb}tr:nth-child(even) td{background:#fafcff}pre{background:#111c2e;color:#dbeafe;padding:16px;border-radius:12px;overflow:auto;font:12px/1.7 ui-monospace,Consolas,monospace}code{background:#eef2f8;padding:2px 5px;border-radius:4px;font-size:.9em}pre code{background:transparent;padding:0}blockquote{border-left:3px solid #94a3b8;padding:10px 16px;background:#f7f9fc;color:var(--muted)}footer{max-width:1080px;margin:auto;padding:0 22px 30px;color:var(--muted);font-size:12px}@media(max-width:680px){header{padding-top:42px;padding-bottom:42px}article{padding:18px}}
+</style></head><body><header><div class="eyebrow">PDKS · PERSONAL CAPTURE RUNTIME · 0.5.1.2</div><h1>Agent 驱动安装架构与实施规范</h1><p>让 Codex、WorkBuddy 和其他本地 Agent 帮用户安装与维护 PDKS；Agent 执行，用户决策，数据权限始终单独确认。</p><div class="tags"><span class="tag">Bootstrap Engine 0.1.0</span><span class="tag">Setup Skill 0.1.0</span><span class="tag">Runtime 0.1.1</span><span class="tag">Experimental / Preview</span></div></header><main><div class="warning"><strong>重要限制：</strong>当前 Runtime 尚未提供静态数据加密。安装后默认不启用采集，仅适合合成数据或非敏感评估。真实敏感数据接入仍被禁止，直到加密和生产安全控制完成。</div><article><h1>PDKS 0.5.1.2：Agent 驱动安装架构与实施规范</h1>
+<blockquote>Bootstrap Engine 0.1.0 · Setup Skill 0.1.0 · Capture Runtime 0.1.1 · DWS Connector 0.1.0</blockquote>
+<p>&gt;</p>
+<blockquote>阶段：过渡阶段 Skill 研发（Experimental / Preview）。本版本不等于生产级 Personal AI Life OS。</blockquote>
+<h2>1. 产品决策</h2>
+<p>PDKS 安装从“用户手工安装软件”调整为“Agent 驱动、用户确认”的模式。Codex、WorkBuddy、Claude Code 和其他具备本地执行能力的 Agent 都可以扮演安装助手。</p>
+<p><strong>核心原则：Agent 执行，用户决策；一次确认只授权一个明确范围。</strong></p>
+<p>Agent 不是 PDKS 的宿主依赖。Agent 可以替用户安装和维护 PDKS，但个人数据始终保存在独立的 PDKS Runtime 中。</p>
+<h2>2. 分层架构</h2>
+<pre><code>flowchart TB
+  A[Codex / WorkBuddy / Claude Code / Other Agents]
+  B[PDKS Setup Skill 0.1.0]
+  C[PDKS Bootstrap Engine 0.1.0]
+  D[Consent &amp; Plan Hash Gate]
+  E[PDKS Capture Runtime 0.1.1]
+  F[Local SQLite + Vault]
+  G[DWS Connector 0.1.0]
+  H[PDKS Ontology 0.2.1]
+  A --&gt; B --&gt; C --&gt; D --&gt; E --&gt; F
+  E --&gt; G
+  E --&gt; H</code></pre>
+<ul><li>Setup Skill：描述 Agent 的安装工作流、确认策略和安全边界。</li>
+<li>Bootstrap Engine：执行环境检测、计划生成、用户级安装、初始化和健康检查。</li>
+<li>Agent Adapter：适配不同 Agent 的本地执行与确认能力；不假设所有 Agent 都有相同权限。</li>
+<li>Capture Runtime：安装后的个人数据运行时。</li>
+<li>DWS Connector：钉钉来源适配器；连接和采集授权另行确认。</li>
+</ul><h2>3. 用户体验目标</h2>
+<p>用户只需要告诉 Agent：“帮我安装 PDKS”。Agent 负责：</p>
+<ul><li>找到完整 PDKS 工程包。</li>
+<li>检测系统、Python、磁盘、已有安装和 DWS。</li>
+<li>生成安装计划并展示安装路径、依赖、网络访问和安全限制。</li>
+<li>等待用户确认确切计划。</li>
+<li>安装、初始化并验证。</li>
+<li>汇报真实结果和仍需用户授权的步骤。</li>
+</ul><p><strong>用户不需要手动创建数据库、配置 Ontology、填写 JSON 或理解 Runtime 内部结构。</strong></p>
+<h2>4. L0-L3 确认机制</h2>
+<div class="table-wrap"><table>
+<tr><th>级别</th><th>内容</th><th>确认要求</th></tr>
+<tr><td>L0</td><td>系统检测、版本检测、磁盘检测、安装计划</td><td>自动执行，只读</td></tr>
+<tr><td>L1</td><td>用户目录安装、虚拟环境、PyPI 依赖</td><td>展示精确计划，用户确认计划哈希</td></tr>
+<tr><td>L2</td><td>DWS 安装、钉钉 OAuth、Agent Skill 目录变更、后台服务</td><td>每个权限范围单独确认</td></tr>
+<tr><td>L3</td><td>聊天订阅、历史导入、删除、云备份、跨设备同步</td><td>每项单独确认，说明数据范围、目的地和可逆性</td></tr>
+</table></div>
+<p>低级别授权不自动包含高级别授权。批准 PDKS Runtime 安装不代表批准钉钉登录或读取聊天内容。</p>
+<h2>5. Bootstrap Engine 0.1.0</h2>
+<p>位置：<code>skills/pdks-setup/scripts/pdks_setup.py</code></p>
+<p>命令：</p>
+<pre><code># 只读检查
+python skills/pdks-setup/scripts/pdks_setup.py doctor
+
+# 生成确定性安装计划
+python skills/pdks-setup/scripts/pdks_setup.py plan
+
+# 用户确认计划哈希和未加密存储限制后安装
+python skills/pdks-setup/scripts/pdks_setup.py install \
+  --approve-plan &lt;EXACT_PLAN_SHA256&gt; \
+  --acknowledge-unencrypted-storage
+
+# 安装后健康检查
+python skills/pdks-setup/scripts/pdks_setup.py verify
+
+# 只生成卸载预览，不删除数据
+python skills/pdks-setup/scripts/pdks_setup.py uninstall-plan</code></pre>
+<h3>5.1 计划哈希</h3>
+<p>安装计划包含平台、Python 版本、Bundle 路径、安装路径、DWS 是否已检测到、安装动作、网络依赖和数据行为。Engine 对规范化 JSON 计算 SHA-256。安装时重新计算并比较；若计划发生变化，原批准失效，必须重新向用户展示并确认。</p>
+<p>计划哈希不是数字签名，也不能替代可信软件来源校验；它的作用是绑定用户批准的计划内容，防止 Agent 在用户批准后静默改变安装参数。</p>
+<h3>5.2 安装范围</h3>
+<ul><li>默认安装到当前用户目录，不需要管理员权限。</li>
+<li>拒绝写入当前用户 Home 目录之外。</li>
+<li>拒绝覆盖非空且没有 PDKS 安装标记的目录。</li>
+<li>Runtime 源码从当前完整 Bundle 复制，不执行远程 PDKS 安装脚本。</li>
+<li>在隔离 Python venv 中安装 `jsonschema&gt;=4.18,&lt;5`，只接受二进制 wheel。</li>
+<li>自动创建 SQLite、Vault、默认 Owner 和 `pdks-runtime` Launcher。</li>
+<li>默认不启用数据采集、不登录 DWS、不注册后台服务、不导入历史数据。</li>
+<li>外部依赖下载使用 PyPI；计划中明确展示网络访问。</li>
+</ul><h3>5.3 当前安全限制</h3>
+<p>Capture Runtime 0.1.1 的 SQLite 与 Vault 尚未加密。Bootstrap Engine 通过用户目录、目录权限和文件权限降低同机其他用户访问风险，但权限不等于加密。因此安装流程强制用户确认该限制，并明确只适合合成数据或非敏感评估数据。<strong>在加密与密钥管理完成前，不应采集真实企业聊天、审批、会议纪要或其他敏感个人数据。</strong></p>
+<h2>6. DWS 安装与授权边界</h2>
+<p>DWS 是独立的官方钉钉 CLI，不应与 PDKS Runtime 混装成一个不可区分的组件。</p>
+<ul><li>若已安装：只检测版本，不登录、不读取业务数据。</li>
+<li>若未安装：Agent 展示官方仓库、安装方式和可能影响（包括官方 DWS Skill 对 Agent 目录的写入），等待用户单独确认。</li>
+<li>DWS OAuth 登录由 DWS 官方流程完成；Agent 不读取或保存 Token。</li>
+<li>PDKS Consent、DWS 登录和企业管理员开通权限是三件不同的事。</li>
+<li>DWS Connector 真实事件投递仍需目标租户实测。</li>
+</ul><p>官方来源：&lt;https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli&gt;。</p>
+<h2>7. Agent 兼容标准</h2>
+<p>Agent 具备以下能力才可声明“本地自动安装支持”：</p>
+<ul><li>读取完整 Bundle 和 Setup Skill；</li>
+<li>在用户本机执行命令，而不是仅在云端沙箱执行；</li>
+<li>将安装计划和警告展示给用户；</li>
+<li>等待明确批准并传递精确计划哈希；</li>
+<li>返回实际安装和健康检查结果。</li>
+</ul><p>Codex、WorkBuddy、Claude Code 等具体宿主的本地执行权限、技能导入方式和审批机制可能不同。PDKS 不猜测宿主私有目录或权限；先检测，再按官方能力适配。无本地执行权限时退化为指导模式，不得宣称已安装。</p>
+<h2>8. 测试要求</h2>
+<p>新增 Setup Engine 测试覆盖：</p>
+<ul><li>计划哈希确定性；</li>
+<li>安装路径限制；</li>
+<li>Bundle 缺失拦截；</li>
+<li>非空目录保护；</li>
+<li>未批准计划哈希拦截；</li>
+<li>未确认未加密存储风险拦截；</li>
+<li>无 Shell 拼接执行；</li>
+<li>卸载仅提供非破坏性预览。</li>
+</ul><p>DWS 预检修复还需验证：</p>
+<ul><li>订阅前先检查 PDKS Consent；</li>
+<li>DWS 未登录、认证状态不确定、Token 无效、本地状态需修复或不可读时 fail-closed；</li>
+<li>Profile 不完全匹配或 Schema 不可读取时，不启动订阅。</li>
+</ul><h2>9. 尚未交付的能力</h2>
+<ul><li>原生签名 Windows MSI、macOS notarized PKG/DMG；</li>
+<li>嵌入式 Python；当前需要 Python 3.10+；</li>
+<li>自动安装 DWS 和完整 OAuth 授权向导；</li>
+<li>Codex / WorkBuddy 真实宿主环境逐一联调；</li>
+<li>后台守护、开机自启、断线恢复；</li>
+<li>Runtime 加密、密钥管理和生产级数据保护；</li>
+<li>历史分页回填、自动补漏；</li>
+<li>破坏性卸载、版本升级和数据迁移。</li>
+</ul><h2>10. 阶段结论</h2>
+<p>本版本交付了 Agent-neutral 的 Setup Skill、可执行 Bootstrap Engine、用户级安装计划与确认门禁，以及 DWS 预检 P0 修复。它可以在有 Python 3.10+ 的本地环境中安装实验性 Runtime；尚不是双击即装的商业安装器，也不能据此启用真实敏感数据采集。</p></article></main><footer>PDKS 0.5.1.2 · Agent-driven Installer Preview · 2026-11-19</footer></body></html>

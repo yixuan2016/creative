@@ -1,0 +1,83 @@
+{
+  "release": "PDKS 0.5.0 Personal Capture Runtime Architecture & Reference Implementation",
+  "runtime_track": "0.5.0",
+  "skill_version": "0.3.4",
+  "capture_runtime_version": "0.1.0",
+  "development_stage": "transitional_skill_development",
+  "maturity": "experimental",
+  "test_suites": {
+    "skill_regression": {
+      "total": 39,
+      "passed": 38,
+      "skipped": 1,
+      "failed": 0
+    },
+    "ads_personal_runtime_regression": {
+      "total": 33,
+      "passed": 32,
+      "skipped": 1,
+      "failed": 0
+    },
+    "personal_capture_runtime": {
+      "total": 26,
+      "passed": 26,
+      "skipped": 0,
+      "failed": 0
+    },
+    "aggregate": {
+      "total": 98,
+      "passed": 96,
+      "skipped": 2,
+      "failed": 0
+    }
+  },
+  "stage_validator": {
+    "passed": 12,
+    "total": 12,
+    "status": "valid"
+  },
+  "ontology": {
+    "status": "valid",
+    "version": "0.2.1",
+    "runtime_terms_referenced": 98,
+    "runtime_terms_declared": 98,
+    "legacy_bridged_terms": 71,
+    "legacy_baseline_terms": 71,
+    "relaxed_constraints_requiring_human_review": 14
+  },
+  "ontology_manifest": {
+    "status": "valid",
+    "files_verified": 8,
+    "files_declared": 8
+  },
+  "runtime_demo": {
+    "status": "passed",
+    "capture": "awaiting_agent",
+    "candidate": "needs_review",
+    "owner_approval": "accepted",
+    "bundle_integrity": "valid"
+  },
+  "cli_smoke": {
+    "status": "passed",
+    "manual_text_capture": "awaiting_agent"
+  },
+  "cross_agent_host_validation": {
+    "status": "not_executed",
+    "actual_hosts_tested": 0,
+    "note": "Multi-agent local API and scoped token contract are implemented, but no native ChatGPT/Claude/Codex/Cursor host adapter has been tested in this release."
+  },
+  "github_actions": {
+    "status": "not_executed_in_this_release_session"
+  },
+  "shacl": {
+    "status": "two_tests_skipped_locally",
+    "reason": "pySHACL is not installed in the local execution environment; CI workflow installs requirements-dev.txt."
+  },
+  "capability_boundaries": [
+    "Native DingTalk/WeChat/WeCom/Slack/email/calendar connectors are not implemented.",
+    "OCR, ASR, PDF, video, XLSX and PPTX deep extraction are not implemented.",
+    "Microphone, camera, location, desktop and wearable background capture are not implemented.",
+    "Remote/TLS API, secure relay, multi-device sync, production encryption and KMS are not implemented.",
+    "The Capture Runtime performs JSON Schema, owner, source, evidence and consent checks; it does not execute OWL reasoning or SHACL validation inside the runtime."
+  ]
+}

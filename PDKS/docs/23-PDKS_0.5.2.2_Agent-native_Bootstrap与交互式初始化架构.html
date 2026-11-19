@@ -1,0 +1,306 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDKS 0.5.2.2 — Agent-native Bootstrap 与交互式初始化架构</title><style>
+:root{--ink:#17243b;--line:#dce4ef;--bg:#f3f6fb}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.85 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}header{padding:52px max(22px,calc((100vw - 1080px)/2));background:radial-gradient(circle at 88% 8%,#4c86ad 0,transparent 34%),linear-gradient(125deg,#111b31,#1d3e68 62%,#12615e);color:white}.kicker{font-size:11px;letter-spacing:.2em;color:#bdd8f3;font-weight:800}header h1{font-size:clamp(28px,4.6vw,48px);line-height:1.2;max-width:940px;margin:18px 0}header p{font-size:16px;color:#dbe8f7;max-width:900px}main{max-width:1080px;margin:auto;padding:28px 20px 70px}article{background:white;border:1px solid var(--line);border-radius:18px;padding:clamp(20px,4vw,40px);box-shadow:0 8px 30px #1c2c4508}h2{font-size:23px;margin-top:38px;padding-bottom:9px;border-bottom:1px solid var(--line)}h3{font-size:18px;color:#2859a2;margin-top:25px}p,li{color:#35465e}table{border-collapse:collapse;width:100%;font-size:13px;margin:16px 0}th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f0f4fa}tr:nth-child(even) td{background:#fbfcfe}pre{background:#111c2e;color:#dce9f7;border-radius:12px;padding:17px;overflow:auto;font:12px/1.7 ui-monospace,Consolas,monospace}code{font-family:ui-monospace,Consolas,monospace;background:#eef2f8;padding:2px 5px;border-radius:5px}pre code{background:transparent;padding:0;color:inherit}blockquote{margin:15px 0;padding:12px 16px;border-left:3px solid #5281d7;background:#f4f7fc;color:#5a6c84}</style></head><body><header><div class="kicker">PDKS · AGENT-NATIVE · 0.5.2.2</div><h1>PDKS 0.5.2.2 — Agent-native Bootstrap 与交互式初始化架构</h1><p>在不同 AI Agent 中完成个人数智底座的初始化、配置和验证，同时保持数据主权与明确授权。</p></header><main><article><h1>PDKS 0.5.2.2 — Agent-native Bootstrap 与交互式初始化架构</h1>
+<blockquote>
+<p>版本：Agent Bridge 0.1.0 / Python Bootstrap Engine 0.2.0<br />
+研发阶段：<code>transitional_skill_development</code><br />
+成熟度：Experimental / Preview<br />
+基线：PDKS Standard 0.1.0、Record Schema 0.1.x、Ontology 0.2.1、Event Taxonomy 0.1.0、Personal Knowledge Skill 0.3.4 均不变。</p>
+</blockquote>
+<h2>1. 决策摘要</h2>
+<p>PDKS 初始化不应再以 CLI 为普通用户的主要入口。CLI 保留为开发者、自动化和故障排查接口；普通用户优先在具备本地 MCP 能力的 Agent 中，通过自然语言、MCP 工具和可选的交互式面板完成初始化。</p>
+<p>本版本采用：</p>
+<ul>
+<li><strong>Node.js Agent Bridge</strong>：跨平台本地入口，负责工具暴露、参数校验、路径安全和调用既有 Bootstrap Engine。</li>
+<li><strong>MCP</strong>：Agent 与 PDKS 本地服务之间的标准工具协议。</li>
+<li><strong>MCP Apps</strong>：在支持的宿主中提供路径选择、环境检查、计划审阅和确认面板。</li>
+<li><strong>Agent Skill</strong>：教 Agent 如何安全地调用上述工具；不代替运行时和权限控制。</li>
+<li><strong>现有 Python Bootstrap Engine</strong>：继续执行 Capture Runtime 安装，避免在本版本重写现有 Runtime。</li>
+<li><strong>File-first Vault</strong>：安装后在用户可见目录初始化 Markdown / JSONL / 附件结构，并种入 Ontology 0.2.1 文件。</li>
+</ul>
+<p>本版本不是原生 Node.js Runtime，也不是最终 PDKS 或 Personal Assistant OS。</p>
+<h2>2. 目标用户体验</h2>
+<p>用户在任一支持本地 MCP STDIO 的 Agent 中说：“帮我初始化 PDKS。”</p>
+<p>预期流程：</p>
+<ol>
+<li>Agent 调用 <code>pdks_doctor</code>，只读检查环境和路径。</li>
+<li>Agent 调用 <code>pdks_bootstrap_plan</code>，生成绑定安装路径、Vault 路径和环境信息的确定性计划。</li>
+<li>若宿主支持 MCP Apps，Agent 打开 <code>pdks_setup_wizard</code>，展示表单式配置面板；不支持时，Agent 以普通对话逐项展示相同信息。</li>
+<li>用户查看安装目录、知识库目录、依赖下载、安装动作和未加密风险。</li>
+<li>用户输入 <code>CONFIRM INSTALL PDKS</code> 或点击面板确认，并勾选未加密风险知情项。</li>
+<li>Agent 调用 <code>pdks_bootstrap_apply</code>，服务端重新计算计划哈希并验证确认信息。</li>
+<li>Agent 调用 <code>pdks_verify</code>，报告实际验收结果。</li>
+</ol>
+<p>默认不连接数据源、不登录钉钉、不订阅事件、不导入历史数据、不启用后台服务、不启用云同步。</p>
+<h2>3. 架构</h2>
+<pre><code class="language-mermaid">flowchart TD
+    U[用户自然语言 / 表单交互] --&gt; A[Agent Host]
+    A --&gt; S[PDKS Setup Skill]
+    A --&gt; M[MCP STDIO]
+    M --&gt; B[Node.js Agent Bridge]
+    B --&gt; G[Approval Gate + Path Guard]
+    G --&gt; P[Python Bootstrap Engine 0.2.0]
+    P --&gt; R[Capture Runtime 0.1.1]
+    P --&gt; V[User-owned PDKS Vault]
+    V --&gt; O[Ontology 0.2.1 assets]
+    V --&gt; F[Markdown / JSONL / SHA-256 attachments]
+</code></pre>
+<p>职责边界：</p>
+<table>
+<thead>
+<tr>
+  <th>层</th>
+  <th>职责</th>
+  <th>不负责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Agent Skill</td>
+  <td>交互步骤、用户说明、权限提醒、工具选择</td>
+  <td>直接写数据库、绕过确认</td>
+</tr>
+<tr>
+  <td>MCP Server</td>
+  <td>标准工具接口、输入校验、工具描述</td>
+  <td>自动获得用户授权</td>
+</tr>
+<tr>
+  <td>MCP Apps</td>
+  <td>路径表单、计划预览、确认 UI</td>
+  <td>作为安全边界或凭据保险箱</td>
+</tr>
+<tr>
+  <td>Node Bootstrap</td>
+  <td>环境探测、路径约束、哈希确认、进程编排</td>
+  <td>重写全部 Capture Runtime</td>
+</tr>
+<tr>
+  <td>Python Bootstrap</td>
+  <td>建 venv、安装 Runtime、初始化 SQLite 和 Vault</td>
+  <td>自动采集或接入数据源</td>
+</tr>
+<tr>
+  <td>Runtime / Vault</td>
+  <td>采集数据治理、来源证据、文件资产</td>
+  <td>由 Skill 直接操作</td>
+</tr>
+</tbody>
+</table>
+<h2>4. MCP 工具契约</h2>
+<table>
+<thead>
+<tr>
+  <th>工具</th>
+  <th>读写</th>
+  <th>输入重点</th>
+  <th>约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>pdks_doctor</code></td>
+  <td>只读</td>
+  <td>installRoot / vaultRoot</td>
+  <td>不安装、不写数据</td>
+</tr>
+<tr>
+  <td><code>pdks_bootstrap_plan</code></td>
+  <td>只读</td>
+  <td>installRoot / vaultRoot</td>
+  <td>返回确定性 <code>plan_sha256</code></td>
+</tr>
+<tr>
+  <td><code>pdks_bootstrap_apply</code></td>
+  <td>写入</td>
+  <td>plan hash、确认短语、风险确认</td>
+  <td>唯一安装写操作；服务端重算计划</td>
+</tr>
+<tr>
+  <td><code>pdks_verify</code></td>
+  <td>只读</td>
+  <td>installRoot / vaultRoot</td>
+  <td>报告实际检查</td>
+</tr>
+<tr>
+  <td><code>pdks_vault_status</code></td>
+  <td>只读</td>
+  <td>vaultRoot</td>
+  <td>只读 manifest 元数据，不读取笔记内容</td>
+</tr>
+<tr>
+  <td><code>pdks_agent_config_preview</code></td>
+  <td>只读</td>
+  <td>host 类型</td>
+  <td>只输出配置片段，不修改 Agent 配置</td>
+</tr>
+<tr>
+  <td><code>pdks_setup_wizard</code></td>
+  <td>只读入口</td>
+  <td>可选路径</td>
+  <td>MCP Apps UI；宿主不支持时用文本工具替代</td>
+</tr>
+</tbody>
+</table>
+<p>未来可增加来源连接、迁移和权限管理工具，但必须各自建立独立授权与审计流程，不应把这些操作隐含在初始化工具中。</p>
+<h2>5. 交互模式</h2>
+<h3>5.1 MCP Apps 面板</h3>
+<p>MCP Apps 采用 Tool + UI Resource 模式：工具通过 UI metadata 关联 <code>ui://pdks/setup-wizard.html</code>，宿主在支持该扩展时渲染沙箱化界面。面板提供：</p>
+<ul>
+<li>安装路径和 Vault 路径输入；</li>
+<li>环境检查与结果状态；</li>
+<li>安装计划动作清单和网络依赖；</li>
+<li>计划哈希展开查看；</li>
+<li>未加密风险确认；</li>
+<li>必须完整输入的确认短语；</li>
+<li>安装结果和验证状态。</li>
+</ul>
+<p>MCP Apps 是可选增强，不是协议基础能力。宿主不支持时，Agent 仍然可以用 <code>pdks_doctor</code>、<code>pdks_bootstrap_plan</code>、<code>pdks_bootstrap_apply</code> 完成流程。</p>
+<h3>5.2 MCP Elicitation 与对话式回退</h3>
+<p>当宿主声明 MCP Elicitation 能力、且 Agent 没有随工具调用提供确认参数时，服务端可通过标准 Elicitation 表单请求确认短语和未加密风险知情项。表单只收集非敏感确认，不收集密码或 Token。</p>
+<p>如果宿主不支持 Elicitation，Agent 应展示同一份计划，并要求用户明确回复/输入确认短语。不能把“帮我安装”视为对未加密风险的知情同意。</p>
+<h3>5.3 CLI 回退</h3>
+<p>保留 <code>pdks-agent doctor|plan|apply|verify|config|mcp</code> 以及原有 <code>pdks-runtime</code> 命令。CLI 与 MCP 复用相同的 Python Bootstrap Engine，避免双重业务逻辑。</p>
+<h2>6. 安全和确认模型</h2>
+<h3>6.1 只读与写操作</h3>
+<ul>
+<li>只读：doctor、plan、verify、Vault status、Agent config preview。</li>
+<li>写操作：apply。</li>
+<li>apply 必须具备：当前计划 SHA-256、精确确认短语 <code>CONFIRM INSTALL PDKS</code>、<code>acknowledgeUnencryptedStorage=true</code>。</li>
+<li>安装路径和 Vault 路径必须位于当前用户 Home 内。</li>
+<li>非空且无 PDKS 标识的目录一律拒绝，不覆盖用户文件。</li>
+<li>现有 PDKS Vault 的用户配置和本体文件不会被默认文件覆盖；仅补齐不存在的初始资产。</li>
+<li>不请求管理员权限，不注册后台服务。</li>
+</ul>
+<h3>6.2 凭据</h3>
+<p>MCP 表单和普通对话不允许收集密码、OAuth Token、API Key 或支付凭据。未来连接第三方来源时，应使用来源方授权流程、URL Elicitation 或宿主自己的安全授权机制。</p>
+<h3>6.3 本地与云端</h3>
+<p>当前 Bridge 只提供本地 STDIO 入口。云端 Agent 不能凭空访问用户本机目录；必须存在经用户明确配置的本地执行桥。当前版本不实现远程 Relay、TLS 网关或云端文件上传。</p>
+<h3>6.4 当前存储风险</h3>
+<p>Capture Runtime 0.1.1 的 SQLite 和本地文件尚未提供静态加密。即使安装流程完成，也只适合合成或非敏感测试数据。不能因为使用 MCP 或 Node.js 就宣称数据已加密。</p>
+<h2>7. 安装后的目录与文件</h2>
+<p>安装时生成：</p>
+<pre><code class="language-text">PDKS-Vault/
+├── README.md
+├── PDKS-MANIFEST.json
+├── 00-Inbox/ ... 95-Archive/
+├── 90-Source-Records/
+├── assets/sha256/
+└── .pdks/
+    ├── config/runtime.json
+    ├── ontology/0.2.1/        # 从 Skill 包复制的版本化本体资产
+    ├── schemas/
+    ├── index/                # 可重建索引
+    ├── audit/
+    └── conflicts/
+</code></pre>
+<p><code>.pdks/config/runtime.json</code> 标记当前 Standard、Schema、Ontology、Taxonomy 版本，并明确 <code>default_capture_enabled=false</code>、<code>cloud_sync_enabled=false</code> 和 <code>sensitive_data_allowed=false</code>。</p>
+<p>运行时 SQLite 和 blob store 仍由现有 Capture Runtime 保存。Vault 是面向用户查看和迁移的 File-first 资产层；本版本没有完成所有采集时双写、完整操作状态重建和双向同步。</p>
+<h2>8. Node.js 技术选型</h2>
+<ul>
+<li>Node.js 22.12+：满足当前 MCP Apps SDK 的 Node.js 运行要求。</li>
+<li><code>@modelcontextprotocol/server</code> 2.x：官方 TypeScript/JavaScript Server SDK，提供 STDIO、Tools、Resources 和新协议兼容。</li>
+<li><code>@modelcontextprotocol/ext-apps</code> 2.x：官方 MCP Apps 工具与 UI Resource 注册助手。</li>
+<li><code>zod</code> 4.x：工具输入结构校验。</li>
+<li>Vite + vite-plugin-singlefile：将初始化面板构建为单 HTML 资源。</li>
+</ul>
+<p>官方 SDK v2 支持 Node.js/Bun/Deno，并提供 MCP Server 与 Client 包；MCP Apps 通过 Tool + UI Resource 将界面嵌入支持的 Agent Host。参考：</p>
+<ul>
+<li>https://github.com/modelcontextprotocol/typescript-sdk</li>
+<li>https://ts.sdk.modelcontextprotocol.io/v2/</li>
+<li>https://github.com/modelcontextprotocol/ext-apps</li>
+<li>https://apps.extensions.modelcontextprotocol.io/api/</li>
+</ul>
+<h2>9. 当前已实现与未实现</h2>
+<table>
+<thead>
+<tr>
+  <th>能力</th>
+  <th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Node.js Agent Bridge 目录和 CLI</td>
+  <td>已实现源码</td>
+</tr>
+<tr>
+  <td>Node 环境与 Python 版本探测</td>
+  <td>已实现并通过本机测试</td>
+</tr>
+<tr>
+  <td>跨平台默认安装路径</td>
+  <td>已实现并通过 Node 单元测试</td>
+</tr>
+<tr>
+  <td>Home 路径安全检查</td>
+  <td>已实现并通过 Node 单元测试</td>
+</tr>
+<tr>
+  <td>安装计划和哈希确认</td>
+  <td>复用 Python Bootstrap Engine，已通过测试</td>
+</tr>
+<tr>
+  <td>MCP Tool Server</td>
+  <td>已实现源码，依赖安装和真实协议联调待执行</td>
+</tr>
+<tr>
+  <td>MCP Apps UI 源码</td>
+  <td>已实现，需 npm install + npm run build</td>
+</tr>
+<tr>
+  <td>Agent 配置片段输出</td>
+  <td>已实现，不自动修改宿主配置</td>
+</tr>
+<tr>
+  <td>File-first Vault 初始化</td>
+  <td>已接入 Python Bootstrap，初始化函数可独立测试</td>
+</tr>
+<tr>
+  <td>Ontology 0.2.1 文件种入</td>
+  <td>已实现，只补齐缺失文件</td>
+</tr>
+<tr>
+  <td>自动安装 Python</td>
+  <td>未实现</td>
+</tr>
+<tr>
+  <td>Node-native Capture Runtime</td>
+  <td>未实现</td>
+</tr>
+<tr>
+  <td>MCP Apps 多宿主实测</td>
+  <td>未执行</td>
+</tr>
+<tr>
+  <td>ChatGPT / Claude / Cursor / Codex / WorkBuddy 端到端实测</td>
+  <td>未执行</td>
+</tr>
+<tr>
+  <td>数据加密、Keychain、远程 Relay</td>
+  <td>未实现</td>
+</tr>
+</tbody>
+</table>
+<h2>10. 本轮验收方式</h2>
+<ol>
+<li><code>node --check</code> 检查 Agent Bridge JavaScript 文件语法。</li>
+<li><code>node --test agent-native/tests/core.test.js</code> 验证跨平台路径、路径安全、确认门禁和 MCP 配置预览。</li>
+<li><code>python -m unittest discover -s tests -p test_pdks_setup_engine.py -v</code> 验证安装计划、路径拒绝、确认门禁、Vault 初始化和用户文件保护。</li>
+<li><code>node agent-native/bin/pdks-agent.js doctor</code> 检查实际环境。</li>
+<li><code>node agent-native/bin/pdks-agent.js plan</code> 检查实际计划。</li>
+<li>安装 npm 依赖后 <code>npm run build</code>，再以 MCP Inspector 或实际 Agent Host 测试 <code>tools/list</code>、<code>pdks_setup_wizard</code>、<code>pdks_bootstrap_plan</code> 和 apply 确认。</li>
+<li>使用临时目录完成一次真实安装和 <code>pdks_verify</code>，不得在用户现有目录上做未经授权的试装。</li>
+</ol>
+<h2>11. 下一阶段</h2>
+<p>PDKS 0.5.2.3 建议推进：</p>
+<ol>
+<li>将 Python Bootstrap Engine 的安装、路径和状态契约逐步移入 Node 核心；</li>
+<li>提供签名校验的托管 Python 运行时或迁移 Capture Runtime 到 Node；</li>
+<li>完成 MCP Apps 构建与 MCP Inspector 自动化测试；</li>
+<li>为 Claude Desktop、Cursor、Codex、WorkBuddy 建立实际版本兼容测试矩阵；</li>
+<li>增加 Agent 配置的 Plan / Apply 两阶段流程，但默认只输出配置片段；</li>
+<li>先实现本地加密、密钥管理和恢复，再开放敏感真实数据采集；</li>
+<li>在安全门禁通过后，逐步接入 DWS、日历、邮件、文件和其他工作/生活来源。</li>
+</ol>
+<p>最终原则不变：File-first、Ontology-driven、Agent-native、Local-first；Agent 只是入口，用户拥有数据，权限与审计由 PDKS Runtime 强制执行。</p>
+</article></main></body></html>

@@ -1,0 +1,67 @@
+{
+  "mapping_version": "0.1.0",
+  "source_record_standard": "PDKS JSON Record Schema 0.1",
+  "target_ontology": "urn:pdks:ontology:0.1",
+  "notes": [
+    "映射文件定义 JSON 记录到语义图的转换规则；不要求业务数据库直接使用 RDF 存储。",
+    "所有引用字段必须解析为稳定 IRI；未解析的实体不得被自动合并。",
+    "event_type 代码通过 taxonomy 文件查找对应 SKOS Concept IRI。",
+    "时间字段应映射为 OWL-Time Instant/Interval；同时保留原始时间精度和时区。",
+    "简单关系可作为 RDF 边；需要独立证据、状态、置信度或有效期时使用 QualifiedRelationship。"
+  ],
+  "object_type_map": {
+    "entity": "pdks:DomainEntity (then refine by payload.entity_type)",
+    "source_asset": "pdks:SourceAsset",
+    "evidence_segment": "pdks:EvidenceSegment",
+    "event": "pdks:Event",
+    "assertion": "pdks:Assertion",
+    "knowledge_asset": "pdks:KnowledgeAsset",
+    "personal_context": "pdks:PersonalContextStatement",
+    "action": "pdks:ActionSpecification",
+    "relationship": "pdks:QualifiedRelationship"
+  },
+  "entity_subtype_map": {
+    "person": "pdks:Person",
+    "organization": "pdks:Organization",
+    "project": "pdks:Project",
+    "place": "pdks:Place",
+    "topic": "pdks:Topic",
+    "tool": "pdks:Tool",
+    "goal": "pdks:Goal"
+  },
+  "field_map": {
+    "object_id": "RDF subject IRI",
+    "object_type": "rdf:type via object_type_map",
+    "owner_ref": "pdks:ownedBy (application governance extension; do not infer from created_by)",
+    "domains": "pdks:hasDomain -> SKOS Concept",
+    "provenance.created_by": "prov:wasAttributedTo",
+    "provenance.source_refs": "prov:wasDerivedFrom or explicit source-use activity, depending on capture semantics",
+    "provenance.processing_activity_ref": "prov:wasGeneratedBy",
+    "payload.canonical_name": "pdks:canonicalName",
+    "payload.source_locator": "pdks:sourceLocator",
+    "payload.captured_at": "pdks:capturedAt",
+    "payload.source_ref": "pdks:extractedFrom",
+    "payload.event_type": "pdks:hasEventType -> lookup SKOS Concept IRI by event code",
+    "payload.description": "pdks:description",
+    "payload.start_at + payload.end_at": "pdks:occurredDuring -> time:Interval with time:hasBeginning and time:hasEnd",
+    "payload.participants[].entity_ref": "pdks:hasParticipant",
+    "payload.context_refs": "pdks:hasContextEntity",
+    "payload.evidence_refs": "pdks:hasEvidence",
+    "payload.asserted_by_ref": "pdks:assertedBy",
+    "payload.epistemic_status": "pdks:hasEpistemicStatus -> controlled SKOS Concept",
+    "payload.derived_from_refs": "pdks:derivedFrom",
+    "payload.subject_ref": "pdks:hasSubject",
+    "payload.assignee_ref": "pdks:assignedTo",
+    "payload.due_at": "pdks:hasDueTime -> time:Instant",
+    "payload.completion_event_ref": "reverse link from Event using pdks:realizesAction",
+    "governance.sensitivity": "pdks:hasSensitivity -> controlled SKOS Concept",
+    "governance.access_scope": "pdks:hasAccessScope -> controlled SKOS Concept"
+  },
+  "semantic_cautions": [
+    "不要把创建时间、采集时间、事件发生时间和知识有效时间混为一谈。",
+    "asserted_by_ref 是观点或主张的表达者，不等同于记录创建者或 AI 处理者。",
+    "AI 推断的个人上下文必须保留证据和推断状态，不能直接升级为本人确认事实。",
+    "owl:sameAs 只用于身份已确认且语义完全相同的资源；候选匹配使用 possibleIdentityMatch。",
+    "event_type 是 SKOS 概念引用，不建议为每个事件代码都创建一个 OWL Class。"
+  ]
+}

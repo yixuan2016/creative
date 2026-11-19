@@ -1,0 +1,42 @@
+@prefix pdks: <urn:pdks:ontology#> .
+@prefix pdksv: <urn:pdks:vocabulary:0.2#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+pdks:EventShape a sh:NodeShape ; sh:targetClass pdks:Event ;
+  sh:property [ sh:path pdks:hasEventType ; sh:minCount 1 ; sh:maxCount 1 ; sh:class skos:Concept ; sh:message "事件必须且只能有一个事件类型概念。"@zh ] ;
+  sh:property [ sh:path pdks:description ; sh:minCount 1 ; sh:datatype xsd:string ; sh:message "事件必须保留描述。"@zh ] ;
+  sh:property [ sh:path pdks:occurredDuring ; sh:maxCount 1 ; sh:class time:TemporalEntity ] ;
+  sh:property [ sh:path pdks:ownedBy ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+pdks:AssertionShape a sh:NodeShape ; sh:targetClass pdks:Assertion ;
+  sh:property [ sh:path pdks:content ; sh:minCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path pdks:assertedBy ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path pdks:hasEpistemicStatus ; sh:minCount 1 ; sh:maxCount 1 ; sh:class skos:Concept ] ;
+  sh:property [ sh:path pdks:ownedBy ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+pdks:EvidenceSegmentShape a sh:NodeShape ; sh:targetClass pdks:EvidenceSegment ;
+  sh:property [ sh:path pdks:extractedFrom ; sh:minCount 1 ; sh:maxCount 1 ; sh:class pdks:SourceAsset ] .
+
+pdks:PersonalContextShape a sh:NodeShape ; sh:targetClass pdks:PersonalContextStatement ;
+  sh:property [ sh:path pdks:hasSubject ; sh:minCount 1 ; sh:maxCount 1 ; sh:class pdks:Person ] ;
+  sh:property [ sh:path pdks:hasContextType ; sh:minCount 1 ; sh:maxCount 1 ; sh:class skos:Concept ] ;
+  sh:property [ sh:path pdks:verificationStatus ; sh:minCount 1 ; sh:datatype xsd:string ] .
+
+pdks:ActionSpecificationShape a sh:NodeShape ; sh:targetClass pdks:ActionSpecification ;
+  sh:property [ sh:path pdks:title ; sh:minCount 1 ; sh:datatype xsd:string ] .
+
+pdks:SourceAssetShape a sh:NodeShape ; sh:targetClass pdks:SourceAsset ;
+  sh:property [ sh:path pdks:sourceLocator ; sh:minCount 1 ; sh:datatype xsd:string ] .
+
+pdks:QualifiedRelationshipShape a sh:NodeShape ; sh:targetClass pdks:QualifiedRelationship ;
+  sh:property [ sh:path pdks:relationshipSubject ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path pdks:relationshipObject ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path pdks:relationshipPredicate ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+pdks:PersonalDataRecordShape a sh:NodeShape ; sh:targetClass pdks:PersonalDataRecord ;
+  sh:property [ sh:path pdks:ownedBy ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path pdks:hasSensitivity ; sh:minCount 1 ; sh:maxCount 1 ; sh:class skos:Concept ] ;
+  sh:property [ sh:path pdks:hasAccessScope ; sh:minCount 1 ; sh:maxCount 1 ; sh:class skos:Concept ] .

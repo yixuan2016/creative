@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pdks-capture-runtime"
+version = "0.1.1"
+description = "Experimental local reference implementation of the PDKS Personal Capture Runtime"
+requires-python = ">=3.10"
+dependencies = ["jsonschema>=4.18,<5"]
+
+[project.scripts]
+pdks-runtime = "pdks_capture_runtime.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pdks_capture_runtime*"]
+
+[tool.setuptools.package-data]
+pdks_capture_runtime = ["assets/*.json", "source-registry.json"]

@@ -1,0 +1,34 @@
+{
+  "case_id": "C02-chat-explicit-commitment",
+  "title": "聊天记录中的明确承诺",
+  "scenario": "chat",
+  "input_text": "项目群：王敏：接口文档我来整理，明天下午三点前发到群里。赵磊：收到，我负责安排评审。随后有人回复：辛苦。",
+  "expected_record_types": [
+    "action",
+    "assertion"
+  ],
+  "required_terms": [
+    "接口文档",
+    "王敏",
+    "评审"
+  ],
+  "forbidden_terms": [
+    "赵磊负责整理接口文档"
+  ],
+  "checks": {
+    "require_source_refs": true,
+    "require_owner_only": true,
+    "require_uncertainty": false,
+    "forbid_same_as": false,
+    "no_completed_action_from_plan": true
+  },
+  "review_focus": [
+    "是否区分王敏与赵磊的责任",
+    "是否将承诺作为待办而非完成事件",
+    "相对时间是否按输入日期条件处理，不能擅自补绝对日期"
+  ],
+  "critical_failures": [
+    "责任人错配",
+    "将未来承诺标记为已完成"
+  ]
+}

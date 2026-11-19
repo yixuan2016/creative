@@ -1,0 +1,40 @@
+{
+  "owner_ref": "urn:pdks:example:voice-meeting:entity:person:owner-001",
+  "purpose": "personal_planning",
+  "memories": [
+    {
+      "memory_id": "pmem-pdks-00283f44ec691ac91525",
+      "memory_type": "project_context",
+      "statement": "持续研究个人数据采集、知识沉淀与个人数智底座。",
+      "assertion_status": "candidate",
+      "confidence": 0.6,
+      "source_event_refs": [
+        "pevt-pdks-399319700773a74b0e76"
+      ]
+    },
+    {
+      "memory_id": "pmem-pdks-ac9e0982383dc8469068",
+      "memory_type": "semantic",
+      "statement": "语音产品的价值不应止于录音，而应支持工作事件的持续采集与理解。",
+      "assertion_status": "candidate",
+      "confidence": 0.5,
+      "source_event_refs": [
+        "pevt-pdks-399319700773a74b0e76"
+      ]
+    }
+  ],
+  "intents": [
+    {
+      "intent_id": "pintent-pdks-a65e6e1fb80f5d4814a1",
+      "intent_type": "task",
+      "title": "研究语音采集产品接入标准",
+      "status": "proposed",
+      "confirmation_status": "inferred_candidate",
+      "due_at": "2026-11-25T18:00:00+08:00",
+      "source_event_refs": [
+        "pevt-pdks-399319700773a74b0e76"
+      ]
+    }
+  ],
+  "store_revision": 1
+}

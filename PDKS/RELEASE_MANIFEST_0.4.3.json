@@ -1,0 +1,26 @@
+{
+  "release": "PDKS 0.4.3 Cross-Agent Skill Validation Edition",
+  "runtime_track": "0.4.3",
+  "skill_version": "0.3.3",
+  "stage": "transitional_skill_development",
+  "maturity": "experimental",
+  "ontology": "0.2.1",
+  "benchmark_cases": 12,
+  "cross_host_status": "protocol_prepared_not_executed",
+  "skill_files_count": 128,
+  "deliverables": [
+    "docs/16-PDKS_0.4.3_跨Agent_Skill可用性与工作流验证.md",
+    "docs/16-PDKS_0.4.3_跨Agent_Skill可用性与工作流验证.html",
+    "docs/16-PDKS_0.4.3_跨Agent_Skill可用性与工作流验证.docx",
+    "skills/pdks-personal-knowledge/benchmarks/benchmark-manifest.json",
+    "skills/pdks-personal-knowledge/benchmarks/EVALUATION_RUBRIC.md",
+    "skills/pdks-personal-knowledge/benchmarks/CROSS_AGENT_TEST_PROTOCOL.md",
+    "skills/pdks-personal-knowledge/benchmarks/OUTPUT_CONTRACT.md",
+    "skills/pdks-personal-knowledge/scripts/evaluate_benchmark.py",
+    "skills/pdks-personal-knowledge/benchmarks/BENCHMARK_RUNNER_GUIDE.md",
+    "skills/pdks-personal-knowledge/benchmarks/run-results-template.csv",
+    "skills/pdks-personal-knowledge/benchmarks/review-scorecard-template.csv",
+    "reports/CROSS_AGENT_VALIDATION_STATUS_0.4.3.md",
+    "reports/CROSS_AGENT_VALIDATION_STATUS_0.4.3.json"
+  ]
+}

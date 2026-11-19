@@ -1,0 +1,38 @@
+@prefix pdks: <urn:pdks:ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:pdks:ontology:governance:0.2> a owl:Ontology ;
+  owl:versionInfo "0.2.0" ;
+  owl:imports <urn:pdks:ontology:0.2> ;
+  rdfs:label "PDKS Governance Ontology 0.2"@en, "PDKS 数据治理本体 0.2"@zh .
+
+pdks:ConsentRecord a owl:Class ; rdfs:subClassOf pdks:InformationObject ; rdfs:label "授权记录"@zh .
+pdks:AccessGrant a owl:Class ; rdfs:subClassOf pdks:InformationObject ; rdfs:label "访问授权"@zh .
+pdks:RetentionPolicy a owl:Class ; rdfs:subClassOf pdks:InformationObject ; rdfs:label "数据保留策略"@zh .
+pdks:DeletionRequest a owl:Class ; rdfs:subClassOf pdks:InformationObject ; rdfs:label "删除请求"@zh .
+pdks:ProcessingPurpose a owl:Class ; rdfs:subClassOf pdks:DomainEntity ; rdfs:label "处理目的"@zh .
+pdks:SourceConnector a owl:Class ; rdfs:subClassOf pdks:SoftwareAgent ; rdfs:label "来源连接器"@zh .
+
+pdks:hasConsent a owl:ObjectProperty ; rdfs:range pdks:ConsentRecord ; rdfs:label "依据授权记录"@zh .
+pdks:consentGivenBy a owl:ObjectProperty ; rdfs:domain pdks:ConsentRecord ; rdfs:range pdks:Person ; rdfs:label "授权人"@zh .
+pdks:consentForPurpose a owl:ObjectProperty ; rdfs:domain pdks:ConsentRecord ; rdfs:range pdks:ProcessingPurpose ; rdfs:label "授权处理目的"@zh .
+pdks:consentEvidence a owl:ObjectProperty ; rdfs:domain pdks:ConsentRecord ; rdfs:range pdks:EvidenceSegment ; rdfs:label "授权证据"@zh .
+pdks:requestedBy a owl:ObjectProperty ; rdfs:domain pdks:DeletionRequest ; rdfs:range pdks:Person ; rdfs:label "删除请求人"@zh .
+pdks:hasRetentionPolicy a owl:ObjectProperty ; rdfs:range pdks:RetentionPolicy ; rdfs:label "适用保留策略"@zh .
+pdks:hasProcessingPurpose a owl:ObjectProperty ; rdfs:range pdks:ProcessingPurpose ; rdfs:label "处理目的"@zh .
+pdks:hasDataSubject a owl:ObjectProperty ; rdfs:range pdks:Person ; rdfs:label "数据主体"@zh .
+pdks:capturedBy a owl:ObjectProperty ; rdfs:domain pdks:SourceAsset ; rdfs:range pdks:SourceConnector ; rdfs:label "采集连接器"@zh .
+pdks:hasAccessGrant a owl:ObjectProperty ; rdfs:range pdks:AccessGrant ; rdfs:label "访问授权"@zh .
+
+pdks:consentStatus a owl:DatatypeProperty ; rdfs:domain pdks:ConsentRecord ; rdfs:range xsd:string ; rdfs:label "授权状态"@zh .
+pdks:consentGrantedAt a owl:DatatypeProperty ; rdfs:domain pdks:ConsentRecord ; rdfs:range xsd:dateTimeStamp ; rdfs:label "授权时间"@zh .
+pdks:consentRevokedAt a owl:DatatypeProperty ; rdfs:domain pdks:ConsentRecord ; rdfs:range xsd:dateTimeStamp ; rdfs:label "撤回时间"@zh .
+pdks:deletionStatus a owl:DatatypeProperty ; rdfs:domain pdks:DeletionRequest ; rdfs:range xsd:string ; rdfs:label "删除状态"@zh .
+pdks:deletionScope a owl:DatatypeProperty ; rdfs:domain pdks:DeletionRequest ; rdfs:range xsd:string ; rdfs:label "删除范围"@zh .
+pdks:deletionReceipt a owl:DatatypeProperty ; rdfs:domain pdks:DeletionRequest ; rdfs:range xsd:string ; rdfs:label "删除回执"@zh .
+pdks:accessDecision a owl:DatatypeProperty ; rdfs:domain pdks:AccessGrant ; rdfs:range xsd:string ; rdfs:label "访问决策"@zh .
+pdks:policyVersion a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "策略版本"@zh .

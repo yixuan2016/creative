@@ -1,0 +1,196 @@
+@prefix pdks: <urn:pdks:ontology#> .
+@prefix legacy: <urn:pdks:ontology:0.1#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<urn:pdks:ontology:0.2> a owl:Ontology ;
+  dcterms:title "PDKS Core Ontology 0.2"@en, "PDKS 核心本体 0.2"@zh ;
+  dcterms:description "Ontology-first semantic contract for personal digital knowledge, provenance, temporal context and governance."@en,
+    "面向个人数智底座的本体优先语义契约，定义主体、事件、信息对象、证据、知识、上下文、行动、关系与治理语义。"@zh ;
+  owl:versionInfo "0.2.0" ;
+  owl:versionIRI <urn:pdks:ontology:0.2> ;
+  owl:imports <http://www.w3.org/ns/prov#>, <http://www.w3.org/2004/02/skos/core#>, <http://www.w3.org/2006/time#> .
+
+# 1. Agents and entities
+pdks:Agent a owl:Class ; rdfs:subClassOf prov:Agent ; rdfs:label "行动主体"@zh, "Agent"@en .
+pdks:Person a owl:Class ; rdfs:subClassOf pdks:Agent, prov:Person ; rdfs:label "个人"@zh, "Person"@en .
+pdks:Organization a owl:Class ; rdfs:subClassOf pdks:Agent, prov:Organization ; rdfs:label "组织"@zh, "Organization"@en .
+pdks:SoftwareAgent a owl:Class ; rdfs:subClassOf pdks:Agent, prov:SoftwareAgent ; rdfs:label "软件智能体"@zh, "Software Agent"@en .
+pdks:DomainEntity a owl:Class ; rdfs:label "领域实体"@zh, "Domain Entity"@en .
+pdks:Project a owl:Class ; rdfs:subClassOf pdks:DomainEntity ; rdfs:label "项目"@zh .
+pdks:Place a owl:Class ; rdfs:subClassOf pdks:DomainEntity ; rdfs:label "地点"@zh .
+pdks:Topic a owl:Class ; rdfs:subClassOf pdks:DomainEntity ; rdfs:label "主题"@zh .
+pdks:Tool a owl:Class ; rdfs:subClassOf pdks:DomainEntity ; rdfs:label "工具"@zh .
+pdks:Goal a owl:Class ; rdfs:subClassOf pdks:DomainEntity ; rdfs:label "目标"@zh .
+
+# 2. Events and activities
+pdks:Event a owl:Class ; rdfs:label "事件"@zh, "Event"@en ;
+  rdfs:comment "A real or reported occurrence in a person's work or life. Event type is a SKOS concept, not a separate OWL class."@en .
+pdks:ActivityEvent a owl:Class ; rdfs:subClassOf pdks:Event, prov:Activity ; rdfs:label "活动型事件"@zh .
+pdks:ProcessingActivity a owl:Class ; rdfs:subClassOf prov:Activity ; rdfs:label "数据处理活动"@zh .
+
+# 3. Information objects, evidence and knowledge
+pdks:InformationObject a owl:Class ; rdfs:subClassOf prov:Entity ; rdfs:label "信息对象"@zh .
+pdks:PersonalDataRecord a owl:Class ; rdfs:subClassOf pdks:InformationObject ; rdfs:label "个人数据记录"@zh .
+pdks:SourceAsset a owl:Class ; rdfs:subClassOf pdks:InformationObject ; rdfs:label "原始材料"@zh .
+pdks:EvidenceSegment a owl:Class ; rdfs:subClassOf pdks:InformationObject ; rdfs:label "证据片段"@zh .
+pdks:Assertion a owl:Class ; rdfs:subClassOf pdks:InformationObject ; rdfs:label "主张/表达"@zh ;
+  rdfs:comment "A statement by a person or system. Keep speaker, epistemic status and evidence distinct from record creator."@en .
+pdks:KnowledgeAsset a owl:Class ; rdfs:subClassOf pdks:InformationObject ; rdfs:label "知识资产"@zh .
+pdks:PersonalContextStatement a owl:Class ; rdfs:subClassOf pdks:InformationObject ; rdfs:label "个人上下文陈述"@zh ;
+  rdfs:comment "A time-qualified, evidence-aware statement about a person's role, goal, capability, preference or current focus."@en .
+pdks:QualifiedRelationship a owl:Class ; rdfs:subClassOf pdks:InformationObject ; rdfs:label "带限定条件的关系记录"@zh .
+
+# 4. Intent, actions and roles
+pdks:ActionSpecification a owl:Class ; rdfs:subClassOf pdks:InformationObject ; rdfs:label "行动计划项"@zh .
+pdks:Task a owl:Class ; rdfs:subClassOf pdks:ActionSpecification ; rdfs:label "任务"@zh .
+pdks:Plan a owl:Class ; rdfs:subClassOf pdks:ActionSpecification ; rdfs:label "计划"@zh .
+pdks:Commitment a owl:Class ; rdfs:subClassOf pdks:ActionSpecification ; rdfs:label "承诺"@zh .
+pdks:Reminder a owl:Class ; rdfs:subClassOf pdks:ActionSpecification ; rdfs:label "提醒"@zh .
+pdks:Intent a owl:Class ; rdfs:subClassOf pdks:ActionSpecification ; rdfs:label "人的意图"@zh .
+pdks:RoleAssignment a owl:Class ; rdfs:subClassOf pdks:InformationObject ; rdfs:label "角色承担记录"@zh .
+pdks:ParticipantRoleAssignment a owl:Class ; rdfs:label "事件参与角色记录"@zh .
+
+# 5. Core object properties
+pdks:ownedBy a owl:ObjectProperty ; rdfs:range pdks:Agent ; rdfs:label "归属主体"@zh .
+pdks:hasDomain a owl:ObjectProperty ; rdfs:range skos:Concept ; rdfs:label "所属领域"@zh .
+pdks:hasEventType a owl:ObjectProperty ; rdfs:domain pdks:Event ; rdfs:range skos:Concept ; rdfs:label "事件类型"@zh .
+pdks:occurredDuring a owl:ObjectProperty ; rdfs:domain pdks:Event ; rdfs:range time:TemporalEntity ; rdfs:label "发生时间"@zh .
+pdks:hasParticipant a owl:ObjectProperty ; rdfs:domain pdks:Event ; rdfs:range pdks:Agent ; owl:inverseOf pdks:participatedIn ; rdfs:label "参与者"@zh .
+pdks:participatedIn a owl:ObjectProperty ; rdfs:domain pdks:Agent ; rdfs:range pdks:Event ; rdfs:label "参与了"@zh .
+pdks:hasParticipantAssignment a owl:ObjectProperty ; rdfs:domain pdks:Event ; rdfs:range pdks:ParticipantRoleAssignment ; rdfs:label "参与角色记录"@zh .
+pdks:participantAgent a owl:ObjectProperty ; rdfs:domain pdks:ParticipantRoleAssignment ; rdfs:range pdks:Agent ; rdfs:label "参与主体"@zh .
+pdks:hasContextEntity a owl:ObjectProperty ; rdfs:domain pdks:Event ; rdfs:range pdks:DomainEntity ; rdfs:label "关联领域实体"@zh .
+pdks:about a owl:ObjectProperty ; rdfs:domain pdks:InformationObject ; rdfs:label "关于"@zh .
+pdks:hasEvidence a owl:ObjectProperty ; rdfs:range pdks:EvidenceSegment ; rdfs:label "证据片段"@zh .
+pdks:extractedFrom a owl:ObjectProperty ; rdfs:domain pdks:EvidenceSegment ; rdfs:range pdks:SourceAsset ; rdfs:subPropertyOf prov:wasDerivedFrom ; rdfs:label "提取自"@zh .
+pdks:hasSourceReference a owl:ObjectProperty ; rdfs:label "来源引用"@zh .
+pdks:derivedFrom a owl:ObjectProperty ; rdfs:subPropertyOf prov:wasDerivedFrom ; rdfs:label "推导自"@zh .
+pdks:generatedBy a owl:ObjectProperty ; rdfs:subPropertyOf prov:wasGeneratedBy ; rdfs:label "由处理活动生成"@zh .
+pdks:attributedTo a owl:ObjectProperty ; rdfs:subPropertyOf prov:wasAttributedTo ; rdfs:label "归因于"@zh .
+pdks:assertedBy a owl:ObjectProperty ; rdfs:domain pdks:Assertion ; rdfs:range pdks:Agent ; rdfs:label "表达者/主张者"@zh .
+pdks:hasEpistemicStatus a owl:ObjectProperty ; rdfs:domain pdks:Assertion ; rdfs:range skos:Concept ; rdfs:label "认知状态"@zh .
+pdks:hasAssertionType a owl:ObjectProperty ; rdfs:domain pdks:Assertion ; rdfs:range skos:Concept ; rdfs:label "表达类型"@zh .
+pdks:hasOutcome a owl:ObjectProperty ; rdfs:domain pdks:Event ; rdfs:range pdks:InformationObject ; rdfs:label "产生结果"@zh .
+pdks:realizesAction a owl:ObjectProperty ; rdfs:domain pdks:Event ; rdfs:range pdks:ActionSpecification ; rdfs:label "落实行动项"@zh .
+pdks:assignedTo a owl:ObjectProperty ; rdfs:domain pdks:ActionSpecification ; rdfs:range pdks:Agent ; rdfs:label "分配给"@zh .
+pdks:hasDueTime a owl:ObjectProperty ; rdfs:domain pdks:ActionSpecification ; rdfs:range time:TemporalEntity ; rdfs:label "截止时间"@zh .
+pdks:hasSubject a owl:ObjectProperty ; rdfs:domain pdks:PersonalContextStatement ; rdfs:range pdks:Person ; rdfs:label "被描述的个人"@zh .
+pdks:hasContextType a owl:ObjectProperty ; rdfs:domain pdks:PersonalContextStatement ; rdfs:range skos:Concept ; rdfs:label "上下文类型"@zh .
+pdks:validDuring a owl:ObjectProperty ; rdfs:range time:TemporalEntity ; rdfs:label "有效时间"@zh .
+pdks:hasRoleAssignment a owl:ObjectProperty ; rdfs:range pdks:RoleAssignment ; rdfs:label "具有角色承担记录"@zh .
+pdks:hasRoleHolder a owl:ObjectProperty ; rdfs:domain pdks:RoleAssignment ; rdfs:range pdks:Agent ; rdfs:label "角色承担者"@zh .
+pdks:hasRoleType a owl:ObjectProperty ; rdfs:domain pdks:RoleAssignment ; rdfs:range skos:Concept ; rdfs:label "角色类型"@zh .
+pdks:hasRoleContext a owl:ObjectProperty ; rdfs:domain pdks:RoleAssignment ; rdfs:range pdks:DomainEntity ; rdfs:label "角色场景"@zh .
+pdks:possibleIdentityMatch a owl:ObjectProperty ; rdfs:label "可能是同一对象"@zh ;
+  rdfs:comment "A candidate identity link; never replace with owl:sameAs before confirmed identity resolution."@en .
+pdks:mergedInto a owl:ObjectProperty ; rdfs:label "合并到"@zh .
+pdks:relationshipSubject a owl:ObjectProperty ; rdfs:domain pdks:QualifiedRelationship ; rdfs:label "关系主体"@zh .
+pdks:relationshipObject a owl:ObjectProperty ; rdfs:domain pdks:QualifiedRelationship ; rdfs:label "关系客体"@zh .
+pdks:relationshipPredicate a owl:ObjectProperty ; rdfs:domain pdks:QualifiedRelationship ; rdfs:range skos:Concept ; rdfs:label "关系类型"@zh .
+
+# 6. Core datatype properties
+pdks:objectTypeCode a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "记录对象类型代码"@zh .
+pdks:recordSchemaVersion a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "记录 Schema 版本"@zh .
+pdks:recordVersion a owl:DatatypeProperty ; rdfs:range xsd:integer ; rdfs:label "记录版本"@zh .
+pdks:recordedAt a owl:DatatypeProperty ; rdfs:range xsd:dateTimeStamp ; rdfs:label "记录时间"@zh .
+pdks:canonicalName a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "标准名称"@zh .
+pdks:title a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "标题"@zh .
+pdks:description a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "描述"@zh .
+pdks:content a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "内容"@zh .
+pdks:summary a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "摘要"@zh .
+pdks:sourceLocator a owl:DatatypeProperty ; rdfs:domain pdks:SourceAsset ; rdfs:range xsd:string ; rdfs:label "原始材料定位符"@zh .
+pdks:capturedAt a owl:DatatypeProperty ; rdfs:domain pdks:SourceAsset ; rdfs:range xsd:dateTimeStamp ; rdfs:label "采集时间"@zh .
+pdks:timePrecision a owl:DatatypeProperty ; rdfs:domain pdks:Event ; rdfs:range xsd:string ; rdfs:label "时间精度"@zh .
+pdks:confidenceLevel a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "置信等级"@zh .
+pdks:verificationStatus a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "核验状态"@zh .
+pdks:hasSensitivity a owl:ObjectProperty ; rdfs:range skos:Concept ; rdfs:label "敏感级别"@zh .
+pdks:hasAccessScope a owl:ObjectProperty ; rdfs:range skos:Concept ; rdfs:label "访问范围"@zh .
+pdks:lifecycleStatus a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "生命周期状态"@zh .
+pdks:sourceType a owl:DatatypeProperty ; rdfs:domain pdks:SourceAsset ; rdfs:range xsd:string ; rdfs:label "来源类型"@zh .
+pdks:originSystem a owl:DatatypeProperty ; rdfs:domain pdks:SourceAsset ; rdfs:range xsd:string ; rdfs:label "来源系统"@zh .
+pdks:mediaType a owl:DatatypeProperty ; rdfs:domain pdks:SourceAsset ; rdfs:range xsd:string ; rdfs:label "媒体类型"@zh .
+pdks:captureMethod a owl:DatatypeProperty ; rdfs:domain pdks:SourceAsset ; rdfs:range xsd:string ; rdfs:label "采集方式"@zh .
+pdks:contentHash a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "内容哈希"@zh .
+pdks:excerpt a owl:DatatypeProperty ; rdfs:domain pdks:EvidenceSegment ; rdfs:range xsd:string ; rdfs:label "证据摘录"@zh .
+pdks:locatorJson a owl:DatatypeProperty ; rdfs:domain pdks:EvidenceSegment ; rdfs:range rdf:JSON ; rdfs:label "证据定位信息"@zh .
+pdks:assertionAt a owl:DatatypeProperty ; rdfs:domain pdks:Assertion ; rdfs:range xsd:dateTimeStamp ; rdfs:label "表达时间"@zh .
+pdks:participantRole a owl:DatatypeProperty ; rdfs:domain pdks:ParticipantRoleAssignment ; rdfs:range xsd:string ; rdfs:label "参与角色"@zh .
+pdks:identityStatus a owl:DatatypeProperty ; rdfs:domain pdks:ParticipantRoleAssignment ; rdfs:range xsd:string ; rdfs:label "身份确认状态"@zh .
+pdks:actionStatus a owl:DatatypeProperty ; rdfs:domain pdks:ActionSpecification ; rdfs:range xsd:string ; rdfs:label "行动状态"@zh .
+pdks:knowledgeType a owl:DatatypeProperty ; rdfs:domain pdks:KnowledgeAsset ; rdfs:range xsd:string ; rdfs:label "知识类型"@zh .
+pdks:reviewPolicy a owl:DatatypeProperty ; rdfs:domain pdks:PersonalContextStatement ; rdfs:range xsd:string ; rdfs:label "复核策略"@zh .
+pdks:retentionPolicyCode a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "保留策略代码"@zh .
+
+pdks:entityTypeCode a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "实体类型代码"@zh .
+pdks:sourceLocator a owl:DatatypeProperty ; rdfs:domain pdks:SourceAsset ; rdfs:range xsd:string ; rdfs:label "原始材料定位符"@zh .
+pdks:participantRole a owl:DatatypeProperty ; rdfs:domain pdks:ParticipantRoleAssignment ; rdfs:range xsd:string ; rdfs:label "参与角色"@zh .
+pdks:identityStatus a owl:DatatypeProperty ; rdfs:domain pdks:ParticipantRoleAssignment ; rdfs:range xsd:string ; rdfs:label "身份确认状态"@zh .
+pdks:supports a owl:ObjectProperty ; rdfs:label "支持"@zh .
+pdks:contradicts a owl:ObjectProperty ; rdfs:label "反驳/矛盾"@zh .
+pdks:relatedTo a owl:ObjectProperty ; rdfs:label "相关"@zh .
+pdks:partOf a owl:ObjectProperty ; rdfs:label "属于"@zh .
+pdks:dependsOn a owl:ObjectProperty ; rdfs:label "依赖"@zh .
+pdks:hasSourceReference a owl:ObjectProperty ; rdfs:label "来源引用"@zh .
+pdks:hasConsent a owl:ObjectProperty ; rdfs:label "依据授权记录"@zh .
+pdks:hasRetentionPolicy a owl:ObjectProperty ; rdfs:label "适用保留策略"@zh .
+pdks:hasProcessingPurpose a owl:ObjectProperty ; rdfs:label "处理目的"@zh .
+pdks:hasDataSubject a owl:ObjectProperty ; rdfs:label "数据主体"@zh .
+pdks:hasAccessGrant a owl:ObjectProperty ; rdfs:label "访问授权"@zh .
+pdks:payloadJson a owl:DatatypeProperty ; rdfs:range rdf:JSON ; rdfs:label "原始负载 JSON"@zh .
+
+# 7. Legacy namespace bridge. Old records remain readable; new exports use the stable namespace.
+legacy:Agent owl:equivalentClass pdks:Agent ; owl:deprecated true .
+legacy:Person owl:equivalentClass pdks:Person ; owl:deprecated true .
+legacy:Organization owl:equivalentClass pdks:Organization ; owl:deprecated true .
+legacy:SoftwareAgent owl:equivalentClass pdks:SoftwareAgent ; owl:deprecated true .
+legacy:DomainEntity owl:equivalentClass pdks:DomainEntity ; owl:deprecated true .
+legacy:Project owl:equivalentClass pdks:Project ; owl:deprecated true .
+legacy:Place owl:equivalentClass pdks:Place ; owl:deprecated true .
+legacy:Topic owl:equivalentClass pdks:Topic ; owl:deprecated true .
+legacy:Tool owl:equivalentClass pdks:Tool ; owl:deprecated true .
+legacy:Goal owl:equivalentClass pdks:Goal ; owl:deprecated true .
+legacy:Event owl:equivalentClass pdks:Event ; owl:deprecated true .
+legacy:SourceAsset owl:equivalentClass pdks:SourceAsset ; owl:deprecated true .
+legacy:EvidenceSegment owl:equivalentClass pdks:EvidenceSegment ; owl:deprecated true .
+legacy:Assertion owl:equivalentClass pdks:Assertion ; owl:deprecated true .
+legacy:KnowledgeAsset owl:equivalentClass pdks:KnowledgeAsset ; owl:deprecated true .
+legacy:PersonalContextStatement owl:equivalentClass pdks:PersonalContextStatement ; owl:deprecated true .
+legacy:ActionSpecification owl:equivalentClass pdks:ActionSpecification ; owl:deprecated true .
+legacy:QualifiedRelationship owl:equivalentClass pdks:QualifiedRelationship ; owl:deprecated true .
+legacy:RoleAssignment owl:equivalentClass pdks:RoleAssignment ; owl:deprecated true .
+legacy:hasEventType owl:equivalentProperty pdks:hasEventType ; owl:deprecated true .
+legacy:occurredDuring owl:equivalentProperty pdks:occurredDuring ; owl:deprecated true .
+legacy:hasParticipant owl:equivalentProperty pdks:hasParticipant ; owl:deprecated true .
+legacy:hasContextEntity owl:equivalentProperty pdks:hasContextEntity ; owl:deprecated true .
+legacy:hasDomain owl:equivalentProperty pdks:hasDomain ; owl:deprecated true .
+legacy:ownedBy owl:equivalentProperty pdks:ownedBy ; owl:deprecated true .
+legacy:hasEvidence owl:equivalentProperty pdks:hasEvidence ; owl:deprecated true .
+legacy:extractedFrom owl:equivalentProperty pdks:extractedFrom ; owl:deprecated true .
+legacy:derivedFrom owl:equivalentProperty pdks:derivedFrom ; owl:deprecated true .
+legacy:assertedBy owl:equivalentProperty pdks:assertedBy ; owl:deprecated true .
+legacy:hasEpistemicStatus owl:equivalentProperty pdks:hasEpistemicStatus ; owl:deprecated true .
+legacy:hasSubject owl:equivalentProperty pdks:hasSubject ; owl:deprecated true .
+legacy:hasContextType owl:equivalentProperty pdks:hasContextType ; owl:deprecated true .
+legacy:assignedTo owl:equivalentProperty pdks:assignedTo ; owl:deprecated true .
+legacy:hasDueTime owl:equivalentProperty pdks:hasDueTime ; owl:deprecated true .
+
+
+pdks:alternateName a owl:DatatypeProperty ; rdfs:range xsd:string ; rdfs:label "别名"@zh .
+pdks:eventMode a owl:DatatypeProperty ; rdfs:domain pdks:Event ; rdfs:range xsd:string ; rdfs:label "事件形式"@zh .
+pdks:eventTaxonomyVersion a owl:DatatypeProperty ; rdfs:domain pdks:Event ; rdfs:range xsd:string ; rdfs:label "事件分类版本"@zh .
+pdks:modality a owl:DatatypeProperty ; rdfs:domain pdks:EvidenceSegment ; rdfs:range xsd:string ; rdfs:label "证据模态"@zh .
+pdks:transcriptStatus a owl:DatatypeProperty ; rdfs:domain pdks:EvidenceSegment ; rdfs:range xsd:string ; rdfs:label "转写状态"@zh .
+pdks:recognitionQuality a owl:DatatypeProperty ; rdfs:domain pdks:EvidenceSegment ; rdfs:range xsd:string ; rdfs:label "识别质量"@zh .
+pdks:applicability a owl:DatatypeProperty ; rdfs:domain pdks:KnowledgeAsset ; rdfs:range xsd:string ; rdfs:label "适用范围"@zh .
+pdks:limitation a owl:DatatypeProperty ; rdfs:domain pdks:KnowledgeAsset ; rdfs:range xsd:string ; rdfs:label "局限"@zh .
+pdks:priority a owl:DatatypeProperty ; rdfs:domain pdks:ActionSpecification ; rdfs:range xsd:string ; rdfs:label "优先级"@zh .
+pdks:relationshipStatus a owl:DatatypeProperty ; rdfs:domain pdks:QualifiedRelationship ; rdfs:range xsd:string ; rdfs:label "关系状态"@zh .
+pdks:relationshipPredicateCode a owl:DatatypeProperty ; rdfs:domain pdks:QualifiedRelationship ; rdfs:range xsd:string ; rdfs:label "关系谓词代码"@zh .
+pdks:supersedes a owl:ObjectProperty ; rdfs:label "替代先前版本"@zh .

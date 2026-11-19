@@ -1,0 +1,36 @@
+{
+  "pdks_version": "0.1.0",
+  "object_id": "urn:pdks:example:research:relationship:001",
+  "object_type": "relationship",
+  "created_at": "2026-11-19T10:00:00+08:00",
+  "updated_at": "2026-11-19T10:00:00+08:00",
+  "owner_ref": "urn:pdks:example:research:entity:person:owner-001",
+  "domains": [
+    "work"
+  ],
+  "provenance": {
+    "created_by": "urn:pdks:agent:ingestion-001",
+    "source_refs": [
+      "urn:pdks:example:research:event:meeting:001"
+    ]
+  },
+  "governance": {
+    "sensitivity": "personal_work",
+    "access_scope": "owner_only"
+  },
+  "lifecycle": {
+    "status": "active",
+    "version": 1
+  },
+  "payload": {
+    "subject_ref": "urn:pdks:example:research:knowledge:001",
+    "predicate": "derived_from",
+    "object_ref": "urn:pdks:example:research:event:meeting:001",
+    "asserted_by_ref": "urn:pdks:agent:ingestion-001",
+    "evidence_refs": [
+      "urn:pdks:example:research:evidence:audio:segment-001"
+    ],
+    "status": "proposed",
+    "confidence_level": "high"
+  }
+}

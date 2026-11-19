@@ -1,0 +1,30 @@
+{
+  "case_id": "C08-ambiguous-identity",
+  "title": "同名实体不等于同一人",
+  "scenario": "entity_resolution",
+  "input_text": "材料中出现两位‘陈晨’：一位是产品经理，另一位是外部供应商联系人。没有邮箱、组织或其他可确认身份的信息。",
+  "expected_record_types": [
+    "entity"
+  ],
+  "required_terms": [
+    "陈晨"
+  ],
+  "forbidden_terms": [
+    "owl:sameAs"
+  ],
+  "checks": {
+    "require_source_refs": true,
+    "require_owner_only": true,
+    "require_uncertainty": true,
+    "forbid_same_as": true,
+    "no_completed_action_from_plan": false
+  },
+  "review_focus": [
+    "是否保留两个候选实体或明确身份歧义",
+    "是否没有使用 same_as_refs/强行合并",
+    "是否没有补造外部身份信息"
+  ],
+  "critical_failures": [
+    "将两位同名者合并为同一实体"
+  ]
+}

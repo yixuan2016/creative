@@ -1,0 +1,45 @@
+{
+  "pdks_version": "0.1.0",
+  "object_id": "urn:pdks:example:research:knowledge:001",
+  "object_type": "knowledge_asset",
+  "created_at": "2026-11-19T10:00:00+08:00",
+  "updated_at": "2026-11-19T10:00:00+08:00",
+  "owner_ref": "urn:pdks:example:research:entity:person:owner-001",
+  "domains": [
+    "work",
+    "thinking"
+  ],
+  "provenance": {
+    "created_by": "urn:pdks:agent:ingestion-001",
+    "source_refs": [
+      "urn:pdks:example:research:event:meeting:001",
+      "urn:pdks:example:research:assertion:001"
+    ]
+  },
+  "governance": {
+    "sensitivity": "personal_work",
+    "access_scope": "owner_only"
+  },
+  "lifecycle": {
+    "status": "active",
+    "version": 1
+  },
+  "payload": {
+    "knowledge_type": "insight",
+    "title": "语音入口应成为个人事件采集入口",
+    "summary": "语音产品的价值不应止于录音，而应支持工作事件的持续采集与理解。",
+    "content": "产品设计应优先降低采集门槛，并将语音内容与个人工作事件、知识和行动关联。",
+    "applicability": [
+      "个人工作信息采集",
+      "个人数智底座入口设计"
+    ],
+    "limitations": [
+      "需要遵守录音授权和隐私边界"
+    ],
+    "derived_from_refs": [
+      "urn:pdks:example:research:event:meeting:001",
+      "urn:pdks:example:research:assertion:001"
+    ],
+    "verification_status": "draft"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "case_id": "C01-meeting-event-decision-action",
+  "title": "会议内容拆分：事件、决策、行动",
+  "scenario": "voice_meeting",
+  "input_text": "2026年11月18日下午，产品讨论会上，负责人说：先不要自研录音硬件，先验证手机端低门槛采集。小林负责本周五前整理三种采集入口的对比。大家还讨论了录音卡不方便携带的问题。",
+  "expected_record_types": [
+    "event",
+    "assertion",
+    "action"
+  ],
+  "required_terms": [
+    "手机端低门槛采集",
+    "小林",
+    "三种采集入口"
+  ],
+  "forbidden_terms": [
+    "已经完成自研录音硬件"
+  ],
+  "checks": {
+    "require_source_refs": true,
+    "require_owner_only": true,
+    "require_uncertainty": false,
+    "forbid_same_as": false,
+    "no_completed_action_from_plan": true
+  },
+  "review_focus": [
+    "是否把会议作为 event",
+    "是否把负责人意见作为 assertion/decision，而不是事实事件",
+    "是否把小林的任务作为 action，且保留截止时间",
+    "是否没有把讨论内容误写成已完成成果"
+  ],
+  "critical_failures": [
+    "把尚未执行的自研硬件计划记录为已完成事件",
+    "无依据编造任务已完成"
+  ]
+}

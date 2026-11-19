@@ -1,0 +1,32 @@
+{
+  "name": "@pdks/agent-native-bootstrap",
+  "version": "0.2.0",
+  "private": true,
+  "description": "PDKS Node-native File-first bootstrap and MCP bridge (transitional preview)",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "bin": {
+    "pdks-agent": "./bin/pdks-agent.js"
+  },
+  "scripts": {
+    "build": "vite build",
+    "start": "node ./bin/pdks-agent.js mcp",
+    "doctor": "node ./bin/pdks-agent.js doctor",
+    "test": "node --test",
+    "native-doctor": "node ./bin/pdks-agent.js native-doctor",
+    "native-plan": "node ./bin/pdks-agent.js native-plan",
+    "native-verify": "node ./bin/pdks-agent.js native-verify"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/ext-apps": "^2.0.0",
+    "@modelcontextprotocol/server": "^2.0.0",
+    "zod": "^4.2.0",
+    "@modelcontextprotocol/client": "^2.0.0"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0",
+    "vite-plugin-singlefile": "^2.3.0"
+  }
+}

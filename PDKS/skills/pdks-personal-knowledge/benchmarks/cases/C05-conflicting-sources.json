@@ -1,0 +1,32 @@
+{
+  "case_id": "C05-conflicting-sources",
+  "title": "多来源冲突：保留争议而非强行合并",
+  "scenario": "conflicting_sources",
+  "input_text": "会议纪要A写：版本计划在12月5日上线。项目群消息B写：版本计划在12月12日上线。两份材料都没有说明哪一份是最新决定。",
+  "expected_record_types": [
+    "assertion"
+  ],
+  "required_terms": [
+    "12月5日",
+    "12月12日"
+  ],
+  "forbidden_terms": [
+    "确定12月5日上线",
+    "确定12月12日上线"
+  ],
+  "checks": {
+    "require_source_refs": true,
+    "require_owner_only": true,
+    "require_uncertainty": true,
+    "forbid_same_as": false,
+    "no_completed_action_from_plan": true
+  },
+  "review_focus": [
+    "是否保留两条相互冲突的说法",
+    "是否标记 disputed/待核实",
+    "是否没有自行选择一个日期作为最终决定"
+  ],
+  "critical_failures": [
+    "将冲突信息压成单一确定事实"
+  ]
+}

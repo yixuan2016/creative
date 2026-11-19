@@ -1,0 +1,31 @@
+{
+  "case_id": "C11-capture-time-vs-event-time",
+  "title": "区分事件发生时间与材料采集时间",
+  "scenario": "temporal_provenance",
+  "input_text": "今天上传的一份会议纪要写明：会议实际发生于2026年11月10日。上传时间是2026年11月19日。",
+  "expected_record_types": [
+    "event",
+    "source_asset"
+  ],
+  "required_terms": [
+    "2026-11-10",
+    "2026-11-19"
+  ],
+  "forbidden_terms": [
+    "事件发生于2026-11-19"
+  ],
+  "checks": {
+    "require_source_refs": true,
+    "require_owner_only": true,
+    "require_uncertainty": false,
+    "forbid_same_as": false,
+    "no_completed_action_from_plan": false
+  },
+  "review_focus": [
+    "是否分别保存事件发生时间和来源采集时间",
+    "是否没有把上传时间当作事件时间"
+  ],
+  "critical_failures": [
+    "混淆事件时间与采集时间"
+  ]
+}

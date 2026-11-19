@@ -1,0 +1,255 @@
+{
+  "migration_id": "pdks-ontology-0.1-to-0.2",
+  "from": "urn:pdks:ontology:0.1",
+  "to": "urn:pdks:ontology:0.2",
+  "term_namespace_from": "urn:pdks:ontology:0.1#",
+  "term_namespace_to": "urn:pdks:ontology#",
+  "record_schema_unchanged": "0.1.x",
+  "strategy": "preserve-data-and-identity; re-project-rdf; retain-source-records",
+  "class_map": {
+    "Agent": "urn:pdks:ontology#Agent",
+    "Person": "urn:pdks:ontology#Person",
+    "Organization": "urn:pdks:ontology#Organization",
+    "SoftwareAgent": "urn:pdks:ontology#SoftwareAgent",
+    "DomainEntity": "urn:pdks:ontology#DomainEntity",
+    "Project": "urn:pdks:ontology#Project",
+    "Place": "urn:pdks:ontology#Place",
+    "Topic": "urn:pdks:ontology#Topic",
+    "Tool": "urn:pdks:ontology#Tool",
+    "Goal": "urn:pdks:ontology#Goal",
+    "Event": "urn:pdks:ontology#Event",
+    "ActivityEvent": "urn:pdks:ontology#ActivityEvent",
+    "ProcessingActivity": "urn:pdks:ontology#ProcessingActivity",
+    "InformationObject": "urn:pdks:ontology#InformationObject",
+    "SourceAsset": "urn:pdks:ontology#SourceAsset",
+    "EvidenceSegment": "urn:pdks:ontology#EvidenceSegment",
+    "Assertion": "urn:pdks:ontology#Assertion",
+    "KnowledgeAsset": "urn:pdks:ontology#KnowledgeAsset",
+    "PersonalContextStatement": "urn:pdks:ontology#PersonalContextStatement",
+    "ActionSpecification": "urn:pdks:ontology#ActionSpecification",
+    "Task": "urn:pdks:ontology#Task",
+    "Plan": "urn:pdks:ontology#Plan",
+    "Commitment": "urn:pdks:ontology#Commitment",
+    "Reminder": "urn:pdks:ontology#Reminder",
+    "QualifiedRelationship": "urn:pdks:ontology#QualifiedRelationship",
+    "RoleAssignment": "urn:pdks:ontology#RoleAssignment"
+  },
+  "property_map": {
+    "hasEventType": "urn:pdks:ontology#hasEventType",
+    "occurredDuring": "urn:pdks:ontology#occurredDuring",
+    "hasParticipant": "urn:pdks:ontology#hasParticipant",
+    "participatedIn": "urn:pdks:ontology#participatedIn",
+    "hasContextEntity": "urn:pdks:ontology#hasContextEntity",
+    "hasDomain": "urn:pdks:ontology#hasDomain",
+    "ownedBy": "urn:pdks:ontology#ownedBy",
+    "hasEvidence": "urn:pdks:ontology#hasEvidence",
+    "extractedFrom": "urn:pdks:ontology#extractedFrom",
+    "derivedFrom": "urn:pdks:ontology#derivedFrom",
+    "assertedBy": "urn:pdks:ontology#assertedBy",
+    "hasEpistemicStatus": "urn:pdks:ontology#hasEpistemicStatus",
+    "hasSubject": "urn:pdks:ontology#hasSubject",
+    "hasContextType": "urn:pdks:ontology#hasContextType",
+    "assignedTo": "urn:pdks:ontology#assignedTo",
+    "hasDueTime": "urn:pdks:ontology#hasDueTime",
+    "about": "urn:pdks:ontology#about",
+    "attributedTo": "urn:pdks:ontology#attributedTo",
+    "generatedBy": "urn:pdks:ontology#generatedBy",
+    "hasAccessScope": "urn:pdks:ontology#hasAccessScope",
+    "hasAssertionType": "urn:pdks:ontology#hasAssertionType",
+    "hasOutcome": "urn:pdks:ontology#hasOutcome",
+    "hasRoleAssignment": "urn:pdks:ontology#hasRoleAssignment",
+    "hasRoleContext": "urn:pdks:ontology#hasRoleContext",
+    "hasRoleHolder": "urn:pdks:ontology#hasRoleHolder",
+    "hasRoleType": "urn:pdks:ontology#hasRoleType",
+    "hasSensitivity": "urn:pdks:ontology#hasSensitivity",
+    "mergedInto": "urn:pdks:ontology#mergedInto",
+    "possibleIdentityMatch": "urn:pdks:ontology#possibleIdentityMatch",
+    "realizesAction": "urn:pdks:ontology#realizesAction",
+    "relationshipObject": "urn:pdks:ontology#relationshipObject",
+    "relationshipPredicate": "urn:pdks:ontology#relationshipPredicate",
+    "relationshipSubject": "urn:pdks:ontology#relationshipSubject",
+    "validDuring": "urn:pdks:ontology#validDuring",
+    "canonicalName": "urn:pdks:ontology#canonicalName",
+    "capturedAt": "urn:pdks:ontology#capturedAt",
+    "confidenceLevel": "urn:pdks:ontology#confidenceLevel",
+    "content": "urn:pdks:ontology#content",
+    "description": "urn:pdks:ontology#description",
+    "recordedAt": "urn:pdks:ontology#recordedAt",
+    "relationshipStatus": "urn:pdks:ontology#relationshipStatus",
+    "sourceLocator": "urn:pdks:ontology#sourceLocator",
+    "timePrecision": "urn:pdks:ontology#timePrecision",
+    "title": "urn:pdks:ontology#title",
+    "verificationStatus": "urn:pdks:ontology#verificationStatus"
+  },
+  "compatibility_rules": [
+    "PDKS JSON Schema 0.1.x records are not rewritten merely because the ontology version changes.",
+    "The 0.2 ontology provides owl:equivalentClass/owl:equivalentProperty bridges for legacy 0.1 terms.",
+    "Rebuild semantic triples from canonical JSON records under the selected ontology version.",
+    "Never overwrite the original record or original source asset during ontology migration.",
+    "Record the ontology version used for every projection and export.",
+    "Every OWL class, object property and datatype property declared in 0.1 has an explicit equivalence bridge to the stable 0.2 term namespace.",
+    "Vocabulary concepts are bridged by stable skos:notation values and skos:exactMatch; version-scheme notation is not treated as a domain concept."
+  ],
+  "vocabulary_map": {
+    "reported": {
+      "from": "urn:pdks:vocabulary:0.1#reported",
+      "to": "urn:pdks:vocabulary:0.2#reported",
+      "match": "skos:exactMatch"
+    },
+    "inferred": {
+      "from": "urn:pdks:vocabulary:0.1#inferred",
+      "to": "urn:pdks:vocabulary:0.2#inferred",
+      "match": "skos:exactMatch"
+    },
+    "hypothesized": {
+      "from": "urn:pdks:vocabulary:0.1#hypothesized",
+      "to": "urn:pdks:vocabulary:0.2#hypothesized",
+      "match": "skos:exactMatch"
+    },
+    "corroborated": {
+      "from": "urn:pdks:vocabulary:0.1#corroborated",
+      "to": "urn:pdks:vocabulary:0.2#corroborated",
+      "match": "skos:exactMatch"
+    },
+    "disputed": {
+      "from": "urn:pdks:vocabulary:0.1#disputed",
+      "to": "urn:pdks:vocabulary:0.2#disputed",
+      "match": "skos:exactMatch"
+    },
+    "retracted": {
+      "from": "urn:pdks:vocabulary:0.1#retracted",
+      "to": "urn:pdks:vocabulary:0.2#retracted",
+      "match": "skos:exactMatch"
+    },
+    "unknown": {
+      "from": "urn:pdks:vocabulary:0.1#unknown",
+      "to": "urn:pdks:vocabulary:0.2#unknown",
+      "match": "skos:exactMatch"
+    },
+    "observation": {
+      "from": "urn:pdks:vocabulary:0.1#observation",
+      "to": "urn:pdks:vocabulary:0.2#observation",
+      "match": "skos:exactMatch"
+    },
+    "opinion": {
+      "from": "urn:pdks:vocabulary:0.1#opinion",
+      "to": "urn:pdks:vocabulary:0.2#opinion",
+      "match": "skos:exactMatch"
+    },
+    "hypothesis": {
+      "from": "urn:pdks:vocabulary:0.1#hypothesis",
+      "to": "urn:pdks:vocabulary:0.2#hypothesis",
+      "match": "skos:exactMatch"
+    },
+    "intention": {
+      "from": "urn:pdks:vocabulary:0.1#intention",
+      "to": "urn:pdks:vocabulary:0.2#intention",
+      "match": "skos:exactMatch"
+    },
+    "commitment": {
+      "from": "urn:pdks:vocabulary:0.1#commitment",
+      "to": "urn:pdks:vocabulary:0.2#commitment",
+      "match": "skos:exactMatch"
+    },
+    "decision": {
+      "from": "urn:pdks:vocabulary:0.1#decision",
+      "to": "urn:pdks:vocabulary:0.2#decision",
+      "match": "skos:exactMatch"
+    },
+    "question": {
+      "from": "urn:pdks:vocabulary:0.1#question",
+      "to": "urn:pdks:vocabulary:0.2#question",
+      "match": "skos:exactMatch"
+    },
+    "estimate": {
+      "from": "urn:pdks:vocabulary:0.1#estimate",
+      "to": "urn:pdks:vocabulary:0.2#estimate",
+      "match": "skos:exactMatch"
+    },
+    "preference": {
+      "from": "urn:pdks:vocabulary:0.1#preference_context",
+      "to": "urn:pdks:vocabulary:0.2#preference",
+      "match": "skos:exactMatch"
+    },
+    "role": {
+      "from": "urn:pdks:vocabulary:0.1#role",
+      "to": "urn:pdks:vocabulary:0.2#role",
+      "match": "skos:exactMatch"
+    },
+    "goal": {
+      "from": "urn:pdks:vocabulary:0.1#goal",
+      "to": "urn:pdks:vocabulary:0.2#goal",
+      "match": "skos:exactMatch"
+    },
+    "capability": {
+      "from": "urn:pdks:vocabulary:0.1#capability",
+      "to": "urn:pdks:vocabulary:0.2#capability",
+      "match": "skos:exactMatch"
+    },
+    "responsibility": {
+      "from": "urn:pdks:vocabulary:0.1#responsibility",
+      "to": "urn:pdks:vocabulary:0.2#responsibility",
+      "match": "skos:exactMatch"
+    },
+    "working_style": {
+      "from": "urn:pdks:vocabulary:0.1#working_style",
+      "to": "urn:pdks:vocabulary:0.2#working_style",
+      "match": "skos:exactMatch"
+    },
+    "current_focus": {
+      "from": "urn:pdks:vocabulary:0.1#current_focus",
+      "to": "urn:pdks:vocabulary:0.2#current_focus",
+      "match": "skos:exactMatch"
+    },
+    "constraint": {
+      "from": "urn:pdks:vocabulary:0.1#constraint",
+      "to": "urn:pdks:vocabulary:0.2#constraint",
+      "match": "skos:exactMatch"
+    },
+    "relationship": {
+      "from": "urn:pdks:vocabulary:0.1#relationship_context",
+      "to": "urn:pdks:vocabulary:0.2#relationship",
+      "match": "skos:exactMatch"
+    },
+    "personal_private": {
+      "from": "urn:pdks:vocabulary:0.1#personal_private",
+      "to": "urn:pdks:vocabulary:0.2#personal_private",
+      "match": "skos:exactMatch"
+    },
+    "personal_work": {
+      "from": "urn:pdks:vocabulary:0.1#personal_work",
+      "to": "urn:pdks:vocabulary:0.2#personal_work",
+      "match": "skos:exactMatch"
+    },
+    "organization_internal": {
+      "from": "urn:pdks:vocabulary:0.1#organization_internal",
+      "to": "urn:pdks:vocabulary:0.2#organization_internal",
+      "match": "skos:exactMatch"
+    },
+    "restricted": {
+      "from": "urn:pdks:vocabulary:0.1#restricted",
+      "to": "urn:pdks:vocabulary:0.2#restricted",
+      "match": "skos:exactMatch"
+    },
+    "public": {
+      "from": "urn:pdks:vocabulary:0.1#public_access",
+      "to": "urn:pdks:vocabulary:0.2#public",
+      "match": "skos:exactMatch"
+    },
+    "owner_only": {
+      "from": "urn:pdks:vocabulary:0.1#owner_only",
+      "to": "urn:pdks:vocabulary:0.2#owner_only",
+      "match": "skos:exactMatch"
+    },
+    "explicitly_shared": {
+      "from": "urn:pdks:vocabulary:0.1#explicitly_shared",
+      "to": "urn:pdks:vocabulary:0.2#explicitly_shared",
+      "match": "skos:exactMatch"
+    },
+    "organization_authorized": {
+      "from": "urn:pdks:vocabulary:0.1#organization_authorized",
+      "to": "urn:pdks:vocabulary:0.2#organization_authorized",
+      "match": "skos:exactMatch"
+    }
+  }
+}

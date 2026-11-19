@@ -1,0 +1,31 @@
+{
+  "case_id": "C10-correction-and-retraction",
+  "title": "用户纠错：保留更正关系与历史",
+  "scenario": "correction",
+  "input_text": "用户先前记录：评审在周三。用户现在更正：刚才说错了，评审实际在周四。请更新，但保留原始记录可追溯。",
+  "expected_record_types": [
+    "assertion"
+  ],
+  "required_terms": [
+    "周三",
+    "周四"
+  ],
+  "forbidden_terms": [
+    "周三和周四都已确认"
+  ],
+  "checks": {
+    "require_source_refs": true,
+    "require_owner_only": true,
+    "require_uncertainty": false,
+    "forbid_same_as": false,
+    "no_completed_action_from_plan": false
+  },
+  "review_focus": [
+    "是否保留原始断言并标记更正/被取代",
+    "是否以新信息更新当前有效值",
+    "是否保留更正来源与时间"
+  ],
+  "critical_failures": [
+    "静默覆盖历史且丢失纠错轨迹"
+  ]
+}

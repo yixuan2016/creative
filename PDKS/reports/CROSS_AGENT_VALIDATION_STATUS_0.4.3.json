@@ -1,0 +1,68 @@
+{
+  "release": "PDKS 0.4.3 Cross-Agent Skill Validation Edition",
+  "runtime_track": "0.4.3",
+  "skill_version": "0.3.3",
+  "stage": "transitional_skill_development",
+  "maturity": "experimental",
+  "stage_gate": {
+    "validator": "pdks-skill-stage-check",
+    "stage": "transitional_skill_development",
+    "maturity": "experimental",
+    "checks": {
+      "skill_version_0_3_3": true,
+      "runtime_track_0_4_3": true,
+      "transitional_stage_declared": true,
+      "experimental_maturity_declared": true,
+      "stage_profile_matches": true,
+      "ontology_baseline_frozen": true,
+      "ontology_layering_proposal_only": true,
+      "production_not_claimed": true,
+      "required_stage_references_present": true,
+      "cross_host_benchmark_prepared_not_claimed": true
+    },
+    "passed": 10,
+    "total": 10,
+    "status": "valid"
+  },
+  "unit_tests": {
+    "total": 38,
+    "passed": 37,
+    "skipped": 1,
+    "failed": 0
+  },
+  "ontology_check": {
+    "status": "valid",
+    "ontology_version": "0.2.1",
+    "runtime_terms_referenced": 98,
+    "runtime_terms_declared": 98,
+    "legacy_bridged": 71,
+    "legacy_baseline": 71,
+    "breaking_changes": [],
+    "relaxed_constraints_review_count": 14
+  },
+  "ontology_manifest": {
+    "status": "valid",
+    "files": 8
+  },
+  "cross_host_validation": {
+    "status": "protocol_prepared_not_executed",
+    "synthetic_cases": 12,
+    "minimum_hosts": 2,
+    "runs_per_case_per_host": 3,
+    "minimum_planned_runs": 72,
+    "actual_cross_host_runs": 0
+  },
+  "shacl": {
+    "status": "one_test_skipped",
+    "note": "One SHACL negative-case test was skipped because pySHACL is unavailable in this local runtime; requirements-dev.txt includes it for CI."
+  },
+  "github_actions": {
+    "status": "not_yet_executed"
+  },
+  "notes": [
+    "Structural evaluator is not an automated semantic judge.",
+    "Human review is required for all benchmark outputs.",
+    "Agent-facing prompts are separated from evaluator-side expected labels.",
+    "No real personal or enterprise data was used."
+  ]
+}

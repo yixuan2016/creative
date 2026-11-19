@@ -1,0 +1,1419 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pdks:schema:0.1:record",
+  "title": "PDKS 0.1 Record Schema",
+  "description": "PDKS 0.1 core record and relationship schema. Semantic cross-record checks are additionally required.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/entityRecord"
+    },
+    {
+      "$ref": "#/$defs/sourceAssetRecord"
+    },
+    {
+      "$ref": "#/$defs/evidenceSegmentRecord"
+    },
+    {
+      "$ref": "#/$defs/eventRecord"
+    },
+    {
+      "$ref": "#/$defs/assertionRecord"
+    },
+    {
+      "$ref": "#/$defs/knowledgeAssetRecord"
+    },
+    {
+      "$ref": "#/$defs/personalContextRecord"
+    },
+    {
+      "$ref": "#/$defs/actionRecord"
+    },
+    {
+      "$ref": "#/$defs/relationshipRecord"
+    }
+  ],
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "domain": {
+      "oneOf": [
+        {
+          "enum": [
+            "work",
+            "learning",
+            "thinking",
+            "life",
+            "relationship",
+            "growth",
+            "finance",
+            "health",
+            "other"
+          ]
+        },
+        {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*:[a-z][a-z0-9_.-]*$"
+        }
+      ]
+    },
+    "domains": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/domain"
+      }
+    },
+    "fieldState": {
+      "enum": [
+        "unknown",
+        "not_captured",
+        "not_applicable",
+        "withheld",
+        "unresolved"
+      ]
+    },
+    "fieldStates": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/fieldState"
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "created_by": {
+          "$ref": "#/$defs/ref"
+        },
+        "source_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "processing_activity_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "model_info": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string"
+            },
+            "model_id": {
+              "type": "string"
+            },
+            "processing_version": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "created_by"
+      ],
+      "additionalProperties": false
+    },
+    "governance": {
+      "type": "object",
+      "properties": {
+        "sensitivity": {
+          "enum": [
+            "personal_private",
+            "personal_work",
+            "organization_internal",
+            "restricted",
+            "public"
+          ]
+        },
+        "access_scope": {
+          "enum": [
+            "owner_only",
+            "explicitly_shared",
+            "organization_authorized",
+            "public"
+          ]
+        },
+        "allowed_subject_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "retention_policy": {
+          "type": [
+            "string",
+            "object"
+          ]
+        },
+        "consent_ref": {
+          "$ref": "#/$defs/ref"
+        }
+      },
+      "required": [
+        "sensitivity",
+        "access_scope"
+      ],
+      "additionalProperties": false
+    },
+    "lifecycle": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "active",
+            "archived",
+            "superseded",
+            "retracted",
+            "deleted_tombstone",
+            "unresolved"
+          ]
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "supersedes_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "valid_from": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "valid_until": {
+          "$ref": "#/$defs/dateTime"
+        }
+      },
+      "required": [
+        "status",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "envelope": {
+      "type": "object",
+      "properties": {
+        "pdks_version": {
+          "type": "string",
+          "pattern": "^0\\.1\\.\\d+$"
+        },
+        "object_id": {
+          "$ref": "#/$defs/ref"
+        },
+        "object_type": {
+          "enum": [
+            "entity",
+            "source_asset",
+            "evidence_segment",
+            "event",
+            "assertion",
+            "knowledge_asset",
+            "personal_context",
+            "action",
+            "relationship"
+          ]
+        },
+        "created_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "owner_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "domains": {
+          "$ref": "#/$defs/domains"
+        },
+        "primary_domain": {
+          "$ref": "#/$defs/domain"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "governance": {
+          "$ref": "#/$defs/governance"
+        },
+        "lifecycle": {
+          "$ref": "#/$defs/lifecycle"
+        },
+        "field_states": {
+          "$ref": "#/$defs/fieldStates"
+        },
+        "payload": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "pdks_version",
+        "object_id",
+        "object_type",
+        "created_at",
+        "updated_at",
+        "owner_ref",
+        "domains",
+        "provenance",
+        "governance",
+        "lifecycle",
+        "payload"
+      ]
+    },
+    "entityPayload": {
+      "type": "object",
+      "properties": {
+        "entity_type": {
+          "enum": [
+            "person",
+            "organization",
+            "project",
+            "place",
+            "topic",
+            "tool",
+            "goal"
+          ]
+        },
+        "canonical_name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "aliases": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "external_ids": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "system": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "id": {
+                "$ref": "#/$defs/nonEmptyString"
+              }
+            },
+            "required": [
+              "system",
+              "id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "active",
+            "inactive",
+            "unresolved",
+            "merged"
+          ]
+        },
+        "merged_into_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "same_as_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "entity_type",
+        "canonical_name",
+        "status"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "merged"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "merged_into_ref"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "sourceAssetPayload": {
+      "type": "object",
+      "properties": {
+        "source_type": {
+          "enum": [
+            "audio",
+            "message",
+            "document",
+            "email",
+            "image",
+            "video",
+            "webpage",
+            "calendar_record",
+            "note",
+            "other"
+          ]
+        },
+        "origin_system": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_locator": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "captured_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "original_created_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "media_type": {
+          "type": "string"
+        },
+        "content_hash": {
+          "type": "object",
+          "properties": {
+            "algorithm": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "algorithm",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "language": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        },
+        "capture_method": {
+          "enum": [
+            "automatic",
+            "manual_upload",
+            "device_capture",
+            "system_sync",
+            "api_import"
+          ]
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "source_type",
+        "origin_system",
+        "source_locator"
+      ],
+      "additionalProperties": false
+    },
+    "locator": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "audio"
+            },
+            "start_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "end_ms": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "kind",
+            "start_ms",
+            "end_ms"
+          ],
+          "allOf": [
+            {
+              "properties": {
+                "end_ms": {
+                  "minimum": 0
+                }
+              }
+            }
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "video"
+            },
+            "start_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "end_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "frame_start": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "frame_end": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "document"
+            },
+            "page": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "paragraph": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "char_start": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "char_end": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "message"
+            },
+            "message_id": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "char_start": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "char_end": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "kind",
+            "message_id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "image"
+            },
+            "bbox": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 4,
+              "maxItems": 4
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "text"
+            },
+            "char_start": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "char_end": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "paragraph": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "evidenceSegmentPayload": {
+      "type": "object",
+      "properties": {
+        "source_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "locator": {
+          "$ref": "#/$defs/locator"
+        },
+        "excerpt": {
+          "type": "string"
+        },
+        "speaker_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "transcript_status": {
+          "enum": [
+            "not_applicable",
+            "machine_generated",
+            "human_corrected",
+            "verified"
+          ]
+        },
+        "recognition_quality": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "modality": {
+          "enum": [
+            "text",
+            "audio",
+            "video",
+            "image",
+            "document",
+            "message"
+          ]
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "source_ref",
+        "locator",
+        "modality"
+      ],
+      "additionalProperties": false
+    },
+    "participant": {
+      "type": "object",
+      "properties": {
+        "entity_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "role": {
+          "type": "string"
+        },
+        "identity_status": {
+          "enum": [
+            "confirmed",
+            "candidate",
+            "unknown"
+          ]
+        }
+      },
+      "required": [
+        "entity_ref"
+      ],
+      "additionalProperties": false
+    },
+    "eventPayload": {
+      "type": "object",
+      "properties": {
+        "event_type": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*(\\.[a-z][a-z0-9_-]*)+$"
+        },
+        "event_taxonomy_version": {
+          "type": "string",
+          "pattern": "^0\\.1\\.\\d+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "end_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "time_precision": {
+          "enum": [
+            "exact",
+            "approximate",
+            "date_only",
+            "range",
+            "unknown"
+          ]
+        },
+        "participants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/participant"
+          }
+        },
+        "context_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "location_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "event_mode": {
+          "enum": [
+            "in_person",
+            "online",
+            "hybrid",
+            "asynchronous",
+            "unknown"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "classification_status": {
+          "enum": [
+            "classified",
+            "suggested",
+            "needs_review",
+            "unclassified"
+          ]
+        },
+        "classification_confidence": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "event_type",
+        "event_taxonomy_version",
+        "description",
+        "time_precision"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "time_precision": {
+                "enum": [
+                  "exact",
+                  "approximate",
+                  "date_only",
+                  "range"
+                ]
+              }
+            },
+            "required": [
+              "time_precision"
+            ]
+          },
+          "then": {
+            "required": [
+              "start_at"
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "start_at",
+              "end_at"
+            ]
+          },
+          "then": {
+            "properties": {
+              "end_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "assertionPayload": {
+      "type": "object",
+      "properties": {
+        "assertion_type": {
+          "enum": [
+            "observation",
+            "opinion",
+            "hypothesis",
+            "intention",
+            "commitment",
+            "decision",
+            "question",
+            "estimate",
+            "preference"
+          ]
+        },
+        "content": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "asserted_by_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "assertion_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "about_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "epistemic_status": {
+          "enum": [
+            "reported",
+            "inferred",
+            "hypothesized",
+            "corroborated",
+            "disputed",
+            "retracted",
+            "unknown"
+          ]
+        },
+        "confidence_level": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "valid_from": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "valid_until": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "assertion_type",
+        "content",
+        "asserted_by_ref",
+        "epistemic_status"
+      ],
+      "additionalProperties": false
+    },
+    "knowledgeAssetPayload": {
+      "type": "object",
+      "properties": {
+        "knowledge_type": {
+          "enum": [
+            "concept",
+            "fact",
+            "method",
+            "experience",
+            "case",
+            "procedure",
+            "principle",
+            "lesson",
+            "insight"
+          ]
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "content": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ]
+        },
+        "applicability": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "derived_from_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "verification_status": {
+          "enum": [
+            "draft",
+            "reviewed",
+            "validated",
+            "deprecated",
+            "disputed"
+          ]
+        },
+        "maintainer_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "review_due_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "knowledge_type",
+        "title",
+        "content",
+        "verification_status"
+      ],
+      "additionalProperties": false
+    },
+    "personalContextPayload": {
+      "type": "object",
+      "properties": {
+        "context_type": {
+          "enum": [
+            "role",
+            "goal",
+            "preference",
+            "capability",
+            "relationship",
+            "constraint",
+            "responsibility",
+            "working_style",
+            "current_focus"
+          ]
+        },
+        "subject_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            },
+            {
+              "type": "array"
+            }
+          ]
+        },
+        "valid_from": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "valid_until": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "verification_status": {
+          "enum": [
+            "self_declared",
+            "confirmed",
+            "inferred",
+            "contested",
+            "expired"
+          ]
+        },
+        "confidence_level": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "review_policy": {
+          "enum": [
+            "never_auto_update",
+            "suggest_update",
+            "periodic_review"
+          ]
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "context_type",
+        "subject_ref",
+        "value",
+        "verification_status"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "verification_status": {
+                "const": "inferred"
+              }
+            },
+            "required": [
+              "verification_status"
+            ]
+          },
+          "then": {
+            "required": [
+              "evidence_refs"
+            ],
+            "properties": {
+              "evidence_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "actionPayload": {
+      "type": "object",
+      "properties": {
+        "action_type": {
+          "enum": [
+            "task",
+            "plan",
+            "commitment",
+            "reminder"
+          ]
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "proposed",
+            "open",
+            "in_progress",
+            "blocked",
+            "completed",
+            "cancelled"
+          ]
+        },
+        "assignee_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "created_from_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "start_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "due_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "priority": {
+          "enum": [
+            "low",
+            "normal",
+            "high",
+            "urgent"
+          ]
+        },
+        "depends_on_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "completion_event_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "action_type",
+        "title",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "relationshipPayload": {
+      "type": "object",
+      "properties": {
+        "subject_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "predicate": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$"
+        },
+        "object_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "asserted_by_ref": {
+          "$ref": "#/$defs/ref"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "status": {
+          "enum": [
+            "proposed",
+            "confirmed",
+            "disputed",
+            "retracted"
+          ]
+        },
+        "valid_from": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "valid_until": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "confidence_level": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "subject_ref",
+        "predicate",
+        "object_ref",
+        "asserted_by_ref",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "entityRecord": {
+      "title": "Entity Record",
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "object_type": {
+              "const": "entity"
+            },
+            "payload": {
+              "$ref": "#/$defs/entityPayload"
+            }
+          },
+          "required": [
+            "object_type",
+            "payload"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "eventRecord": {
+      "title": "Event Record",
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "object_type": {
+              "const": "event"
+            },
+            "payload": {
+              "$ref": "#/$defs/eventPayload"
+            }
+          },
+          "required": [
+            "object_type",
+            "payload"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "assertionRecord": {
+      "title": "Assertion Record",
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "object_type": {
+              "const": "assertion"
+            },
+            "payload": {
+              "$ref": "#/$defs/assertionPayload"
+            }
+          },
+          "required": [
+            "object_type",
+            "payload"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "actionRecord": {
+      "title": "Action Record",
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "object_type": {
+              "const": "action"
+            },
+            "payload": {
+              "$ref": "#/$defs/actionPayload"
+            }
+          },
+          "required": [
+            "object_type",
+            "payload"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "relationshipRecord": {
+      "title": "Relationship Record",
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "object_type": {
+              "const": "relationship"
+            },
+            "payload": {
+              "$ref": "#/$defs/relationshipPayload"
+            }
+          },
+          "required": [
+            "object_type",
+            "payload"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "sourceAssetRecord": {
+      "title": "Source Asset Record",
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "object_type": {
+              "const": "source_asset"
+            },
+            "payload": {
+              "$ref": "#/$defs/sourceAssetPayload"
+            }
+          },
+          "required": [
+            "object_type",
+            "payload"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "evidenceSegmentRecord": {
+      "title": "Evidence Segment Record",
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "object_type": {
+              "const": "evidence_segment"
+            },
+            "payload": {
+              "$ref": "#/$defs/evidenceSegmentPayload"
+            }
+          },
+          "required": [
+            "object_type",
+            "payload"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "knowledgeAssetRecord": {
+      "title": "Knowledge Asset Record",
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "object_type": {
+              "const": "knowledge_asset"
+            },
+            "payload": {
+              "$ref": "#/$defs/knowledgeAssetPayload"
+            }
+          },
+          "required": [
+            "object_type",
+            "payload"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "personalContextRecord": {
+      "title": "Personal Context Record",
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "object_type": {
+              "const": "personal_context"
+            },
+            "payload": {
+              "$ref": "#/$defs/personalContextPayload"
+            }
+          },
+          "required": [
+            "object_type",
+            "payload"
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

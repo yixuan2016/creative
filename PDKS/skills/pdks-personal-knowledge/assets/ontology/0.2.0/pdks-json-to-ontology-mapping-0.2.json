@@ -1,0 +1,87 @@
+{
+  "mapping_version": "0.2.0",
+  "source_record_standard": "PDKS JSON Record Schema 0.1.x (backward compatible)",
+  "target_ontology": "urn:pdks:ontology:0.2",
+  "term_namespace": "urn:pdks:ontology#",
+  "taxonomy": "urn:pdks:taxonomy:event:0.1",
+  "vocabulary": "urn:pdks:vocabulary:0.2",
+  "object_type_map": {
+    "entity": "pdks:DomainEntity (refine by payload.entity_type)",
+    "source_asset": "pdks:SourceAsset",
+    "evidence_segment": "pdks:EvidenceSegment",
+    "event": "pdks:Event",
+    "assertion": "pdks:Assertion",
+    "knowledge_asset": "pdks:KnowledgeAsset",
+    "personal_context": "pdks:PersonalContextStatement",
+    "action": "pdks:ActionSpecification (refine by payload.action_type)",
+    "relationship": "pdks:QualifiedRelationship"
+  },
+  "entity_subtype_map": {
+    "person": "pdks:Person",
+    "organization": "pdks:Organization",
+    "project": "pdks:Project",
+    "place": "pdks:Place",
+    "topic": "pdks:Topic",
+    "tool": "pdks:Tool",
+    "goal": "pdks:Goal"
+  },
+  "action_subtype_map": {
+    "task": "pdks:Task",
+    "plan": "pdks:Plan",
+    "commitment": "pdks:Commitment",
+    "reminder": "pdks:Reminder",
+    "intent": "pdks:Intent"
+  },
+  "envelope_map": {
+    "object_id": "RDF subject IRI",
+    "object_type": "pdks:objectTypeCode",
+    "pdks_version": "pdks:recordSchemaVersion",
+    "owner_ref": "pdks:ownedBy",
+    "domains": "pdks:hasDomain -> SKOS Concept",
+    "created_at": "dcterms:created",
+    "updated_at": "dcterms:modified",
+    "provenance.created_by": "prov:wasAttributedTo",
+    "provenance.source_refs": "pdks:hasSourceReference",
+    "provenance.processing_activity_ref": "pdks:generatedBy",
+    "governance.sensitivity": "pdks:hasSensitivity -> controlled SKOS Concept",
+    "governance.access_scope": "pdks:hasAccessScope -> controlled SKOS Concept",
+    "governance.consent_ref": "pdks:hasConsent",
+    "lifecycle.status": "pdks:lifecycleStatus",
+    "lifecycle.version": "pdks:recordVersion"
+  },
+  "payload_map": {
+    "event.event_type": "pdks:hasEventType -> Event Taxonomy SKOS Concept",
+    "event.start_at+end_at": "pdks:occurredDuring -> time:Interval",
+    "event.participants": "pdks:hasParticipant + ParticipantRoleAssignment",
+    "event.context_refs": "pdks:hasContextEntity",
+    "event.evidence_refs": "pdks:hasEvidence",
+    "assertion.asserted_by_ref": "pdks:assertedBy",
+    "assertion.epistemic_status": "pdks:hasEpistemicStatus -> controlled SKOS Concept",
+    "assertion.assertion_type": "pdks:hasAssertionType -> controlled SKOS Concept",
+    "knowledge_asset.derived_from_refs": "pdks:derivedFrom",
+    "personal_context.subject_ref": "pdks:hasSubject",
+    "personal_context.context_type": "pdks:hasContextType -> controlled SKOS Concept",
+    "action.assignee_ref": "pdks:assignedTo",
+    "action.due_at": "pdks:hasDueTime -> time:Instant",
+    "evidence_segment.source_ref": "pdks:extractedFrom",
+    "relationship.subject_ref+predicate+object_ref": "QualifiedRelationship and optional whitelisted direct edge"
+  },
+  "relationship_predicate_allowlist": {
+    "derived_from": "pdks:derivedFrom",
+    "supports": "pdks:supports",
+    "contradicts": "pdks:contradicts",
+    "related_to": "pdks:relatedTo",
+    "part_of": "pdks:partOf",
+    "depends_on": "pdks:dependsOn",
+    "participated_in": "pdks:participatedIn"
+  },
+  "semantic_cautions": [
+    "PDKS JSON record remains the canonical source; RDF triples are a rebuildable semantic projection.",
+    "Do not infer consent from capture method, file presence or agent statements; consent_ref must resolve through a trusted authorization service.",
+    "Do not equate source creator, assertion speaker, owner and AI processor.",
+    "Do not collapse event occurrence time, capture time, record time and knowledge validity time.",
+    "Do not emit owl:sameAs for uncertain identity; use possibleIdentityMatch.",
+    "An ActionSpecification describes a human plan or commitment; it is not an AgentActionProposal and cannot trigger execution.",
+    "Unknown relationship predicates are retained as qualified relationship records and mapped to pdks:relatedTo only for broad navigation; never mint arbitrary predicates from user text."
+  ]
+}

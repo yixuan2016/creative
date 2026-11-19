@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <title>PDKS 初始化向导</title>
+</head>
+<body>
+  <div id="app">
+    <header class="hero">
+      <div class="eyebrow">PERSONAL DATA KNOWLEDGE SYSTEM · 0.5.3</div>
+      <h1>初始化你的 PDKS</h1>
+      <p>通过当前 Agent 完成环境检查、路径配置、初始化预览与确认。Node.js 原生创建 File-first Vault，不需要先安装 Python Runtime，也不会连接任何数据源。</p>
+      <div class="stage"><span class="pulse"></span> 过渡阶段预览版 · Node.js 原生初始化</div>
+    </header>
+    <main>
+      <section class="panel">
+        <div class="section-head"><div><span class="step">01</span><h2>检查与配置</h2></div><button id="doctorBtn" class="secondary">重新检查</button></div>
+        <div id="doctorState" class="state">正在检查 Node.js 与本地路径…</div>
+        <label>PDKS 本地配置目录 <input id="installRoot" spellcheck="false" /></label>
+        <label>个人知识库目录 <input id="vaultRoot" spellcheck="false" /></label>
+        <p class="hint">知识库目录是普通文件夹，可直接使用 Obsidian、VS Code 或其他 Markdown 工具打开。不会覆盖已有的非 PDKS 文件夹。</p>
+        <button id="planBtn" class="primary">生成安装计划 <span>→</span></button>
+      </section>
+      <section class="panel" id="planPanel" hidden>
+        <div class="section-head"><div><span class="step">02</span><h2>审阅安装计划</h2></div><span class="tag">只读预览</span></div>
+        <div id="planSummary"></div>
+        <details><summary>查看完整计划与校验码</summary><pre id="planJson"></pre></details>
+        <div class="warning"><strong>重要：本版本的本地文件尚未提供静态加密</strong><p>本地 Vault 文件不会自动加密。请只使用合成数据或非敏感测试材料。本轮只初始化文件知识库，不安装 Python Capture Runtime，不开启数据采集、DWS 登录、云同步或后台服务。</p></div>
+        <label class="ack"><input type="checkbox" id="ackBox" /> 我已阅读并理解本地数据未加密的风险。</label>
+        <label>输入确认短语 <input id="confirmPhrase" placeholder="CONFIRM INSTALL PDKS" autocomplete="off" /></label>
+        <button id="applyBtn" class="danger" disabled>确认并初始化 PDKS</button>
+        <p class="hint">只有勾选风险确认并输入完整短语后，初始化按钮才会启用。</p>
+      </section>
+      <section class="panel" id="resultPanel" hidden>
+        <div class="section-head"><div><span class="step">03</span><h2>初始化结果</h2></div><span id="resultTag" class="tag">处理中</span></div>
+        <div id="resultBody"></div>
+      </section>
+      <footer>PDKS 0.5.3 · File-first · Ontology-driven · Agent-native · Local-first<br/>此向导不收集密码、Token 或其他密钥。</footer>
+    </main>
+  </div>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

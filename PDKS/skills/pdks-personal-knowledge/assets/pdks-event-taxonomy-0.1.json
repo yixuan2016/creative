@@ -1,0 +1,440 @@
+{
+  "version": "0.1.0",
+  "scheme_iri": "urn:pdks:taxonomy:event:0.1#EventTypes",
+  "concept_iri_pattern": "urn:pdks:taxonomy:event:0.1#{event_code_with_dots_replaced_by_underscores}",
+  "principles": [
+    "event_type 是指向 SKOS Concept 的语义引用，不只是自由文本。",
+    "事件分类描述发生的事情；计划、任务和承诺单独建模为 ActionSpecification。",
+    "分类由 AI 自动推荐；无法确定时使用 other.unclassified，不丢弃原始内容。",
+    "domains 可多选；event_type 只指定一个主要分类。",
+    "代码稳定，标签可修订；新增类别必须说明定义、边界和版本。"
+  ],
+  "domains": [
+    {
+      "code": "work",
+      "label_zh": "工作",
+      "events": [
+        {
+          "code": "work.meeting.internal_meeting",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_meeting_internal_meeting",
+          "label_zh": "内部会议",
+          "definition": "组织内部围绕工作议题开展的会议"
+        },
+        {
+          "code": "work.meeting.one_on_one",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_meeting_one_on_one",
+          "label_zh": "一对一沟通",
+          "definition": "两人围绕工作、反馈或协作开展的沟通"
+        },
+        {
+          "code": "work.meeting.external_meeting",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_meeting_external_meeting",
+          "label_zh": "外部会议",
+          "definition": "与客户、供应商或合作方开展的会议"
+        },
+        {
+          "code": "work.communication.message_exchange",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_communication_message_exchange",
+          "label_zh": "工作消息沟通",
+          "definition": "通过即时消息开展的工作交流"
+        },
+        {
+          "code": "work.communication.email_exchange",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_communication_email_exchange",
+          "label_zh": "工作邮件往来",
+          "definition": "围绕工作事项的邮件沟通"
+        },
+        {
+          "code": "work.communication.phone_call",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_communication_phone_call",
+          "label_zh": "工作电话沟通",
+          "definition": "通过电话开展的工作沟通"
+        },
+        {
+          "code": "work.collaboration.coordination",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_collaboration_coordination",
+          "label_zh": "协同协调",
+          "definition": "协调分工、资源或进度"
+        },
+        {
+          "code": "work.collaboration.support",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_collaboration_support",
+          "label_zh": "工作支持",
+          "definition": "为他人提供或获得工作协助"
+        },
+        {
+          "code": "work.execution.work_started",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_execution_work_started",
+          "label_zh": "工作开始",
+          "definition": "某项具体工作实际开始"
+        },
+        {
+          "code": "work.execution.work_progressed",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_execution_work_progressed",
+          "label_zh": "工作推进",
+          "definition": "某项工作形成实质进展"
+        },
+        {
+          "code": "work.execution.work_completed",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_execution_work_completed",
+          "label_zh": "工作完成",
+          "definition": "某项工作或阶段性工作完成"
+        },
+        {
+          "code": "work.delivery.deliverable_submitted",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_delivery_deliverable_submitted",
+          "label_zh": "成果提交",
+          "definition": "正式提交工作成果"
+        },
+        {
+          "code": "work.delivery.presentation_delivered",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_delivery_presentation_delivered",
+          "label_zh": "工作汇报或演示",
+          "definition": "展示或讲解工作成果"
+        },
+        {
+          "code": "work.decision.decision_made",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_decision_decision_made",
+          "label_zh": "工作决策形成",
+          "definition": "工作场景中形成明确决策"
+        },
+        {
+          "code": "work.decision.decision_changed",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_decision_decision_changed",
+          "label_zh": "工作决策调整",
+          "definition": "既有工作决策被修改"
+        },
+        {
+          "code": "work.problem.problem_identified",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_problem_problem_identified",
+          "label_zh": "问题发现",
+          "definition": "识别影响工作推进的问题"
+        },
+        {
+          "code": "work.problem.problem_resolved",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_problem_problem_resolved",
+          "label_zh": "问题解决",
+          "definition": "工作问题得到解决"
+        },
+        {
+          "code": "work.customer.customer_feedback_received",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_customer_customer_feedback_received",
+          "label_zh": "客户反馈",
+          "definition": "收到客户对产品或服务的反馈"
+        },
+        {
+          "code": "work.customer.customer_issue_handled",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_customer_customer_issue_handled",
+          "label_zh": "客户问题处理",
+          "definition": "针对客户问题开展处理"
+        },
+        {
+          "code": "work.meeting.workshop",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_meeting_workshop",
+          "label_zh": "研讨或共创会",
+          "definition": "以共同分析、设计或产出为目标的工作坊"
+        },
+        {
+          "code": "work.approval.approval_granted",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_approval_approval_granted",
+          "label_zh": "审批通过",
+          "definition": "某项申请或成果获得正式批准"
+        },
+        {
+          "code": "work.approval.approval_rejected",
+          "iri": "urn:pdks:taxonomy:event:0.1#work_approval_approval_rejected",
+          "label_zh": "审批未通过",
+          "definition": "某项申请或成果未获批准"
+        }
+      ]
+    },
+    {
+      "code": "learning",
+      "label_zh": "学习",
+      "events": [
+        {
+          "code": "learning.reading.reading_session",
+          "iri": "urn:pdks:taxonomy:event:0.1#learning_reading_reading_session",
+          "label_zh": "阅读学习",
+          "definition": "阅读书籍、文章或资料"
+        },
+        {
+          "code": "learning.course.course_attended",
+          "iri": "urn:pdks:taxonomy:event:0.1#learning_course_course_attended",
+          "label_zh": "课程学习",
+          "definition": "参加线上或线下课程"
+        },
+        {
+          "code": "learning.training.training_attended",
+          "iri": "urn:pdks:taxonomy:event:0.1#learning_training_training_attended",
+          "label_zh": "培训活动",
+          "definition": "参加组织或个人安排的培训"
+        },
+        {
+          "code": "learning.practice.skill_practice",
+          "iri": "urn:pdks:taxonomy:event:0.1#learning_practice_skill_practice",
+          "label_zh": "技能练习",
+          "definition": "通过练习提升技能"
+        },
+        {
+          "code": "learning.research.research_session",
+          "iri": "urn:pdks:taxonomy:event:0.1#learning_research_research_session",
+          "label_zh": "研究活动",
+          "definition": "围绕问题开展资料收集和分析"
+        },
+        {
+          "code": "learning.mentoring.mentoring_session",
+          "iri": "urn:pdks:taxonomy:event:0.1#learning_mentoring_mentoring_session",
+          "label_zh": "请教或辅导",
+          "definition": "向他人请教或提供指导"
+        },
+        {
+          "code": "learning.assessment.assessment_completed",
+          "iri": "urn:pdks:taxonomy:event:0.1#learning_assessment_assessment_completed",
+          "label_zh": "学习评估",
+          "definition": "完成测验、考试或能力评估"
+        },
+        {
+          "code": "learning.sharing.knowledge_shared",
+          "iri": "urn:pdks:taxonomy:event:0.1#learning_sharing_knowledge_shared",
+          "label_zh": "知识分享",
+          "definition": "向他人分享知识或经验"
+        }
+      ]
+    },
+    {
+      "code": "thinking",
+      "label_zh": "思考",
+      "events": [
+        {
+          "code": "thinking.idea.idea_captured",
+          "iri": "urn:pdks:taxonomy:event:0.1#thinking_idea_idea_captured",
+          "label_zh": "灵感记录",
+          "definition": "捕捉值得研究或验证的想法"
+        },
+        {
+          "code": "thinking.question.question_raised",
+          "iri": "urn:pdks:taxonomy:event:0.1#thinking_question_question_raised",
+          "label_zh": "问题提出",
+          "definition": "提出需要回答或解决的问题"
+        },
+        {
+          "code": "thinking.analysis.analysis_performed",
+          "iri": "urn:pdks:taxonomy:event:0.1#thinking_analysis_analysis_performed",
+          "label_zh": "分析思考",
+          "definition": "对信息或问题进行系统分析"
+        },
+        {
+          "code": "thinking.hypothesis.hypothesis_formed",
+          "iri": "urn:pdks:taxonomy:event:0.1#thinking_hypothesis_hypothesis_formed",
+          "label_zh": "假设形成",
+          "definition": "提出尚待验证的解释"
+        },
+        {
+          "code": "thinking.reflection.reflection_completed",
+          "iri": "urn:pdks:taxonomy:event:0.1#thinking_reflection_reflection_completed",
+          "label_zh": "反思复盘",
+          "definition": "回顾经历并形成反思"
+        },
+        {
+          "code": "thinking.insight.insight_reached",
+          "iri": "urn:pdks:taxonomy:event:0.1#thinking_insight_insight_reached",
+          "label_zh": "重要认识形成",
+          "definition": "形成新的理解或洞察"
+        },
+        {
+          "code": "thinking.planning.planning_session",
+          "iri": "urn:pdks:taxonomy:event:0.1#thinking_planning_planning_session",
+          "label_zh": "规划思考",
+          "definition": "开展目标或路径规划"
+        }
+      ]
+    },
+    {
+      "code": "life",
+      "label_zh": "生活",
+      "events": [
+        {
+          "code": "life.family.family_activity",
+          "iri": "urn:pdks:taxonomy:event:0.1#life_family_family_activity",
+          "label_zh": "家庭活动",
+          "definition": "与家庭成员共同发生的活动"
+        },
+        {
+          "code": "life.travel.travel_started",
+          "iri": "urn:pdks:taxonomy:event:0.1#life_travel_travel_started",
+          "label_zh": "出行开始",
+          "definition": "一次出行实际开始"
+        },
+        {
+          "code": "life.travel.travel_completed",
+          "iri": "urn:pdks:taxonomy:event:0.1#life_travel_travel_completed",
+          "label_zh": "出行结束",
+          "definition": "一次出行实际结束"
+        },
+        {
+          "code": "life.household.household_activity",
+          "iri": "urn:pdks:taxonomy:event:0.1#life_household_household_activity",
+          "label_zh": "家庭事务",
+          "definition": "家庭生活中的事务处理"
+        },
+        {
+          "code": "life.social.social_activity",
+          "iri": "urn:pdks:taxonomy:event:0.1#life_social_social_activity",
+          "label_zh": "社交活动",
+          "definition": "非工作性质的社交活动"
+        },
+        {
+          "code": "life.personal.personal_milestone",
+          "iri": "urn:pdks:taxonomy:event:0.1#life_personal_personal_milestone",
+          "label_zh": "个人重要经历",
+          "definition": "对个人有意义的生活事件"
+        }
+      ]
+    },
+    {
+      "code": "relationship",
+      "label_zh": "人际关系",
+      "events": [
+        {
+          "code": "relationship.interaction.relationship_interaction",
+          "iri": "urn:pdks:taxonomy:event:0.1#relationship_interaction_relationship_interaction",
+          "label_zh": "人际互动",
+          "definition": "与他人发生有意义的交流"
+        },
+        {
+          "code": "relationship.support.support_given",
+          "iri": "urn:pdks:taxonomy:event:0.1#relationship_support_support_given",
+          "label_zh": "提供帮助",
+          "definition": "向他人提供支持"
+        },
+        {
+          "code": "relationship.support.support_received",
+          "iri": "urn:pdks:taxonomy:event:0.1#relationship_support_support_received",
+          "label_zh": "获得帮助",
+          "definition": "从他人处获得支持"
+        },
+        {
+          "code": "relationship.conflict.conflict_occurred",
+          "iri": "urn:pdks:taxonomy:event:0.1#relationship_conflict_conflict_occurred",
+          "label_zh": "冲突事件",
+          "definition": "发生意见冲突或关系摩擦"
+        },
+        {
+          "code": "relationship.change.relationship_changed",
+          "iri": "urn:pdks:taxonomy:event:0.1#relationship_change_relationship_changed",
+          "label_zh": "关系变化",
+          "definition": "重要关系状态发生变化"
+        }
+      ]
+    },
+    {
+      "code": "growth",
+      "label_zh": "个人成长",
+      "events": [
+        {
+          "code": "growth.goal.goal_set",
+          "iri": "urn:pdks:taxonomy:event:0.1#growth_goal_goal_set",
+          "label_zh": "目标设定",
+          "definition": "明确设定个人目标"
+        },
+        {
+          "code": "growth.goal.goal_reviewed",
+          "iri": "urn:pdks:taxonomy:event:0.1#growth_goal_goal_reviewed",
+          "label_zh": "目标回顾",
+          "definition": "检查目标进展并调整"
+        },
+        {
+          "code": "growth.milestone.milestone_reached",
+          "iri": "urn:pdks:taxonomy:event:0.1#growth_milestone_milestone_reached",
+          "label_zh": "阶段里程碑达成",
+          "definition": "达到个人成长节点"
+        },
+        {
+          "code": "growth.habit.habit_practiced",
+          "iri": "urn:pdks:taxonomy:event:0.1#growth_habit_habit_practiced",
+          "label_zh": "习惯实践",
+          "definition": "实际执行持续性习惯"
+        },
+        {
+          "code": "growth.capability.capability_demonstrated",
+          "iri": "urn:pdks:taxonomy:event:0.1#growth_capability_capability_demonstrated",
+          "label_zh": "能力实践",
+          "definition": "在真实场景应用能力"
+        }
+      ]
+    },
+    {
+      "code": "finance",
+      "label_zh": "个人财务",
+      "events": [
+        {
+          "code": "finance.income.income_received",
+          "iri": "urn:pdks:taxonomy:event:0.1#finance_income_income_received",
+          "label_zh": "收入到账",
+          "definition": "个人收入实际到账"
+        },
+        {
+          "code": "finance.expense.expense_incurred",
+          "iri": "urn:pdks:taxonomy:event:0.1#finance_expense_expense_incurred",
+          "label_zh": "发生支出",
+          "definition": "个人消费或支出发生"
+        },
+        {
+          "code": "finance.payment.bill_paid",
+          "iri": "urn:pdks:taxonomy:event:0.1#finance_payment_bill_paid",
+          "label_zh": "账单支付",
+          "definition": "完成账单支付"
+        },
+        {
+          "code": "finance.review.budget_reviewed",
+          "iri": "urn:pdks:taxonomy:event:0.1#finance_review_budget_reviewed",
+          "label_zh": "预算回顾",
+          "definition": "检查或调整个人预算"
+        }
+      ]
+    },
+    {
+      "code": "health",
+      "label_zh": "健康",
+      "events": [
+        {
+          "code": "health.activity.exercise_completed",
+          "iri": "urn:pdks:taxonomy:event:0.1#health_activity_exercise_completed",
+          "label_zh": "运动完成",
+          "definition": "完成一次身体锻炼"
+        },
+        {
+          "code": "health.appointment.appointment_attended",
+          "iri": "urn:pdks:taxonomy:event:0.1#health_appointment_appointment_attended",
+          "label_zh": "健康服务就诊",
+          "definition": "参加医疗或健康服务预约"
+        },
+        {
+          "code": "health.measurement.measurement_recorded",
+          "iri": "urn:pdks:taxonomy:event:0.1#health_measurement_measurement_recorded",
+          "label_zh": "健康测量记录",
+          "definition": "记录健康相关测量结果"
+        }
+      ]
+    },
+    {
+      "code": "other",
+      "label_zh": "其他或待分类",
+      "events": [
+        {
+          "code": "other.unclassified",
+          "iri": "urn:pdks:taxonomy:event:0.1#other_unclassified",
+          "label_zh": "待分类事件",
+          "definition": "暂时无法归类但应保留的事件"
+        },
+        {
+          "code": "other.custom_event",
+          "iri": "urn:pdks:taxonomy:event:0.1#other_custom_event",
+          "label_zh": "扩展事件",
+          "definition": "由个人或组织定义的扩展事件"
+        }
+      ]
+    }
+  ]
+}

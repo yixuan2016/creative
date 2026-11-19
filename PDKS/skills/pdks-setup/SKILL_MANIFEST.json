@@ -1,0 +1,51 @@
+{
+  "name": "pdks-setup",
+  "skill_version": "0.2.0",
+  "pdks_track": "0.5.3",
+  "bootstrap_engine": "0.2.0",
+  "development_stage": "transitional_skill_development",
+  "maturity": "experimental",
+  "files_count": 5,
+  "files": [
+    {
+      "path": "SKILL.md",
+      "size_bytes": 13138,
+      "sha256": "dd835d26c6459670c3feeed766187668ca34f13d58aa48ee1c1d923cb0eba925"
+    },
+    {
+      "path": "references/agent-adapters.md",
+      "size_bytes": 2433,
+      "sha256": "1c9cf908315da7f50f34b1d6c6d80daf1a9777ad0754b40c5ede3ec6d4efe9bd"
+    },
+    {
+      "path": "references/confirmation-policy.md",
+      "size_bytes": 942,
+      "sha256": "e92ad0ed4eb43efc600b86c9a88e27af2bb4f525d77e9b550c05cd94923cc685"
+    },
+    {
+      "path": "references/platform-prerequisites.md",
+      "size_bytes": 2013,
+      "sha256": "1a7a8afa427cbf05f84ad73c762fb49b4e51850ea7bf7a89141324aa5e1a9335"
+    },
+    {
+      "path": "scripts/pdks_setup.py",
+      "size_bytes": 17641,
+      "sha256": "e190c5df3ca895579b483e8b12bb9dca52055a983436bb0a80f701b2a77946c3"
+    }
+  ],
+  "version": "0.3.0",
+  "agent_bridge": "0.1.0",
+  "stage": "transitional_skill_development",
+  "entrypoint": "SKILL.md",
+  "primary_workflow": "Node-native MCP initialization; Python Capture Runtime is optional and separately approved.",
+  "capabilities": [
+    "native-doctor",
+    "native-plan",
+    "native-apply",
+    "native-verify",
+    "MCP Apps setup wizard",
+    "text-only fallback",
+    "optional Python Runtime onboarding",
+    "source permission separation"
+  ]
+}

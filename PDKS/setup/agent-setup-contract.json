@@ -1,0 +1,117 @@
+{
+  "contract_version": "0.3.0",
+  "product": "PDKS Agent-native Bootstrap",
+  "pdks_track": "0.5.3",
+  "stage": "transitional_skill_development",
+  "maturity": "experimental_preview",
+  "components": {
+    "agent_bridge": "0.2.0",
+    "native_bootstrap": "0.2.0",
+    "capture_runtime": "0.1.1_optional_python_runtime",
+    "file_store_adapter": "0.1.0_one_way_projection_preview",
+    "ontology": "0.2.1_frozen"
+  },
+  "operations": [
+    {
+      "id": "pdks_native_doctor",
+      "mutation": false,
+      "approval": "none",
+      "purpose": "Read-only Node.js, path, target directory and bundled Ontology checks; no Python required."
+    },
+    {
+      "id": "pdks_native_plan",
+      "mutation": false,
+      "approval": "none",
+      "purpose": "Generate deterministic Node-native File-first initialization plan and SHA-256 hash."
+    },
+    {
+      "id": "pdks_native_apply",
+      "mutation": true,
+      "approval": "exact_plan_hash + explicit_confirmation_phrase + unencrypted_storage_acknowledgement",
+      "purpose": "Create user config, Markdown Vault, starter templates and Ontology 0.2.1 assets."
+    },
+    {
+      "id": "pdks_native_verify",
+      "mutation": false,
+      "approval": "none",
+      "purpose": "Verify Vault manifest, Ontology SHA-256 hashes and standard folder structure."
+    },
+    {
+      "id": "pdks_setup_wizard",
+      "mutation": false,
+      "approval": "none",
+      "purpose": "Render optional MCP Apps setup panel; text-only MCP workflow remains available."
+    },
+    {
+      "id": "pdks_vault_status",
+      "mutation": false,
+      "approval": "none",
+      "purpose": "Read Vault manifest metadata only."
+    },
+    {
+      "id": "pdks_agent_config_preview",
+      "mutation": false,
+      "approval": "none",
+      "purpose": "Generate MCP config preview without editing Agent configuration."
+    },
+    {
+      "id": "pdks_bootstrap_apply",
+      "mutation": true,
+      "approval": "separate_legacy_runtime_plan_and_explicit_approval",
+      "purpose": "Legacy Python Capture Runtime install; not part of native Vault initialization."
+    }
+  ],
+  "forbidden_without_separate_approval": [
+    "install_python_capture_runtime",
+    "install_or_login_dws",
+    "dingtalk_oauth_login",
+    "subscribe_data_sources",
+    "historical_import",
+    "register_background_service",
+    "modify_agent_configuration_files",
+    "cloud_backup",
+    "cloud_sync",
+    "delete_or_overwrite_user_data",
+    "collect_passwords_or_tokens_through_chat_or_form"
+  ],
+  "default_privileges": "current_user_only",
+  "administrator_required": false,
+  "data_collection_enabled_by_default": false,
+  "cloud_sync_enabled_by_default": false,
+  "encryption_at_rest": "not_available_do_not_store_sensitive_data",
+  "native_initialization_network_dependencies": [],
+  "agent_bridge_network_dependencies": [
+    "npm_registry_for_mcp_sdk_and_mcp_apps_dependencies"
+  ],
+  "capture_runtime_network_dependencies": [
+    "PyPI_when_optional_python_runtime_is_installed"
+  ],
+  "interaction_surfaces": [
+    "MCP_tools",
+    "MCP_Apps_interactive_setup_wizard_when_supported",
+    "MCP_Elicitation_when_supported",
+    "Agent_Skills_natural_language_fallback",
+    "CLI_fallback"
+  ],
+  "path_safety": [
+    "inside_current_user_home",
+    "resolve_existing_symlinks",
+    "reject_symlink_escape",
+    "reject_equal_or_nested_install_and_vault_paths",
+    "reject_nonempty_unmanaged_directories"
+  ],
+  "idempotency": [
+    "preserve_user_edited_markdown",
+    "do_not_overwrite_existing_user_files",
+    "verify_protected_ontology_assets_by_sha256"
+  ],
+  "initialization_does_not": [
+    "install_python_runtime",
+    "connect_any_data_source",
+    "start_capture",
+    "import_history",
+    "enable_background_service",
+    "enable_cloud_sync",
+    "edit_agent_host_config"
+  ]
+}

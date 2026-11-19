@@ -1,0 +1,90 @@
+{
+  "package": "PDKS 0.5.2.2.1 Agent-native Bootstrap Safety Patch",
+  "pdks_track": "0.5.2.2",
+  "development_stage": "transitional_skill_development",
+  "maturity": "experimental_preview",
+  "agent_bridge": "0.1.0",
+  "python_bootstrap_engine": "0.2.0",
+  "capture_runtime": "0.1.1",
+  "file_store_adapter": "0.1.0",
+  "setup_skill": "0.2.0",
+  "personal_knowledge_skill": "0.3.4",
+  "pdks_standard": "0.1.0",
+  "record_schema": "0.1.x",
+  "ontology": {
+    "version": "0.2.1",
+    "runtime_terms_referenced": 98,
+    "runtime_terms_declared": 98,
+    "controlled_vocabulary_codes": 67,
+    "event_taxonomy_codes": 72,
+    "status": "valid"
+  },
+  "event_taxonomy": "0.1.0",
+  "runtime_install_prerequisites": {
+    "node": "22.12+",
+    "python": "3.10+",
+    "pip": true
+  },
+  "mcp": {
+    "transport": "local_stdio",
+    "sdk": "@modelcontextprotocol/server 2.x",
+    "apps": "@modelcontextprotocol/ext-apps 2.x",
+    "elicitation": "optional_host_capability",
+    "mcp_app_ui": "source_included_build_required"
+  },
+  "storage": {
+    "file_vault": "markdown+jsonl+sha256_attachments",
+    "operational_db": "sqlite",
+    "encryption_at_rest": false,
+    "cloud_sync_default": false
+  },
+  "test_summary": {
+    "total": 153,
+    "passed": 151,
+    "skipped": 2,
+    "failed": 0
+  },
+  "stage_validator": {
+    "passed": 12,
+    "total": 12,
+    "status": "valid"
+  },
+  "ontology_runtime_terms": {
+    "referenced": 98,
+    "declared": 98,
+    "status": "valid"
+  },
+  "ontology_manifest": {
+    "verified": 8,
+    "declared": 8,
+    "status": "valid"
+  },
+  "node_doctor": {
+    "checks_passed": 9,
+    "checks_total": 9,
+    "status": "ready"
+  },
+  "mcp_sdk_dependency_install": "not_run_registry_timeout",
+  "mcp_apps_build": "not_run_registry_timeout",
+  "mcp_host_validation": "not_run",
+  "full_bootstrap_apply": "not_run",
+  "sensitive_data_allowed": false,
+  "agent_bridge_version": "0.1.1",
+  "node": {
+    "version": "22.16.0",
+    "minimum": "22.12.0",
+    "doctor": "ready",
+    "checks_passed": 9
+  },
+  "python": {
+    "version": "3.13.5",
+    "minimum": "3.10",
+    "required": true
+  },
+  "mcp_sdk_install_and_host_validation": "not_executed",
+  "new_security_controls": [
+    "symlink-aware path canonicalization",
+    "reject install-vault overlap"
+  ],
+  "encryption_at_rest": "not_available_do_not_use_sensitive_data"
+}

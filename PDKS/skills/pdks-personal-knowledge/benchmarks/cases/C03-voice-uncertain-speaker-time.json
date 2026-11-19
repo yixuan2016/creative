@@ -1,0 +1,32 @@
+{
+  "case_id": "C03-voice-uncertain-speaker-time",
+  "title": "语音转写中的不确定时间与说话人",
+  "scenario": "voice_transcript",
+  "input_text": "转写片段：‘我觉得下周可能要把那个方案再看一下。’说话人标签缺失，录音文件没有可用的创建时间。",
+  "expected_record_types": [
+    "assertion"
+  ],
+  "required_terms": [
+    "方案"
+  ],
+  "forbidden_terms": [
+    "确认由张总负责",
+    "2026-11-26T"
+  ],
+  "checks": {
+    "require_source_refs": true,
+    "require_owner_only": true,
+    "require_uncertainty": true,
+    "forbid_same_as": false,
+    "no_completed_action_from_plan": true
+  },
+  "review_focus": [
+    "是否标记说话人未知",
+    "是否不伪造精确时间",
+    "是否把‘可能’保留为不确定表达，不虚构成确定任务"
+  ],
+  "critical_failures": [
+    "编造说话人身份",
+    "编造录音时间或确定截止时间"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "pdks_version": "0.1.0",
+  "object_id": "urn:pdks:example:voice-meeting:context:001",
+  "object_type": "personal_context",
+  "created_at": "2026-11-19T10:00:00+08:00",
+  "updated_at": "2026-11-19T10:00:00+08:00",
+  "owner_ref": "urn:pdks:example:voice-meeting:entity:person:owner-001",
+  "domains": [
+    "work",
+    "thinking"
+  ],
+  "provenance": {
+    "created_by": "urn:pdks:agent:ingestion-001",
+    "source_refs": [
+      "urn:pdks:example:voice-meeting:event:meeting:001",
+      "urn:pdks:example:voice-meeting:knowledge:001"
+    ]
+  },
+  "governance": {
+    "sensitivity": "personal_work",
+    "access_scope": "owner_only"
+  },
+  "lifecycle": {
+    "status": "active",
+    "version": 1
+  },
+  "payload": {
+    "context_type": "current_focus",
+    "subject_ref": "urn:pdks:example:voice-meeting:entity:person:owner-001",
+    "value": "持续研究个人数据采集、知识沉淀与个人数智底座。",
+    "verification_status": "inferred",
+    "confidence_level": "medium",
+    "evidence_refs": [
+      "urn:pdks:example:voice-meeting:event:meeting:001",
+      "urn:pdks:example:voice-meeting:knowledge:001"
+    ],
+    "review_policy": "suggest_update"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "pdks_version": "0.1.0",
+  "object_id": "urn:pdks:example:daily-work:evidence:audio:segment-001",
+  "object_type": "evidence_segment",
+  "created_at": "2026-11-19T10:00:00+08:00",
+  "updated_at": "2026-11-19T10:00:00+08:00",
+  "owner_ref": "urn:pdks:example:daily-work:entity:person:owner-001",
+  "domains": [
+    "work"
+  ],
+  "provenance": {
+    "created_by": "urn:pdks:agent:ingestion-001",
+    "source_refs": [
+      "urn:pdks:example:daily-work:source:audio:meeting-001"
+    ]
+  },
+  "governance": {
+    "sensitivity": "personal_work",
+    "access_scope": "owner_only"
+  },
+  "lifecycle": {
+    "status": "active",
+    "version": 1
+  },
+  "payload": {
+    "source_ref": "urn:pdks:example:daily-work:source:audio:meeting-001",
+    "locator": {
+      "kind": "audio",
+      "start_ms": 720000,
+      "end_ms": 900000
+    },
+    "excerpt": "现有录音工具没有融入工作生态，需要降低信息采集门槛。",
+    "modality": "audio",
+    "transcript_status": "machine_generated",
+    "recognition_quality": "medium"
+  }
+}

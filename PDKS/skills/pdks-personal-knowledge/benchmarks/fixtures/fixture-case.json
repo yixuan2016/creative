@@ -1,0 +1,22 @@
+{
+  "case_id": "FIXTURE-STRUCTURAL-01",
+  "title": "Evaluator unit fixture",
+  "scenario": "test",
+  "input_text": "Synthetic evaluator smoke fixture.",
+  "expected_record_types": [
+    "entity"
+  ],
+  "required_terms": [
+    "Example Person"
+  ],
+  "forbidden_terms": [
+    "Forbidden"
+  ],
+  "checks": {
+    "require_source_refs": true,
+    "require_owner_only": true,
+    "require_uncertainty": false,
+    "forbid_same_as": false,
+    "no_completed_action_from_plan": false
+  }
+}

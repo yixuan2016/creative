@@ -1,0 +1,25 @@
+@prefix pdks: <urn:pdks:ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:pdks:ontology:agent-runtime:0.2.1> a owl:Ontology ;
+  owl:versionInfo "0.2.1" ;
+  owl:imports <urn:pdks:ontology:0.2.1>, <urn:pdks:ontology:governance:0.2.1> ;
+  rdfs:label "PDKS Agent Runtime Ontology 0.2.1"@en, "PDKS Agent 运行本体 0.2.1"@zh .
+
+pdks:AgentActionProposal a owl:Class ; rdfs:subClassOf pdks:InformationObject ;
+  rdfs:label "Agent 动作提案"@zh ;
+  rdfs:comment "An external or state-changing action proposed by an agent; it is not executable until explicit policy and owner approval are satisfied."@en .
+pdks:AgentExecution a owl:Class ; rdfs:subClassOf prov:Activity ; rdfs:label "Agent 执行活动"@zh .
+pdks:AgentSession a owl:Class ; rdfs:subClassOf prov:Activity ; rdfs:label "Agent 会话"@zh .
+
+pdks:proposedBy a owl:ObjectProperty ; rdfs:domain pdks:AgentActionProposal ; rdfs:range pdks:SoftwareAgent ; rdfs:label "提案 Agent"@zh .
+pdks:approvedBy a owl:ObjectProperty ; rdfs:domain pdks:AgentActionProposal ; rdfs:range pdks:Person ; rdfs:label "批准人"@zh .
+pdks:executedBy a owl:ObjectProperty ; rdfs:domain pdks:AgentActionProposal ; rdfs:range pdks:SoftwareAgent ; rdfs:label "执行 Agent"@zh .
+pdks:requiresApproval a owl:DatatypeProperty ; rdfs:domain pdks:AgentActionProposal ; rdfs:range xsd:boolean ; rdfs:label "是否需要批准"@zh .
+pdks:approvalStatus a owl:DatatypeProperty ; rdfs:domain pdks:AgentActionProposal ; rdfs:range xsd:string ; rdfs:label "审批状态"@zh .
+pdks:executionStatus a owl:DatatypeProperty ; rdfs:domain pdks:AgentActionProposal ; rdfs:range xsd:string ; rdfs:label "执行状态"@zh .
+pdks:actionTarget a owl:DatatypeProperty ; rdfs:domain pdks:AgentActionProposal ; rdfs:range xsd:string ; rdfs:label "动作目标"@zh .
+pdks:actionPayloadHash a owl:DatatypeProperty ; rdfs:domain pdks:AgentActionProposal ; rdfs:range xsd:string ; rdfs:label "动作载荷哈希"@zh .

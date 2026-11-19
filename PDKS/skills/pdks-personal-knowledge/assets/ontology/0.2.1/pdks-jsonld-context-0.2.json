@@ -1,0 +1,38 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "pdks": "urn:pdks:ontology#",
+    "pdksv": "urn:pdks:vocabulary:0.2#",
+    "pdtax": "urn:pdks:taxonomy:event:0.1#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "time": "http://www.w3.org/2006/time#",
+    "object_id": {
+      "@id": "@id"
+    },
+    "object_type": {
+      "@id": "pdks:objectTypeCode"
+    },
+    "pdks_version": {
+      "@id": "pdks:recordSchemaVersion"
+    },
+    "owner_ref": {
+      "@id": "pdks:ownedBy",
+      "@type": "@id"
+    },
+    "domains": {
+      "@id": "pdks:hasDomain",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "created_at": {
+      "@id": "dcterms:created",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "updated_at": {
+      "@id": "dcterms:modified",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "dcterms": "http://purl.org/dc/terms/"
+  }
+}

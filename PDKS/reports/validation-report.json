@@ -1,0 +1,44 @@
+{
+  "release": "PDKS Agent Skill 0.2.0",
+  "skill_version": "0.2.0",
+  "pdks_standard_version": "0.1.0",
+  "unit_tests": {
+    "status": "passed",
+    "tests": 5
+  },
+  "records": {
+    "status": "valid",
+    "count": 29,
+    "unique_ids": 29,
+    "errors": 0,
+    "warnings": 0,
+    "strict_references": true
+  },
+  "taxonomy": {
+    "domains": 9,
+    "event_concepts": 62
+  },
+  "ontology": {
+    "turtle_syntax": "passed",
+    "files_parsed": 4,
+    "triples": 1028,
+    "shacl_runtime": "not_run"
+  },
+  "tested_capabilities": [
+    "record validation",
+    "strict reference validation",
+    "keyword search",
+    "structured daily review",
+    "bundle build",
+    "SHA-256 bundle verification",
+    "target-neutral migration plan",
+    "Python script compilation"
+  ],
+  "limitations": [
+    "SHACL runtime validation was not run; Turtle syntax parsing is not SHACL conformance.",
+    "No live Agent Skills installation/discovery test was run against third-party agents.",
+    "No live DingTalk, voice recorder, email, calendar or database connector was configured.",
+    "No real-world extraction accuracy or cross-model consistency benchmark was run.",
+    "The migration planner prepares a target-neutral plan; it does not import into a destination system."
+  ]
+}

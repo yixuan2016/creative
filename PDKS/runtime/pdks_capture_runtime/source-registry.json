@@ -1,0 +1,275 @@
+{
+  "registry_version": "0.1.1",
+  "status": "design_registry_not_connector_inventory",
+  "default_policy": "deny_automatic_capture_without_active_consent",
+  "categories": [
+    {
+      "source_kind": "manual",
+      "label": "手工输入与用户上传",
+      "domains": [
+        "work",
+        "learning",
+        "thinking",
+        "life",
+        "relationship",
+        "growth",
+        "finance",
+        "health",
+        "other"
+      ],
+      "capture_methods": [
+        "manual_upload"
+      ],
+      "implementation": "available_local"
+    },
+    {
+      "source_kind": "dingtalk",
+      "label": "钉钉",
+      "domains": [
+        "work"
+      ],
+      "capture_methods": [
+        "manual_upload",
+        "api_import",
+        "system_sync"
+      ],
+      "implementation": "dws_cli_connector_reference_0.1.0",
+      "connector_id": "pdks.dingtalk.dws",
+      "connector_version": "0.1.0",
+      "access_mode": "official_cli_read_only",
+      "realtime_events": "prototype_local_not_live_verified",
+      "historical_backfill": "schema_discovery_only_not_implemented",
+      "limitations": [
+        "Requires installed official DWS CLI and user OAuth login",
+        "Requires tenant CLI access and event subscription enablement",
+        "Real account and tenant event delivery not yet verified",
+        "Historical pagination/backfill not implemented",
+        "Media download and full minutes transcription enrichment not implemented"
+      ],
+      "consent_required": true,
+      "default_capture_enabled": false
+    },
+    {
+      "source_kind": "wechat",
+      "label": "微信",
+      "domains": [
+        "work",
+        "life",
+        "relationship"
+      ],
+      "capture_methods": [
+        "manual_upload",
+        "api_import",
+        "system_sync"
+      ],
+      "implementation": "manual_export_only"
+    },
+    {
+      "source_kind": "wecom",
+      "label": "企业微信",
+      "domains": [
+        "work"
+      ],
+      "capture_methods": [
+        "manual_upload",
+        "api_import",
+        "system_sync"
+      ],
+      "implementation": "manual_export_only"
+    },
+    {
+      "source_kind": "slack",
+      "label": "Slack",
+      "domains": [
+        "work"
+      ],
+      "capture_methods": [
+        "manual_upload",
+        "api_import",
+        "system_sync"
+      ],
+      "implementation": "manual_export_only"
+    },
+    {
+      "source_kind": "email",
+      "label": "邮件",
+      "domains": [
+        "work",
+        "life"
+      ],
+      "capture_methods": [
+        "manual_upload",
+        "api_import",
+        "system_sync"
+      ],
+      "implementation": "manual_upload_supported"
+    },
+    {
+      "source_kind": "calendar",
+      "label": "日历",
+      "domains": [
+        "work",
+        "life"
+      ],
+      "capture_methods": [
+        "manual_upload",
+        "api_import",
+        "system_sync"
+      ],
+      "implementation": "manual_upload_supported"
+    },
+    {
+      "source_kind": "cloud_docs",
+      "label": "云文档与知识库",
+      "domains": [
+        "work",
+        "learning",
+        "thinking"
+      ],
+      "capture_methods": [
+        "manual_upload",
+        "api_import",
+        "system_sync"
+      ],
+      "implementation": "manual_upload_supported"
+    },
+    {
+      "source_kind": "browser",
+      "label": "网页与浏览器",
+      "domains": [
+        "work",
+        "learning",
+        "thinking",
+        "life"
+      ],
+      "capture_methods": [
+        "manual_upload",
+        "api_import"
+      ],
+      "implementation": "manual_clipboard_or_file"
+    },
+    {
+      "source_kind": "task_system",
+      "label": "任务与项目管理",
+      "domains": [
+        "work",
+        "life"
+      ],
+      "capture_methods": [
+        "manual_upload",
+        "api_import",
+        "system_sync"
+      ],
+      "implementation": "manual_export_only"
+    },
+    {
+      "source_kind": "crm",
+      "label": "CRM",
+      "domains": [
+        "work"
+      ],
+      "capture_methods": [
+        "manual_upload",
+        "api_import",
+        "system_sync"
+      ],
+      "implementation": "future_adapter"
+    },
+    {
+      "source_kind": "erp",
+      "label": "ERP与业务系统",
+      "domains": [
+        "work"
+      ],
+      "capture_methods": [
+        "manual_upload",
+        "api_import",
+        "system_sync"
+      ],
+      "implementation": "future_adapter"
+    },
+    {
+      "source_kind": "microphone",
+      "label": "麦克风与录音设备",
+      "domains": [
+        "work",
+        "life"
+      ],
+      "capture_methods": [
+        "device_capture"
+      ],
+      "implementation": "not_implemented_default_off"
+    },
+    {
+      "source_kind": "desktop_activity",
+      "label": "桌面活动",
+      "domains": [
+        "work"
+      ],
+      "capture_methods": [
+        "device_capture"
+      ],
+      "implementation": "not_implemented_default_off"
+    },
+    {
+      "source_kind": "camera",
+      "label": "照片与摄像头",
+      "domains": [
+        "work",
+        "life"
+      ],
+      "capture_methods": [
+        "device_capture"
+      ],
+      "implementation": "not_implemented_default_off"
+    },
+    {
+      "source_kind": "location",
+      "label": "位置与移动轨迹",
+      "domains": [
+        "life"
+      ],
+      "capture_methods": [
+        "device_capture"
+      ],
+      "implementation": "not_implemented_default_off"
+    },
+    {
+      "source_kind": "wearable",
+      "label": "穿戴设备",
+      "domains": [
+        "life",
+        "health"
+      ],
+      "capture_methods": [
+        "api_import",
+        "device_capture"
+      ],
+      "implementation": "not_implemented_default_off"
+    },
+    {
+      "source_kind": "health",
+      "label": "健康数据",
+      "domains": [
+        "health"
+      ],
+      "capture_methods": [
+        "api_import",
+        "manual_upload"
+      ],
+      "implementation": "future_adapter_explicit_opt_in"
+    },
+    {
+      "source_kind": "finance",
+      "label": "个人财务数据",
+      "domains": [
+        "finance"
+      ],
+      "capture_methods": [
+        "api_import",
+        "manual_upload"
+      ],
+      "implementation": "future_adapter_explicit_opt_in"
+    }
+  ]
+}
