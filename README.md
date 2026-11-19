@@ -41,7 +41,9 @@
 - [OpenAPI 3.1 接口草案](openapi/ads-work-context-v0.1.yaml)
 - [项目交付模拟数据](examples/project-delivery-seed-data.json)
 - [Python 最小认知引擎](prototype/ads_context_engine.py)
-- [原型自动化测试](prototype/test_ads_context_engine.py)
+- [原型行为测试](prototype/test_ads_context_engine.py)
+- [Schema 合同测试](prototype/test_contract_schemas.py)
+- [开发测试依赖](requirements-dev.txt)
 - [原型运行说明](prototype/README.md)
 - [GitHub Actions 测试工作流](.github/workflows/ads-context-prototype.yml)
 
