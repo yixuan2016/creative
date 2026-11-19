@@ -1,4 +1,4 @@
-name: ADS Work Context, Capability and Ontology Tests
+name: ADS Personal OS, Work Context, Capability and Ontology Tests
 
 on:
   push:
@@ -10,6 +10,10 @@ on:
       - "examples/ads-capability-project-risk-triage-v0.1.json"
       - "schemas/ads-work-ontology-v0.1.schema.json"
       - "schemas/ads-personal-context-event-v0.1.schema.json"
+      - "schemas/ads-personal-*.schema.json"
+      - "examples/ads-personal-memory-loop-v0.1.json"
+      - "docs/09-个人数智底座的持续记忆事件账本与自主智能体架构研究.md"
+      - "docs/09-个人数智底座的持续记忆事件账本与自主智能体架构研究.html"
       - "ontologies/**"
       - "examples/ads-personal-to-enterprise-event-projection-v0.1.json"
       - "pilot/工作本体与事件映射评估模板.csv"
