@@ -136,7 +136,7 @@
         "properties": {
           "class_id": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9_.-]*$"
+            "pattern": "^[a-z][A-Za-z0-9_.-]*$"
           },
           "namespace": {
             "type": "string",
