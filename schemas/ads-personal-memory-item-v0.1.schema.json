@@ -306,5 +306,68 @@
     "extensions": {
       "type": "object"
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "sharing_policy": {
+            "properties": {
+              "shareable": {
+                "const": true
+              }
+            },
+            "required": [
+              "shareable"
+            ]
+          }
+        },
+        "required": [
+          "sharing_policy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "sharing_policy": {
+            "properties": {
+              "authorization_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "authorized_purposes": {
+                "minItems": 1
+              },
+              "expires_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "classification": {
+            "const": "personal_sensitive"
+          }
+        },
+        "required": [
+          "classification"
+        ]
+      },
+      "then": {
+        "properties": {
+          "derivation": {
+            "properties": {
+              "human_review_required": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }
