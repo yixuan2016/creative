@@ -126,7 +126,7 @@ class PersonalAssistantOSPrototypeTests(unittest.TestCase):
     def test_frontend_explains_demo_boundary(self):
         self.assertIn("不连接真实钉钉", self.index)
         self.assertIn("模拟", self.index)
-        self.assertIn("没有执行真实写入", self.app)
+        self.assertIn("演示环境没有执行外部操作", self.app)
 
     def test_required_interactions_are_implemented(self):
         for action in (
