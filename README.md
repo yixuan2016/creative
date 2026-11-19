@@ -196,3 +196,17 @@
 核心议题：SQLite 本地持久化、owner 分区、revision 乐观并发、幂等写入、来源撤回传播、元数据追加审计、PDKS Event / Knowledge / Personal Context / Action 到 ADS Event Ledger / Memory / Intent 的保守映射。设备与连接器采集必须通过可信授权门禁；Agent 只能导入候选 Memory / Intent；PDKS Action 不自动创建 Agent Action Proposal；个人侧默认 personal_only。
 
 本阶段是单机本地参考原型，不代表已具备数据库加密、身份认证、正式授权服务、钉钉/录音连接器、多端同步或物理删除能力。当前分支先同步设计文档与 HTML；可执行原型源码和测试随 PDKS × ADS Runtime 0.3.0 独立开发包交付，待评审后再逐文件合入本仓库 prototype/。
+
+
+### 专题 13：PDKS 0.4.0 Ontology 优先的个人数智底座架构
+
+**从记录结构标准升级为可执行的个人数据语义契约**
+
+- [Ontology 优先架构与运行时设计（Markdown）](docs/13-PDKS_0.4.0_Ontology优先架构与运行时设计.md)
+- [Ontology 优先架构图文阅读版（HTML）](docs/13-PDKS_0.4.0_Ontology优先架构与运行时设计.html)
+
+核心判断：Ontology 定义数据意义；Taxonomy / SKOS 定义受控概念；JSON Schema 定义记录结构；SHACL 定义图关系约束；SQLite 是本地权威存储；RDF 是可重建语义投影；Agent 负责理解和使用数据。
+
+本阶段保持 PDKS Record Schema 0.1.x 兼容，将 Ontology 升级至 0.2.0，Runtime 升级至 0.4.0。采用稳定术语命名空间、旧术语等价桥接、owner-scoped RDF projection、版本化记录和可信 consent-reference 门禁。自动化测试 20/20 通过；SHACL runtime 尚未执行，生产级加密、身份认证、连接器和多端同步仍待实现。
+
+本分支同步研究文档与图文阅读版；可执行运行时、Ontology 资源、Skill 和测试随 PDKS 0.4.0 完整开发包交付，待评审后再逐文件合入仓库 prototype / ontologies / skills。
