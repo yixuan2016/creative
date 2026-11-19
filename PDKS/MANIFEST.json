@@ -10,7 +10,7 @@
   "capture_runtime": "0.1.1_optional_python",
   "file_store_adapter": "0.1.0_one_way_projection_preview",
   "dws_connector": "0.1.0_live_tenant_not_verified",
-  "ontology": "0.2.1_frozen",
+  "ontology": "0.2.1_frozen_with_non_breaking_conformance_corrections",
   "default_initialization": "node_native_file_first_no_python_required",
   "data_collection_enabled_by_default": false,
   "cloud_sync_enabled_by_default": false,
@@ -110,8 +110,8 @@
     },
     {
       "path": "RELEASE_NOTES_0.5.3-preview.md",
-      "size_bytes": 1883,
-      "sha256": "0ef79f501d2f588e1c96a1f05254b3b9841f800aaba5e46df5c65edc2875b976"
+      "size_bytes": 2561,
+      "sha256": "cfa26e1fe41675bf5eecec988de8fa4a3cd57b8ee468d8d9848371e7a18fcea9"
     },
     {
       "path": "ROADMAP.md",
@@ -1160,13 +1160,13 @@
     },
     {
       "path": "skills/pdks-personal-knowledge/assets/ontology/0.2.1/pdks-core-ontology-0.2.ttl",
-      "size_bytes": 23017,
-      "sha256": "5899066d9f334a8124aeff98489c759d69fa36093dc2f371a6da110d50f2adc8"
+      "size_bytes": 23025,
+      "sha256": "f18a092bbf298bf4ddc9deba5bc86134e82f436106a84081ac37010951890aa4"
     },
     {
       "path": "skills/pdks-personal-knowledge/assets/ontology/0.2.1/pdks-core-shapes-0.2.ttl",
-      "size_bytes": 6708,
-      "sha256": "1eb77c0540a50308e3410d72ef96213ab5c302f9fbe1620693ac5c2ee839888d"
+      "size_bytes": 6711,
+      "sha256": "c8e759ab70cee2ee73a4326ff89a5de292430e50a9957df064ae049b6bf98970"
     },
     {
       "path": "skills/pdks-personal-knowledge/assets/ontology/0.2.1/pdks-core-vocabularies-0.2.ttl",
@@ -1575,8 +1575,8 @@
     },
     {
       "path": "skills/pdks-personal-knowledge/examples/scenarios/voice-meeting/personal-context.json",
-      "size_bytes": 1175,
-      "sha256": "620e33cb8e802304a992633d8f603ef21fd966dbfad4dbe0cd4a409d38fec50d"
+      "size_bytes": 1130,
+      "sha256": "1dc8fbd5a72e39f20511d1f083de2470d42bad2efc37cb44a5f96470501943e4"
     },
     {
       "path": "skills/pdks-personal-knowledge/examples/scenarios/voice-meeting/relationship-derived-from.json",
