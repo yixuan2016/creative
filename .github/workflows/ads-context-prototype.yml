@@ -1,4 +1,4 @@
-name: ADS Work Context and Capability Asset Tests
+name: ADS Work Context, Capability and Ontology Tests
 
 on:
   push:
@@ -8,6 +8,13 @@ on:
       - "schemas/ads-work-context-v0.1.schema.json"
       - "schemas/ads-capability-asset-v0.1.schema.json"
       - "examples/ads-capability-project-risk-triage-v0.1.json"
+      - "schemas/ads-work-ontology-v0.1.schema.json"
+      - "schemas/ads-personal-context-event-v0.1.schema.json"
+      - "ontologies/**"
+      - "examples/ads-personal-to-enterprise-event-projection-v0.1.json"
+      - "pilot/工作本体与事件映射评估模板.csv"
+      - "docs/08-企业工作本体与事件驱动的个人企业领域协同标准研究.md"
+      - "docs/08-企业工作本体与事件驱动的个人企业领域协同标准研究.html"
       - "capabilities/**"
       - "requirements-dev.txt"
       - ".github/workflows/ads-context-prototype.yml"
@@ -18,6 +25,13 @@ on:
       - "examples/ads-capability-project-risk-triage-v0.1.json"
       - "schemas/ads-work-context-v0.1.schema.json"
       - "schemas/ads-capability-asset-v0.1.schema.json"
+      - "schemas/ads-work-ontology-v0.1.schema.json"
+      - "schemas/ads-personal-context-event-v0.1.schema.json"
+      - "ontologies/**"
+      - "examples/ads-personal-to-enterprise-event-projection-v0.1.json"
+      - "pilot/工作本体与事件映射评估模板.csv"
+      - "docs/08-企业工作本体与事件驱动的个人企业领域协同标准研究.md"
+      - "docs/08-企业工作本体与事件驱动的个人企业领域协同标准研究.html"
       - "capabilities/**"
       - "requirements-dev.txt"
       - ".github/workflows/ads-context-prototype.yml"
