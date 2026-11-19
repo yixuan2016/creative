@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ads/schemas/ads-personal-assistant-daily-brief-v0.1.schema.json",
+  "title": "ADS Personal Assistant Daily Brief",
+  "description": "A user-facing daily brief assembled from authorized personal context. This is a presentation contract, not a new source of truth.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "brief_id",
+    "subject_ref",
+    "generated_at",
+    "timezone",
+    "summary",
+    "focus_items",
+    "upcoming",
+    "attention_items",
+    "pending_confirmations",
+    "suggestions",
+    "source_summary",
+    "policy"
+  ],
+  "properties": {
+    "brief_id": { "type": "string", "minLength": 1 },
+    "subject_ref": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "timezone": { "type": "string", "minLength": 1 },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["headline", "narrative", "no_important_change"],
+      "properties": {
+        "headline": { "type": "string" },
+        "narrative": { "type": "string" },
+        "no_important_change": { "type": "boolean" }
+      }
+    },
+    "focus_items": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["item_id", "title", "reason", "priority", "source_refs"],
+        "properties": {
+          "item_id": { "type": "string" },
+          "title": { "type": "string" },
+          "reason": { "type": "string" },
+          "priority": { "enum": ["low", "normal", "high", "critical"] },
+          "source_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1, "uniqueItems": true },
+          "intent_ref": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "upcoming": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["item_id", "title", "start_at", "end_at", "source_refs"],
+        "properties": {
+          "item_id": { "type": "string" },
+          "title": { "type": "string" },
+          "start_at": { "type": "string", "format": "date-time" },
+          "end_at": { "type": ["string", "null"], "format": "date-time" },
+          "source_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "location_label": { "type": ["string", "null"] },
+          "status": { "enum": ["scheduled", "tentative", "changed", "cancelled"] }
+        }
+      }
+    },
+    "attention_items": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["item_id", "category", "title", "description", "priority", "confidence", "assertion_status", "source_refs"],
+        "properties": {
+          "item_id": { "type": "string" },
+          "category": { "enum": ["commitment_due", "reply_waiting", "schedule_conflict", "task_blocked", "state_change", "other"] },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "priority": { "enum": ["low", "normal", "high", "critical"] },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "assertion_status": { "enum": ["confirmed", "observed", "inferred", "disputed", "unknown"] },
+          "due_at": { "type": ["string", "null"], "format": "date-time" },
+          "source_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "suggested_action": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "pending_confirmations": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["confirmation_id", "kind", "statement", "question", "source_refs", "impact"],
+        "properties": {
+          "confirmation_id": { "type": "string" },
+          "kind": { "enum": ["event", "memory", "commitment", "task_owner", "identity", "preference", "other"] },
+          "statement": { "type": "string" },
+          "question": { "type": "string" },
+          "source_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "impact": { "enum": ["low", "medium", "high"] },
+          "expires_at": { "type": ["string", "null"], "format": "date-time" }
+        }
+      }
+    },
+    "suggestions": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["suggestion_id", "title", "rationale", "delivery_mode", "requires_approval"],
+        "properties": {
+          "suggestion_id": { "type": "string" },
+          "title": { "type": "string" },
+          "rationale": { "type": "string" },
+          "delivery_mode": { "enum": ["digest", "notification", "in_app_only"] },
+          "requires_approval": { "type": "boolean" },
+          "action_ref": { "type": ["string", "null"] },
+          "expires_at": { "type": ["string", "null"], "format": "date-time" }
+        }
+      }
+    },
+    "source_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["connected_sources", "sources_checked", "last_sync_at"],
+      "properties": {
+        "connected_sources": { "type": "integer", "minimum": 0 },
+        "sources_checked": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "last_sync_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["notification_mode", "quiet_hours_enabled", "sensitive_content_hidden", "personal_context_default"],
+      "properties": {
+        "notification_mode": { "enum": ["digest_only", "balanced", "urgent_only"] },
+        "quiet_hours_enabled": { "type": "boolean" },
+        "sensitive_content_hidden": { "type": "boolean" },
+        "personal_context_default": { "const": "personal_only" }
+      }
+    }
+  }
+}
