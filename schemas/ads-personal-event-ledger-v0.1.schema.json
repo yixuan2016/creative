@@ -1,0 +1,350 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ads/schemas/ads-personal-event-ledger-v0.1.schema.json",
+  "title": "ADS Personal Event Ledger Record",
+  "description": "Private-by-default personal event record with provenance, confidence, lifecycle and explicit sharing controls.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "subject_ref",
+    "event_type",
+    "event_schema_version",
+    "occurred_at",
+    "observed_at",
+    "recorded_at",
+    "timezone",
+    "actor_refs",
+    "object_refs",
+    "payload",
+    "source_refs",
+    "assertion_status",
+    "classification",
+    "purpose_tags",
+    "ontology_version",
+    "processing_provenance",
+    "sharing_policy",
+    "retention",
+    "lifecycle_status"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_type": {
+      "type": "string",
+      "pattern": "^personal\\.[a-z][a-z0-9_-]*\\.[a-z][a-z0-9_-]*$"
+    },
+    "event_schema_version": {
+      "type": "string"
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "timezone": {
+      "type": "string"
+    },
+    "valid_time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "to": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "actor_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "actor_type",
+          "actor_id"
+        ],
+        "properties": {
+          "actor_type": {
+            "enum": [
+              "person",
+              "role",
+              "agent",
+              "system",
+              "unknown"
+            ]
+          },
+          "actor_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "object_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "payload": {
+      "type": "object"
+    },
+    "source_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_system",
+          "native_record_id",
+          "capture_mode",
+          "capture_authorization_ref"
+        ],
+        "properties": {
+          "source_system": {
+            "type": "string"
+          },
+          "native_record_id": {
+            "type": "string"
+          },
+          "record_version": {
+            "type": "string"
+          },
+          "content_hash": {
+            "type": "string"
+          },
+          "capture_mode": {
+            "enum": [
+              "user_initiated",
+              "manual_user_entry",
+              "connector_sync",
+              "voice_capture",
+              "device_capture",
+              "manual_import"
+            ]
+          },
+          "capture_authorization_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "content_ref": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assertion_status": {
+      "enum": [
+        "confirmed",
+        "observed",
+        "inferred",
+        "disputed",
+        "rejected",
+        "unknown"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "classification": {
+      "enum": [
+        "personal",
+        "personal_sensitive",
+        "restricted"
+      ]
+    },
+    "purpose_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ontology_version": {
+      "type": "string"
+    },
+    "processing_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capture_method",
+        "extraction_method",
+        "extractor_version",
+        "human_reviewed"
+      ],
+      "properties": {
+        "capture_method": {
+          "enum": [
+            "manual",
+            "connector",
+            "voice",
+            "device",
+            "import"
+          ]
+        },
+        "extraction_method": {
+          "enum": [
+            "none",
+            "rule_based",
+            "model_assisted",
+            "human_curated"
+          ]
+        },
+        "extractor_version": {
+          "type": "string"
+        },
+        "model_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "model_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "human_reviewed": {
+          "type": "boolean"
+        },
+        "reviewer_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reviewed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "sharing_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_scope",
+        "projection_allowed",
+        "authorized_purposes",
+        "authorization_ref",
+        "expires_at"
+      ],
+      "properties": {
+        "default_scope": {
+          "const": "personal_only"
+        },
+        "projection_allowed": {
+          "type": "boolean"
+        },
+        "authorized_purposes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authorization_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "expires_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "retention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_ref",
+        "retain_until",
+        "deletion_state"
+      ],
+      "properties": {
+        "policy_ref": {
+          "type": "string"
+        },
+        "retain_until": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "deletion_state": {
+          "enum": [
+            "active",
+            "deletion_requested",
+            "suppressed",
+            "deleted"
+          ]
+        }
+      }
+    },
+    "correction_of": {
+      "type": "string"
+    },
+    "supersedes": {
+      "type": "string"
+    },
+    "idempotency_key": {
+      "type": "string"
+    },
+    "lifecycle_status": {
+      "enum": [
+        "active",
+        "superseded",
+        "withdrawn",
+        "expired",
+        "archived"
+      ]
+    },
+    "extensions": {
+      "type": "object"
+    }
+  }
+}
