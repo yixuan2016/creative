@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="ADS-WORK-10 个人数智底座产品形态、多终端感知入口与个人助理 OS 交互架构">
+<title>ADS-WORK-10｜Personal Assistant OS</title>
+<style>
+:root{--ink:#172c41;--muted:#6d8094;--line:#dce5ed;--paper:#fff;--canvas:#f1f5f8;--navy:#102a43;--blue:#2a6d9e;--teal:#18796f;--violet:#7059a4;--amber:#a16d27;--rose:#a25264;--shadow:0 12px 32px rgba(24,48,75,.065)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:18px}body{margin:0;background:var(--canvas);color:var(--ink);font:15px/1.78 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.shell{max-width:1480px;margin:auto;padding:22px 24px 60px}.hero{position:relative;overflow:hidden;border-radius:27px;padding:48px 52px;color:#fff;background:linear-gradient(118deg,#10243b 0%,#194e72 48%,#16796e 100%);box-shadow:0 22px 50px rgba(13,39,66,.18)}
+.hero:before,.hero:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.14);border-radius:50%;pointer-events:none}.hero:before{width:610px;height:610px;right:-150px;top:-390px;box-shadow:0 0 0 54px rgba(255,255,255,.035),0 0 0 110px rgba(255,255,255,.025)}.hero:after{width:270px;height:270px;right:260px;bottom:-225px;box-shadow:0 0 0 38px rgba(255,255,255,.035)}
+.kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#c6dce8}.hero h1{position:relative;z-index:1;max-width:1000px;margin:16px 0 14px;font-size:clamp(32px,4vw,49px);line-height:1.2;letter-spacing:-.04em}.subtitle{position:relative;z-index:1;max-width:970px;color:#e1edf3;font-size:18px;line-height:1.75}.meta{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:26px;color:#c9dce7;font-size:12px}.tag{display:inline-flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:4px 10px;background:rgba(255,255,255,.08)}.hero-insight{position:relative;z-index:1;margin-top:28px;max-width:960px;border-left:3px solid #9ed8c9;padding:10px 16px;background:rgba(255,255,255,.08);border-radius:0 10px 10px 0;font-size:14px;color:#f1f7f8}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:22px;margin-top:22px;align-items:start}nav{position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto;padding:18px 16px;background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.nav-title{font-weight:780;font-size:14px;margin-bottom:10px}nav a{display:block;padding:5px 8px;border-radius:7px;color:#4f6278;font-size:12px;line-height:1.5}nav a:hover,nav a.active{background:#edf3f8;color:var(--blue);text-decoration:none}.nav-group{margin-top:11px;padding:10px 8px 3px;border-top:1px solid #edf1f5;color:#8b99a8;font-size:10px;letter-spacing:.13em;text-transform:uppercase}
+main{min-width:0}section,.intro{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:29px 32px;margin-bottom:17px;box-shadow:0 5px 18px rgba(25,48,77,.035)}h2{font-size:23px;line-height:1.35;margin:0 0 15px;letter-spacing:-.025em}h3{font-size:17px;line-height:1.45;margin:23px 0 8px}p{margin:8px 0}.lead{font-size:17px;line-height:1.82;color:#344b63}.small{font-size:12px;color:var(--muted)}.eyebrow{display:block;font-size:10px;letter-spacing:.17em;color:#8293a6;margin-bottom:7px;text-transform:uppercase}
+.callout{margin:16px 0;padding:14px 17px;border-left:4px solid var(--teal);background:#edf8f5;border-radius:0 10px 10px 0}.callout.blue{border-left-color:var(--blue);background:#edf5fb}.callout.amber{border-left-color:#c28a33;background:#fff7e9}.callout.purple{border-left-color:var(--violet);background:#f4f1fa}.callout.red{border-left-color:var(--rose);background:#fff0f2}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.card,.metric{border:1px solid var(--line);border-radius:13px;padding:15px;background:#fff}.card h3{margin:0 0 6px;font-size:15px}.card p{font-size:13px;color:#5d6e82;margin:0}.idx{font-size:10px;color:var(--blue);font-weight:800;letter-spacing:.14em;margin-bottom:7px}.num{font-size:27px;line-height:1.2;font-weight:790;color:var(--navy);letter-spacing:-.04em}.metric .label{font-size:12px;color:var(--muted);margin-top:5px}.pill{display:inline-block;border-radius:99px;padding:3px 9px;font-size:11px;background:#edf1f6;color:#465a72;margin:2px 4px 2px 0}.pill.teal{background:#edf8f5;color:#17685f}.pill.blue{background:#edf5fb;color:#245c94}.pill.amber{background:#fff7e9;color:#8a5a19}.pill.violet{background:#f4f1fa;color:#655198}.pill.rose{background:#fff0f2;color:#99485b}
+table{width:100%;border-collapse:collapse;margin:13px 0;font-size:12.5px}th,td{border:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}th{background:#eff3f8;color:#34465c;font-weight:740}tbody tr:nth-child(even){background:#fbfcfe}ul,ol{padding-left:1.3em;margin:9px 0}li{margin:5px 0}
+.tabs{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.tabs button,.device-tabs button,.level-tabs button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 12px;font:inherit;font-size:12px;color:#53667b;cursor:pointer}.tabs button.selected,.device-tabs button.selected,.level-tabs button.selected{background:#edf5fb;border-color:#9dbbd4;color:#245d8e}.tab-detail{padding:16px;border:1px solid #d4e1eb;border-radius:12px;background:#f7fafc;min-height:112px}.tab-detail strong{display:block;color:#1d4567;margin-bottom:5px}.tab-detail p{margin:0;color:#586d82;font-size:13px}
+.flow{display:flex;align-items:stretch;gap:6px;min-width:760px}.step{flex:1;min-width:100px;border:1px solid var(--line);border-radius:10px;padding:11px 8px;background:#fff;text-align:center}.step b{display:block;color:#245f8e;font-size:11px;margin-bottom:5px}.step span{display:block;font-size:10px;line-height:1.45;color:#65788d}.arrow{display:flex;align-items:center;color:#8b9bac}.diagram{border:1px solid var(--line);border-radius:14px;padding:18px;background:#fbfcfe;margin:16px 0;overflow-x:auto}
+.navmock{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}.navmock-head{padding:12px 15px;background:#f4f7fa;display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:750}.navmock-body{display:grid;grid-template-columns:145px 1fr;min-height:260px}.navmock-side{padding:12px 9px;background:#f8fafc;border-right:1px solid var(--line)}.navmock-side div{padding:7px 9px;border-radius:7px;font-size:11px;color:#5a6e82;margin:3px 0}.navmock-side .on{background:#e8f1f8;color:#245e8c;font-weight:750}.navmock-main{padding:17px}.mock-title{font-weight:780;font-size:17px}.mock-row{border:1px solid var(--line);border-radius:9px;padding:10px 12px;margin-top:9px;font-size:11px}.mock-row b{display:block;font-size:12px;margin-bottom:3px}.mock-row span{color:#6c7f92}.mock-tag{float:right;border-radius:99px;background:#edf8f5;color:#17685f;padding:2px 7px;font-size:9px}
+.device-tabs{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.device-detail{display:grid;grid-template-columns:130px 1fr;gap:15px;padding:16px;border:1px solid #d4e1eb;border-radius:12px;background:#f7fafc}.device-icon{display:flex;align-items:center;justify-content:center;border-radius:12px;background:#eaf2f8;color:#245d8e;font-size:28px;min-height:110px}.device-detail h3{margin:0 0 5px}.device-detail p{margin:0;color:#5a6e82;font-size:13px}
+.level-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:14px 0}.level-tabs button{border-radius:10px;text-align:left;padding:10px}.level-tabs b{display:block;font-size:13px}.level-tabs span{font-size:10px;color:#718296}
+.level-detail{padding:15px;border:1px solid #d4e1eb;border-radius:12px;background:#f7fafc;min-height:95px}.level-detail strong{display:block;margin-bottom:5px}.level-detail p{font-size:13px;color:#53677c;margin:0}
+.timeline{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:15px 0}.phase{border:1px solid var(--line);border-radius:10px;padding:11px 10px;min-height:130px;background:#fff}.phase .stepno{font-size:10px;color:var(--blue);font-weight:800;letter-spacing:.1em}.phase strong{display:block;font-size:12px;margin:7px 0}.phase p{font-size:10.5px;color:var(--muted);margin:0}.guardrails{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:14px 0}.guardrail{border:1px solid var(--line);border-radius:9px;padding:9px 6px;background:#fff;text-align:center}.guardrail b{display:block;font-size:11px;color:var(--teal)}.guardrail span{display:block;font-size:10px;color:#738398;line-height:1.35;margin-top:4px}
+.quote{font-size:19px;line-height:1.7;font-weight:700;color:#1d3b57;padding:8px 0}.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.links a{display:inline-flex;border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-size:12px;background:#fff}.footer{text-align:center;color:#8391a3;font-size:12px;padding:22px}
+@media(max-width:1080px){.layout{grid-template-columns:1fr}nav{position:relative;top:auto;max-height:none}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.timeline{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:720px){.shell{padding:11px 10px 32px}.hero{padding:28px 22px;border-radius:17px}.hero h1{font-size:30px}.subtitle{font-size:15px}section,.intro{padding:20px 16px}.g2,.g3,.g4{grid-template-columns:1fr}.navmock-body{grid-template-columns:110px 1fr}.device-detail{grid-template-columns:1fr}.device-icon{min-height:70px}.level-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.guardrails{grid-template-columns:repeat(4,minmax(0,1fr))}.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}table{display:block;overflow-x:auto}}
+@media print{body{background:#fff}.shell{max-width:none;padding:0}.hero{border-radius:0;box-shadow:none;print-color-adjust:exact}.layout{display:block}nav{display:none}section,.intro{box-shadow:none;break-inside:avoid}.footer{display:none}}
+</style>
+</head>
+<body><div class="shell">
+<header class="hero" id="top">
+ <div class="kicker">ADS · PERSONAL OS · PRODUCT & EXPERIENCE ARCHITECTURE</div>
+ <h1>个人数智底座的产品形态<br>多终端感知入口与个人助理 OS</h1>
+ <p class="subtitle">不让用户维护知识库，而让系统在用户正常使用设备和应用的过程中，自然理解用户、服务用户，并在授权范围内帮助推进重要事情。</p>
+ <div class="meta"><span class="tag">ADS-WORK-10</span><span>V0.1 Product & Experience Architecture</span><span>2026-11-19</span><span>Personal-first · Low-friction · Cross-device</span></div>
+ <div class="hero-insight"><strong>产品主张：</strong>用户只需要记录、表达、查看和确认；系统负责感知、理解、记忆、主动服务和受控执行。</div>
+</header>
+<div class="layout">
+<nav aria-label="专题导航">
+ <div class="nav-title">专题导航</div><a href="#summary">摘要与产品定位</a>
+ <div class="nav-group">Product Experience</div><a href="#principles">1. 普通用户体验原则</a><a href="#spaces">2. 五个核心工作空间</a><a href="#interaction">3. 全局交互方式</a>
+ <div class="nav-group">Device & Intelligence</div><a href="#devices">4. 多终端产品架构</a><a href="#understanding">5. 自然感知与自动理解</a><a href="#proactive">6. 主动服务</a>
+ <div class="nav-group">Trust & Delivery</div><a href="#memory">7. 记忆管理体验</a><a href="#agent">8. Personal Agent 交互</a><a href="#onboarding">9. 新手启用</a><a href="#architecture">10. 产品与技术映射</a><a href="#mvp">11. MVP 与路线图</a><a href="#decisions">12. 产品决策与下一专题</a>
+</nav>
+<main>
+<section class="intro" id="summary">
+ <span class="eyebrow">Executive Summary</span><h2>Personal Assistant OS 是个人智能协同层，不是第二套工作系统</h2>
+ <p class="lead">它连接个人已有设备、应用、数据、记忆和 Agent 能力。用户继续使用熟悉的工具，助理在明确授权的范围内理解上下文，自动整理重要事件，帮助推进目标，并在适当时机主动服务。</p>
+ <div class="callout"><strong>北极星：</strong>用户是否更少遗忘重要事情、更快找到需要的信息、更清楚地知道下一步，并且愿意信任系统持续理解自己。</div>
+ <div class="grid g4">
+  <div class="metric"><div class="num">5</div><div class="label">核心工作空间</div></div>
+  <div class="metric"><div class="num">5</div><div class="label">连续产品闭环</div></div>
+  <div class="metric"><div class="num">6</div><div class="label">主要终端角色</div></div>
+  <div class="metric"><div class="num">6</div><div class="label">分阶段产品路线</div></div>
+ </div>
+ <h3>五个连续闭环</h3>
+ <div class="diagram"><div class="flow">
+  <div class="step"><b>01 自然感知</b><span>授权来源<br>快速记录</span></div><div class="arrow">→</div>
+  <div class="step"><b>02 自动理解</b><span>事件、人物<br>目标、承诺</span></div><div class="arrow">→</div>
+  <div class="step"><b>03 持续记忆</b><span>来源可追溯<br>可纠错</span></div><div class="arrow">→</div>
+  <div class="step"><b>04 主动服务</b><span>变化、遗漏<br>下一步提醒</span></div><div class="arrow">→</div>
+  <div class="step"><b>05 受控执行</b><span>准备、审批<br>执行、核验</span></div>
+ </div></div>
+</section>
+
+<section id="principles">
+ <span class="eyebrow">01 · User Experience Principles</span><h2>普通用户不应该学习系统的复杂性</h2>
+ <div class="grid g3">
+  <div class="card"><div class="idx">01 / DEFAULT</div><h3>默认自动，关键确认</h3><p>日常整理自动完成，重要事实和高风险动作再确认。</p></div>
+  <div class="card"><div class="idx">02 / ZERO DUPLICATION</div><h3>不重复录入</h3><p>尽可能从用户已经使用的应用获取授权信息。</p></div>
+  <div class="card"><div class="idx">03 / NO TAXONOMY</div><h3>不要求手动分类</h3><p>用户只需说、写、分享或转发，系统负责识别。</p></div>
+  <div class="card"><div class="idx">04 / VALUE FIRST</div><h3>先提供价值</h3><p>不连接任何外部来源，也能使用快速记录和对话。</p></div>
+  <div class="card"><div class="idx">05 / EXPLAINABLE</div><h3>重要建议可解释</h3><p>提醒、记忆和建议能说明来源及原因。</p></div>
+  <div class="card"><div class="idx">06 / CORRECTABLE</div><h3>用户随时纠错</h3><p>可以直接说“不是这样”“已经完成”“不要再记住”。</p></div>
+  <div class="card"><div class="idx">07 / LOW INTERRUPTION</div><h3>低打扰</h3><p>默认汇总，只有真正紧急或时间敏感的事情才打断。</p></div>
+  <div class="card"><div class="idx">08 / CONTINUOUS</div><h3>跨端连续</h3><p>手机开始的事情，可以在电脑继续。</p></div>
+  <div class="card"><div class="idx">09 / PERSONAL FIRST</div><h3>个人优先</h3><p>个人工作与生活上下文默认由个人控制。</p></div>
+ </div>
+ <div class="callout amber">用户不应每天给内容打标签、整理录音、维护人物图谱或编写记忆提示词。系统自动处理，用户只在低置信度、高影响或存在冲突时参与确认。</div>
+</section>
+
+<section id="spaces">
+ <span class="eyebrow">02 · Information Architecture</span><h2>五个核心工作空间：简单入口，复杂能力隐藏在背后</h2>
+ <div class="tabs" id="spaceTabs">
+  <button class="selected" data-space="today">01 今日</button><button data-space="inbox">02 收集箱</button><button data-space="timeline">03 时间线</button><button data-space="goals">04 目标与承诺</button><button data-space="myai">05 我的 AI</button>
+ </div>
+ <div class="tab-detail" id="spaceDetail"><strong>今日 Today · 今天我需要关注什么？</strong><p>每日简报、接下来日程、重要变化、待确认事项和下一步建议。默认展示少量高价值内容，没有重要变化时不制造提醒。</p></div>
+ <h3>首页交互草图 · Today</h3>
+ <div class="navmock">
+  <div class="navmock-head"><span>Personal Assistant</span><span>● 今日 · 2026.11.19</span></div>
+  <div class="navmock-body">
+   <div class="navmock-side"><div class="on">☀ 今日</div><div>▣ 收集箱</div><div>◷ 时间线</div><div>◎ 目标与承诺</div><div>⌘ 我的 AI</div></div>
+   <div class="navmock-main"><div class="mock-title">早上好，今天有 3 件值得关注的事</div>
+    <div class="mock-row"><span class="mock-tag">时间安排</span><b>接下来 · 10:30 项目评审</b><span>建议提前查看上次会议的风险清单。</span></div>
+    <div class="mock-row"><span class="mock-tag">待确认</span><b>会议中识别到一项承诺候选</b><span>“周五前整理风险清单” · 是否由你负责？</span></div>
+    <div class="mock-row"><span class="mock-tag">已完成</span><b>昨天的两项个人任务已完成</b><span>已根据你授权的任务来源同步。</span></div>
+   </div>
+  </div>
+ </div>
+ <div class="callout blue">聊天不是第六个孤立模块。用户可以在任何页面直接提问、补充背景、纠正记忆或要求执行任务。</div>
+</section>
+
+<section id="interaction">
+ <span class="eyebrow">03 · Universal Interaction</span><h2>全局交互：输入、对话和动作随处可达</h2>
+ <div class="grid g3">
+  <div class="card"><h3>说一句</h3><p>快速语音记录、主动开启的会议记录或语音问答。</p></div>
+  <div class="card"><h3>写一句</h3><p>自然语言记录想法、任务、承诺和提醒。</p></div>
+  <div class="card"><h3>分享一下</h3><p>把网页、文件、图片、邮件或消息交给助理理解。</p></div>
+ </div>
+ <h3>用户语言直接成为控制接口</h3>
+ <table><thead><tr><th>用户说</th><th>系统应该做</th></tr></thead><tbody>
+ <tr><td>“这个记错了，正确的是……”</td><td>创建纠正事件并更新记忆视图</td></tr>
+ <tr><td>“这件事已经完成。”</td><td>更新任务状态并保留确认来源</td></tr>
+ <tr><td>“不要再记住这条。”</td><td>停止使用并按请求处理派生记忆</td></tr>
+ <tr><td>“这条只在当前项目里使用。”</td><td>限定上下文范围，不提升为全局记忆</td></tr>
+ <tr><td>“把它整理成企业任务草稿，先别提交。”</td><td>生成草稿，不产生外部写入</td></tr>
+ </tbody></table>
+</section>
+
+<section id="devices">
+ <span class="eyebrow">04 · Multi-device Experience</span><h2>一个个人助理，多种终端入口</h2>
+ <div class="device-tabs" id="deviceTabs">
+  <button class="selected" data-device="mobile">手机 App</button><button data-device="desktop">电脑客户端</button><button data-device="web">Web 工作台</button><button data-device="voice">语音终端</button><button data-device="meeting">会议系统</button><button data-device="apps">既有应用</button>
+ </div>
+ <div class="device-detail" id="deviceDetail"><div class="device-icon">▣</div><div><h3>手机 App · 随身入口</h3><p>快速记录、语音、通知、日程、即时确认和设备状态。承担自然输入和及时反馈，不要求用户长时间整理信息。</p></div></div>
+ <h3>多端状态一致的底层要求</h3>
+ <div class="grid g3">
+  <div class="card"><h3>统一身份</h3><p>同一事件拥有稳定 ID，不因设备切换重复生成。</p></div>
+  <div class="card"><h3>离线连续</h3><p>保留发生、观察和同步时间，恢复后补传。</p></div>
+  <div class="card"><h3>冲突可见</h3><p>冲突并列保留，不静默覆盖。</p></div>
+ </div>
+ <div class="callout amber"><strong>硬件原则：</strong>语音设备是可选入口，不能成为个人数智底座的必要条件。用户忘带、没电或未启动时，可通过其他已授权来源补充上下文；来源缺失时应明确标记“未观察到”，不能凭空推断。</div>
+</section>
+
+<section id="understanding">
+ <span class="eyebrow">05 · Ambient Understanding</span><h2>自然感知与自动理解：复杂工作在后台完成</h2>
+ <table><thead><tr><th>优先级</th><th>来源</th><th>首期策略</th></tr></thead><tbody>
+ <tr><td>P0</td><td>手动输入、快速记录</td><td>必须支持，随时可用</td></tr>
+ <tr><td>P0</td><td>日历、个人任务</td><td>先只读同步，验证时间与承诺</td></tr>
+ <tr><td>P1</td><td>文档、笔记</td><td>用户选择连接和范围</td></tr>
+ <tr><td>P1</td><td>邮件、协作沟通</td><td>从主动分享或明确授权范围开始</td></tr>
+ <tr><td>P1/P2</td><td>会议转写</td><td>用户主动开启或使用已授权能力</td></tr>
+ <tr><td>P2</td><td>手机、电脑活动信号</td><td>单独授权，按明确目的采集</td></tr>
+ <tr><td>P2</td><td>专用语音设备</td><td>可选硬件，不成为依赖</td></tr>
+ </tbody></table>
+ <div class="diagram"><div class="flow">
+  <div class="step"><b>Source</b><span>应用 / 设备<br>用户输入</span></div><div class="arrow">→</div>
+  <div class="step"><b>Capture</b><span>授权与<br>来源保留</span></div><div class="arrow">→</div>
+  <div class="step"><b>Event</b><span>候选事件<br>去重关联</span></div><div class="arrow">→</div>
+  <div class="step"><b>Memory</b><span>长期价值<br>确认与纠错</span></div><div class="arrow">→</div>
+  <div class="step"><b>Intent</b><span>目标、承诺<br>下一步</span></div><div class="arrow">→</div>
+  <div class="step"><b>Service</b><span>提醒、建议<br>受控执行</span></div>
+ </div></div>
+</section>
+
+<section id="proactive">
+ <span class="eyebrow">06 · Proactive Service</span><h2>主动服务：在正确的时间，提醒真正重要的事</h2>
+ <div class="grid g2">
+  <div class="card"><span class="pill blue">DAILY REVIEW</span><h3>日常回顾</h3><p>今天发生了什么、明天有哪些重点。</p></div>
+  <div class="card"><span class="pill amber">COMMITMENT</span><h3>承诺提醒</h3><p>已确认的承诺临近截止或可能遗漏。</p></div>
+  <div class="card"><span class="pill teal">CHANGE ALERT</span><h3>变化提示</h3><p>会议时间变更、重要回复或任务状态变化。</p></div>
+  <div class="card"><span class="pill violet">NEXT STEP</span><h3>下一步建议</h3><p>任务阻塞、信息缺失或可以提前准备的材料。</p></div>
+ </div>
+ <h3>提醒策略</h3>
+ <div class="callout">默认以摘要和汇总为主；同一主题的变化合并；用户忽略的低价值建议降低频率；只有确有后果且时间敏感的事项才考虑即时打断。</div>
+ <p class="small">每条建议都应可忽略、延后、关闭或反馈不准确。专注时间、安静时段和通知渠道由用户控制。</p>
+</section>
+
+<section id="memory">
+ <span class="eyebrow">07 · Memory Experience</span><h2>记忆管理：用户看得见、改得动，而不需要日常维护</h2>
+ <div class="grid g3">
+  <div class="card"><h3>AI 记住的</h3><p>当前记忆内容和来源。</p></div>
+  <div class="card"><h3>数据来源</h3><p>连接了什么、同步到何时。</p></div>
+  <div class="card"><h3>权限与隐私</h3><p>哪些内容能用于什么目的。</p></div>
+ </div>
+ <h3>记忆卡片应包含的最小信息</h3>
+ <table><thead><tr><th>内容</th><th>用户操作</th></tr></thead><tbody>
+ <tr><td>AI 当前记住的内容</td><td>确认或修改</td></tr>
+ <tr><td>信息来自哪里</td><td>查看来源</td></tr>
+ <tr><td>已确认 / 自动推断 / 待复核 / 可能过期</td><td>确认或暂不使用</td></tr>
+ <tr><td>个人 / 工作项目 / 当前任务范围</td><td>调整适用范围</td></tr>
+ <tr><td>关联来源和派生内容</td><td>撤回或删除</td></tr>
+ </tbody></table>
+ <div class="callout red">“不要再记住”必须是真实的数据控制操作，而不是一句对话回复。系统需要停止后续检索、推断和投影，并按请求处理相关派生记忆、索引和缓存。</div>
+</section>
+
+<section id="agent">
+ <span class="eyebrow">08 · Personal Agent UX</span><h2>用户知道 AI 准备做什么，再决定是否授权</h2>
+ <div class="level-tabs" id="levelTabs">
+  <button class="selected" data-level="observe"><b>观察</b><span>查看与理解</span></button>
+  <button data-level="suggest"><b>建议</b><span>告诉我怎么做</span></button>
+  <button data-level="prepare"><b>准备</b><span>生成草稿和计划</span></button>
+  <button data-level="execute"><b>执行</b><span>批准后操作</span></button>
+  <button data-level="sensitive"><b>高影响执行</b><span>逐次确认</span></button>
+ </div>
+ <div class="level-detail" id="levelDetail"><strong>观察 · L0</strong><p>在授权范围内检索、总结和查看状态，不改变外部系统状态。</p></div>
+ <div class="callout red"><strong>审批卡片必须清楚：</strong>AI 要做什么、操作哪个对象、会修改或发送哪些内容、使用哪个应用、产生什么影响、是否可以撤销、批准有效期。计划发生实质变化时重新确认。</div>
+ <p>执行结束后区分已核验成功、部分完成、失败和需要用户继续处理。不能把“已提交请求”说成“已成功完成”。</p>
+</section>
+
+<section id="onboarding">
+ <span class="eyebrow">09 · Progressive Onboarding</span><h2>一分钟内获得第一个价值，再逐步启用更多能力</h2>
+ <div class="timeline">
+  <div class="phase"><div class="stepno">STEP 01</div><strong>先认识助理</strong><p>用简单语言说明能帮助什么。</p></div>
+  <div class="phase"><div class="stepno">STEP 02</div><strong>立即记录</strong><p>无需连接外部应用。</p></div>
+  <div class="phase"><div class="stepno">STEP 03</div><strong>得到第一次价值</strong><p>形成简短回顾或整理结果。</p></div>
+  <div class="phase"><div class="stepno">STEP 04</div><strong>连接一个来源</strong><p>例如日历，明确只读范围。</p></div>
+  <div class="phase"><div class="stepno">STEP 05</div><strong>体验持续理解</strong><p>自动形成时间线和摘要。</p></div>
+  <div class="phase"><div class="stepno">STEP 06</div><strong>逐步授权</strong><p>再增加提醒、其他来源和执行。</p></div>
+ </div>
+ <div class="callout amber">不要首次要求用户填写职业、岗位、组织、工作习惯、家庭情况、兴趣和长期目标等长问卷。通过用户实际使用和明确确认逐步理解；任何连接步骤都允许跳过。</div>
+</section>
+
+<section id="architecture">
+ <span class="eyebrow">10 · Product & Technical Mapping</span><h2>产品层与 ADS-WORK-08、09 的关系</h2>
+ <table><thead><tr><th>产品能力</th><th>ADS-WORK-09 技术能力</th><th>ADS-WORK-08 语义能力</th></tr></thead><tbody>
+ <tr><td>快速记录、数据接入</td><td>Capture Gateway / Source Vault</td><td>Signal / Observation</td></tr>
+ <tr><td>时间线</td><td>Personal Event Ledger</td><td>Event / Activity / Time</td></tr>
+ <tr><td>AI 记住的</td><td>Memory Compiler / Store</td><td>Person / Object / Relation / Assertion</td></tr>
+ <tr><td>目标与承诺</td><td>Intent Manager</td><td>Goal / Task / Commitment</td></tr>
+ <tr><td>今日摘要</td><td>Context Builder</td><td>Context / Decision / Risk / Uncertainty</td></tr>
+ <tr><td>主动提醒</td><td>Proactive Service</td><td>Event / Dependency / Due / State</td></tr>
+ <tr><td>受控执行</td><td>Personal Agent Runtime</td><td>Capability / Action / Approval</td></tr>
+ <tr><td>企业协同</td><td>Authorized Projection</td><td>Personal-to-Enterprise Mapping</td></tr>
+ </tbody></table>
+ <div class="diagram"><div class="flow">
+  <div class="step"><b>产品入口层</b><span>Mobile / Desktop<br>Web / Voice / Apps</span></div><div class="arrow">→</div>
+  <div class="step"><b>交互体验层</b><span>Today / Inbox<br>Timeline / Goals</span></div><div class="arrow">→</div>
+  <div class="step"><b>智能服务层</b><span>Capture / Memory<br>Context / Agent</span></div><div class="arrow">→</div>
+  <div class="step"><b>个人数据层</b><span>Vault / Ledger<br>Memory / Intent</span></div>
+ </div></div>
+ <p class="small">治理控制面 Identity / Consent / Policy / Audit / Retention / Deletion / Device Control 贯穿所有层，不能只放在设置页。</p>
+</section>
+
+<section id="mvp">
+ <span class="eyebrow">11 · MVP & Delivery</span><h2>先验证用户价值，不先追求完整 OS</h2>
+ <div class="grid g3">
+  <div class="card"><h3>首期做</h3><p>快速记录、一个只读来源、个人时间线、每日摘要、承诺候选、记忆纠错和提醒。</p></div>
+  <div class="card"><h3>首期不做</h3><p>全天候录音、全量电脑监控、复杂知识图谱编辑、多 Agent 自主协作和自动对外发送。</p></div>
+  <div class="card"><h3>重点衡量</h3><p>整理成本、遗漏减少、提醒准确、记忆正确、用户信任和权限控制。</p></div>
+ </div>
+ <div class="timeline">
+  <div class="phase"><div class="stepno">P0</div><strong>产品验证</strong><p>原型、访谈和核心流程。</p></div>
+  <div class="phase"><div class="stepno">P1</div><strong>快速入口</strong><p>文字/语音、收集箱和来源。</p></div>
+  <div class="phase"><div class="stepno">P2</div><strong>个人时间线</strong><p>事件抽取、关联和每日摘要。</p></div>
+  <div class="phase"><div class="stepno">P3</div><strong>记忆与承诺</strong><p>确认、纠错、目标和任务。</p></div>
+  <div class="phase"><div class="stepno">P4</div><strong>主动服务</strong><p>回顾、提醒和变化提示。</p></div>
+  <div class="phase"><div class="stepno">P5+</div><strong>受控 Agent</strong><p>草稿、审批、核验和多端。</p></div>
+ </div>
+ <p class="small">试点建议从 2—4 周的小范围用户开始。日活、录音时长和记忆条数不能作为唯一成功指标。</p>
+</section>
+
+<section id="decisions">
+ <span class="eyebrow">12 · Decisions & Next Research</span><h2>建议冻结的产品决策</h2>
+ <ol>
+  <li>Personal Assistant OS 是个人智能协同层，不是新的超级 App。</li>
+  <li>普通用户只需要理解五个工作空间。</li>
+  <li>全局对话和快速记录随处可达，不让聊天成为信息孤岛。</li>
+  <li>用户不需要理解标签、本体、Schema 和事件类型。</li>
+  <li>自动整理默认开启在用户授权范围内；重要事实和高风险动作需要确认。</li>
+  <li>语音设备是可选入口，不能成为必要条件。</li>
+  <li>主动服务默认低打扰，以摘要和高价值提醒为主。</li>
+  <li>记忆可见、可纠错、可撤回、可删除。</li>
+  <li>个人数据默认个人控制，企业协同通过目的绑定的最小必要投影。</li>
+  <li>首期先做只读、草稿和提醒，不急于开放高影响自动执行。</li>
+ </ol>
+ <p class="quote">不要让普通用户学习如何维护数智底座；让数智底座在用户正常使用设备和应用的过程中，自然理解用户、服务用户。</p>
+ <div class="callout"><strong>下一专题 ADS-WORK-11：</strong>《个人助理 OS 的主动智能、个人上下文预测与长期目标推进机制》。研究目标识别、承诺风险、任务阻塞、低打扰主动服务、长期目标复盘和 Agent 跨任务连续性。</div>
+ <div class="links">
+  <a href="../docs/10-个人数智底座的产品形态多终端感知入口与个人助理OS交互架构研究.md">研究报告 Markdown</a>
+  <a href="../examples/ads-personal-assistant-os-daily-brief-v0.1.json">每日首页示例数据</a>
+  <a href="../docs/09-个人数智底座的持续记忆事件账本与自主智能体架构研究.md">ADS-WORK-09</a>
+  <a href="../docs/08-企业工作本体与事件驱动的个人企业领域协同标准研究.md">ADS-WORK-08</a>
+ </div>
+</section>
+</main></div>
+<div class="footer">ADS-WORK-10 · V0.1 Product & Experience Architecture Proposal · 2026-11-19</div>
+</div>
+<script>
+(function(){
+ const spaces={
+ today:["今日 Today · 今天我需要关注什么？","每日简报、接下来日程、重要变化、待确认事项和下一步建议。默认展示少量高价值内容，没有重要变化时不制造提醒。"],
+ inbox:["收集箱 Inbox · 我刚刚记录的东西在哪里？","统一接住语音、文字、分享、转发和授权来源的待处理内容。系统自动识别类型和关联对象，用户无需选择文件夹或标签。"],
+ timeline:["时间线 Timeline · 最近发生了什么？","展示对用户有价值的工作、生活和学习事件。每条事件卡片包含时间、来源、关联对象和确认状态。"],
+ goals:["目标与承诺 Goals · 我正在推进什么？","展示目标、承诺、任务、下一步、阻塞和进展。候选任务不会未经确认就成为正式承诺。"],
+ myai:["我的 AI My AI · AI 了解我什么、可以做什么？","查看长期记忆、数据来源、权限、自动化和隐私控制。这里是控制入口，不是让用户每天维护记忆。"]
+ };
+ document.querySelectorAll("#spaceTabs button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#spaceTabs button").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");const v=spaces[b.dataset.space];document.getElementById("spaceDetail").innerHTML="<strong>"+v[0]+"</strong><p>"+v[1]+"</p>"}));
+ const devices={
+ mobile:["手机 App · 随身入口","快速记录、语音、通知、日程、即时确认和设备状态。承担自然输入和及时反馈，不要求用户长时间整理信息。","▣"],
+ desktop:["电脑客户端 · 深度工作助理","文档与会议上下文、任务推进、跨应用操作、草稿和审批。适合长任务和复杂工作流。","▤"],
+ web:["Web 工作台 · 全局管理和复盘","时间线、记忆管理、数据来源、授权、目标和自动化。用于查看全貌、纠错和管理设置。","⌘"],
+ voice:["语音终端 / 可穿戴设备 · 可选免手入口","快速记录、用户主动开启的会议采集和语音问答。必须有可见采集状态、暂停和停止能力。","◉"],
+ meeting:["会议系统 · 会议场景入口","用户主动启用的转写、摘要、决策候选和行动项。参与者告知和适用同意要求优先。","◷"],
+ apps:["日历、邮件、文档和协作应用 · 来源与执行工具","按用户授权读取状态、同步变化、准备草稿和执行经批准的动作。优先只读，逐步开放写回。","▧"]
+ };
+ document.querySelectorAll("#deviceTabs button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#deviceTabs button").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");const v=devices[b.dataset.device];document.getElementById("deviceDetail").innerHTML='<div class="device-icon">'+v[2]+'</div><div><h3>'+v[0]+'</h3><p>'+v[1]+'</p></div>'}));
+ const levels={
+ observe:["观察 · L0","在授权范围内检索、总结和查看状态，不改变外部系统状态。"],
+ suggest:["建议 · L0/L1","分析上下文并提出建议，说明原因、来源和不确定性。"],
+ prepare:["准备 · L1","生成草稿、计划和提醒草案，不产生外部副作用。"],
+ execute:["执行 · L2","修改个人日历、任务或文件等可逆状态前，必须明确确认具体对象和副作用。"],
+ sensitive:["高影响执行 · L3","对外发送、支付、删除、公开发布或修改权限，逐次确认，必要时增加额外验证。"]
+ };
+ document.querySelectorAll("#levelTabs button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#levelTabs button").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");const v=levels[b.dataset.level];document.getElementById("levelDetail").innerHTML="<strong>"+v[0]+"</strong><p>"+v[1]+"</p>"}));
+ const links=[...document.querySelectorAll("nav a")],sections=links.map(a=>document.querySelector(a.getAttribute("href"))).filter(Boolean);
+ if("IntersectionObserver" in window){const ob=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+e.target.id))}),{rootMargin:"-15% 0px -75% 0px"});sections.forEach(s=>ob.observe(s))}
+})();
+</script></body></html>
