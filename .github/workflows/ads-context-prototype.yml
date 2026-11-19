@@ -87,7 +87,7 @@ jobs:
       - name: Run end-to-end demo
         run: python prototype/ads_context_engine.py
       - name: Package Personal Assistant OS prototype
-        run: zip -r ads-personal-assistant-os-v0.1.zip prototype/personal-assistant-os docs/10.1-个人助理OS可交互原型与研发验收规范.md schemas/ads-personal-assistant-os-demo-v0.1.schema.json examples/ads-personal-assistant-os-demo-v0.1.json pilot/个人助理OS30天试点评估模板.csv pilot/个人助理OS用户访谈提纲.md
+        run: zip -r ads-personal-assistant-os-v0.1.zip README.md prototype/README.md prototype/personal-assistant-os prototype/test_personal_assistant_os_prototype.py prototype/test_personal_assistant_os_contracts.py docs/10-个人数智底座的产品形态多终端感知入口与个人助理OS交互架构研究.md docs/10-个人数智底座的产品形态多终端感知入口与个人助理OS交互架构研究.html docs/10.1-个人助理OS可交互原型与研发验收规范.md schemas/ads-personal-assistant-daily-brief-v0.1.schema.json schemas/ads-personal-assistant-os-demo-v0.1.schema.json examples/ads-personal-assistant-os-daily-brief-v0.1.json examples/ads-personal-assistant-os-demo-v0.1.json requirements-dev.txt pilot/个人助理OS30天试点评估模板.csv pilot/个人助理OS用户访谈提纲.md
       - name: Upload Personal Assistant OS bundle
         uses: actions/upload-artifact@v4
         with:
