@@ -110,13 +110,13 @@ python -m pip install -r requirements-dev.txt
 python prototype/personal_memory_cli.py init --db ./data/personal-memory.sqlite3 --owner <owner-ref>
 ~~~
 
-从 PDKS JSON 记录目录生成 ADS 投影：
+从 PDKS JSON 记录目录生成 ADS 投影（默认执行 PDKS JSON Schema 与 Event Taxonomy 校验）：
 
 ~~~bash
 python prototype/personal_memory_cli.py project-pdks --records-dir ./my-pdks-export/records --owner <owner-ref> --output ./data/pdks-projection.json --authorization-ref <trusted-active-consent-ref>
 ~~~
 
-仅在有合法授权引用时才传入 authorization-ref。授权引用必须来自可信授权服务/适配器，不能由模型自行编造。
+仅在有合法授权引用时才传入 authorization-ref。授权引用必须来自可信授权服务/适配器，不能由模型自行编造。仅合成测试数据可以使用 --skip-pdks-validation；真实数据不应跳过 Schema / Taxonomy 校验。
 
 将投影原子写入个人库：
 
@@ -145,7 +145,7 @@ python prototype/personal_memory_cli.py integrity-check --db ./data/personal-mem
 当前参考原型覆盖：
 
 - SQLite 运行时 18 项测试：重启持久化、幂等、owner 分区、并发冲突、记忆确认/纠正/撤回、敏感过滤、来源 suppression、Intent 约束、Agent 审批、审计追加约束和备份。
-- PDKS→ADS Adapter 14 项测试：正常映射、设备/连接器授权阻断、时间/身份校验、候选状态、原子投影、CLI 端到端和 ADS Schema 合同校验。
+- PDKS→ADS Adapter 15 项测试：正常映射、设备/连接器授权阻断、时间/身份校验、候选状态、原子投影、CLI 端到端和 ADS Schema 合同校验。
 - 独立开发包本地测试：32 项中 31 项通过，1 项因未重复打包 ADS 官方 Schema 而跳过；完整 creative 仓库中会执行该 Schema 联合测试。
 - CLI 端到端：1 Event + 2 candidate Memory + 1 candidate Intent；无 Agent Action Proposal，无企业投影。
 - SQLite integrity_check：ok；备份库重新打开成功。
