@@ -64,6 +64,7 @@ class WorkOntologyContractTests(unittest.TestCase):
             self.assertIn(item["event_class"], class_ids, item["event_type"])
         for event in EXAMPLE["personal_events"]:
             self.assertIn(event["event_type"], event_types)
+        self.assertIn(EXAMPLE["enterprise_projection"]["event"]["event_type"], event_types)
 
     def test_personal_events_match_personal_event_contract(self):
         for event in EXAMPLE["personal_events"]:
