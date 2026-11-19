@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="ADS-WORK-06 企业运行认知引擎与企业 Agent 协同执行体系设计。">
+<title>ADS-WORK-06｜企业 Agent 协同执行体系</title>
+<style>
+:root{
+ --ink:#17263b;--muted:#62738a;--line:#dce5ee;--paper:#fff;--canvas:#f2f5f9;
+ --navy:#102943;--blue:#28649f;--teal:#177a70;--violet:#6855a7;--amber:#9a641e;--red:#a64c4c;
+ --bluebg:#edf4fc;--tealbg:#edf8f5;--violetbg:#f3f0fa;--amberbg:#fff7e9;--redbg:#fff0ef;
+ --shadow:0 10px 28px rgba(25,48,77,.07)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;background:var(--canvas);color:var(--ink);font:15px/1.78 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.shell{max-width:1420px;margin:0 auto;padding:22px 24px 54px}
+.hero{position:relative;overflow:hidden;border-radius:25px;padding:46px 50px;color:#fff;background:linear-gradient(118deg,#10243c 0%,#17486b 53%,#17796f 100%);box-shadow:0 20px 48px rgba(13,39,66,.17)}
+.hero:before{content:"";position:absolute;width:430px;height:430px;border:1px solid rgba(255,255,255,.12);border-radius:50%;right:-110px;top:-220px;box-shadow:0 0 0 48px rgba(255,255,255,.035),0 0 0 96px rgba(255,255,255,.025)}
+.kicker{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#bdd6e6}
+.hero h1{position:relative;z-index:1;max-width:1000px;margin:14px 0 12px;font-size:clamp(31px,4vw,47px);line-height:1.22;letter-spacing:-.03em}
+.subtitle{position:relative;z-index:1;max-width:920px;font-size:18px;color:#e0edf4;line-height:1.7}
+.meta{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:26px;font-size:12px;color:#c9dbe7}
+.tag{display:inline-flex;border:1px solid rgba(255,255,255,.23);border-radius:99px;padding:4px 10px;background:rgba(255,255,255,.08)}
+.layout{display:grid;grid-template-columns:255px minmax(0,1fr);gap:23px;margin-top:23px;align-items:start}
+nav{position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto;padding:18px 17px;background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.nav-title{font-weight:760;font-size:14px;margin-bottom:10px}
+nav a{display:block;padding:5px 7px;border-radius:7px;font-size:12px;color:#4e6076;line-height:1.5}
+nav a:hover{background:#f0f4f8;text-decoration:none;color:var(--blue)}
+.nav-group{margin-top:10px;padding:10px 7px 3px;border-top:1px solid #edf1f5;color:#8a98a9;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+main{min-width:0}
+section,.intro{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:28px 31px;margin-bottom:17px;box-shadow:0 5px 18px rgba(25,48,77,.035)}
+h2{font-size:23px;line-height:1.35;margin:0 0 15px;letter-spacing:-.02em}
+h3{font-size:17px;line-height:1.45;margin:23px 0 8px}
+h4{font-size:14px;margin:16px 0 6px}
+p{margin:8px 0}
+.lead{font-size:17px;line-height:1.82;color:#344a63}
+.small{font-size:12px;color:var(--muted)}
+.eyebrow{display:block;font-size:10px;letter-spacing:.16em;color:#8292a6;margin-bottom:7px;text-transform:uppercase}
+.callout{margin:16px 0;padding:14px 17px;border-left:4px solid var(--teal);background:var(--tealbg);border-radius:0 10px 10px 0}
+.callout.blue{border-left-color:var(--blue);background:var(--bluebg)}
+.callout.amber{border-left-color:#c28a33;background:var(--amberbg)}
+.callout.purple{border-left-color:var(--violet);background:var(--violetbg)}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card,.metric{border:1px solid var(--line);border-radius:13px;padding:15px;background:#fff}
+.card h3{margin:0 0 6px;font-size:15px}
+.card p{font-size:13px;color:#5e6e82;margin:0}
+.num{font-size:26px;line-height:1.25;font-weight:780;color:var(--navy);letter-spacing:-.03em}
+.metric .label{font-size:12px;color:var(--muted);margin-top:5px}
+.idx{font-size:10px;color:var(--blue);font-weight:800;letter-spacing:.13em;margin-bottom:7px}
+.pill{display:inline-block;border-radius:99px;padding:3px 9px;font-size:11px;background:#edf1f6;color:#465a72;margin:2px 4px 2px 0}
+.pill.teal{background:var(--tealbg);color:#17685f}.pill.blue{background:var(--bluebg);color:#245c94}.pill.amber{background:var(--amberbg);color:#8a5a19}.pill.violet{background:var(--violetbg);color:#655198}.pill.red{background:var(--redbg);color:#994848}
+table{width:100%;border-collapse:collapse;margin:13px 0;font-size:12.5px}
+th,td{border:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+th{background:#eff3f8;color:#34465c;font-weight:730}
+tbody tr:nth-child(even){background:#fbfcfe}
+ul,ol{padding-left:1.3em;margin:9px 0}
+li{margin:5px 0}
+.diagram{border:1px solid var(--line);border-radius:14px;padding:17px;background:#fbfcfe;margin:16px 0;overflow-x:auto}
+.flow{min-width:600px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.node{width:min(100%,850px);padding:10px 14px;border:1px solid #cbd9e8;border-radius:10px;background:var(--bluebg);text-align:center;font-size:13px;font-weight:650}
+.node.teal{background:var(--tealbg);border-color:#c8e3dc}
+.node.violet{background:var(--violetbg);border-color:#ded5ef}
+.node.dark{background:#203d59;color:#fff;border-color:#203d59}
+.node.amber{background:var(--amberbg);border-color:#eedbb8}
+.arrow{font-size:17px;color:#8a9aac;line-height:1}
+.node small{display:block;font-size:11px;font-weight:400;color:#697b90}
+.node.dark small{color:#d4e3ec}
+.lanes{min-width:650px;display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.lane{border:1px solid var(--line);border-radius:10px;padding:11px;background:#fff}
+.lane strong{display:block;font-size:12px;margin-bottom:7px}
+.lane span{display:block;border-radius:7px;background:#f1f5f9;padding:7px 8px;margin:5px 0;font-size:11px}
+.timeline{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:15px 0}
+.phase{border:1px solid var(--line);border-radius:11px;padding:12px 10px;min-height:125px;background:#fff}
+.phase .week{font-size:10px;color:var(--blue);font-weight:800;letter-spacing:.1em}
+.phase strong{display:block;font-size:13px;margin:7px 0}
+.phase p{font-size:11px;color:var(--muted);margin:0}
+details{border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:9px 0;background:#fff}
+summary{cursor:pointer;font-weight:700;color:#2a4058}
+details p,details ul{font-size:13px;color:#53657a}
+.quote{font-size:19px;line-height:1.7;font-weight:680;color:#1d3b57;padding:8px 0}
+.code{white-space:pre-wrap;overflow:auto;background:#17283d;color:#e7eff7;border-radius:11px;padding:16px;font-size:11px;line-height:1.6}
+.footer{text-align:center;color:#8391a3;font-size:12px;padding:22px}
+@media(max-width:1050px){.layout{grid-template-columns:1fr}nav{position:relative;top:auto;max-height:none}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.shell{padding:11px 10px 32px}.hero{padding:28px 22px;border-radius:17px}.hero h1{font-size:30px}.subtitle{font-size:15px}section,.intro{padding:20px 16px}.g2,.g3,.g4{grid-template-columns:1fr}.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}table{display:block;overflow-x:auto}}
+@media print{body{background:#fff}.shell{max-width:none;padding:0}.hero{border-radius:0;box-shadow:none;print-color-adjust:exact}.layout{display:block}nav{display:none}section,.intro{box-shadow:none;break-inside:avoid}.footer{display:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="hero" id="top">
+ <div class="kicker">ADS · ENTERPRISE RUNTIME · AGENT ORCHESTRATION</div>
+ <h1>企业运行认知引擎<br>与企业 Agent 协同执行体系设计</h1>
+ <p class="subtitle">共享可信的企业运行上下文，让多个专业 Agent 按任务契约协作；用统一策略、受控工具、人工责任和可追溯执行，把企业从“理解发生了什么”推进到“安全地完成下一步工作”。</p>
+ <div class="meta">
+  <span class="tag">ADS-WORK-06</span><span>V0.1 Architecture Proposal</span><span>2026-11-19</span><span>项目交付作为首个领域样板</span>
+ </div>
+</header>
+<div class="layout">
+<nav aria-label="专题导航">
+ <div class="nav-title">专题导航</div>
+ <a href="#summary">摘要与核心判断</a>
+ <div class="nav-group">Architecture</div>
+ <a href="#principles">1. 设计原则与概念边界</a>
+ <a href="#architecture">2. 四平面参考架构</a>
+ <a href="#components">3. 核心组件职责</a>
+ <a href="#agents">4. 专业 Agent 团队</a>
+ <a href="#contract">5. 任务契约与结果契约</a>
+ <a href="#patterns">6. 协作模式与时序</a>
+ <a href="#lifecycle">7. 运行生命周期</a>
+ <div class="nav-group">Control & Trust</div>
+ <a href="#tools">8. 工具与动作治理</a>
+ <a href="#context">9. 上下文、记忆与事实</a>
+ <a href="#security">10. 安全与对抗风险</a>
+ <a href="#observability">11. 可观测性与指标</a>
+ <a href="#evaluation">12. 评测与验收</a>
+ <div class="nav-group">Delivery</div>
+ <a href="#scenario">13. 项目交付协同示例</a>
+ <a href="#reliability">14. 成本与可靠性</a>
+ <a href="#roadmap">15. 分阶段实施</a>
+ <a href="#operation">16. 组织与运营</a>
+ <a href="#decisions">17. 架构决策</a>
+ <a href="#checklist">18. 立项与验收清单</a>
+ <a href="#next">结论与下一专题</a>
+</nav>
+<main>
+<section class="intro" id="summary">
+ <span class="eyebrow">Executive Summary</span>
+ <h2>从“理解企业”走向“协调企业智能执行”</h2>
+ <p class="lead">当 ADS 能持续回答“发生了什么、当前状态是什么、依据是什么、哪里存在冲突和未知”，下一步就不应只是增加一个聊天机器人，而是建立一套能让多个专业 Agent 在统一上下文和权限治理下完成复杂工作的协同执行体系。</p>
+ <div class="callout"><strong>核心定位：</strong>ADS 提供企业运行认知；Agent Runtime 组织受约束的智能执行；业务系统仍然是正式业务状态和交易结果的权威载体。</div>
+ <div class="grid g4">
+  <div class="metric"><div class="num">1</div><div class="label">统一企业上下文基础</div></div>
+  <div class="metric"><div class="num">1 + N</div><div class="label">协调 Agent + 专业 Agent</div></div>
+  <div class="metric"><div class="num">L0—L3</div><div class="label">分级动作风险治理</div></div>
+  <div class="metric"><div class="num">4</div><div class="label">控制、执行、上下文、治理平面</div></div>
+ </div>
+ <h3>本专题要交付什么</h3>
+ <div class="grid g3">
+  <div class="card"><div class="idx">01 / ARCHITECTURE</div><h3>协同参考架构</h3><p>Agent Registry、Orchestrator、Runtime、Tool Gateway、Policy、Approval 和 Trace。</p></div>
+  <div class="card"><div class="idx">02 / CONTRACT</div><h3>任务与结果契约</h3><p>结构化委派、上下文引用、输出 Schema、预算和失败策略。</p></div>
+  <div class="card"><div class="idx">03 / WORKFLOW</div><h3>项目交付 Agent 团队</h3><p>项目状态、风险、依赖、决策证据和行动项协同。</p></div>
+  <div class="card"><div class="idx">04 / GOVERNANCE</div><h3>动作与权限治理</h3><p>最小权限、动作风险分级、审批绑定、幂等和补偿。</p></div>
+  <div class="card"><div class="idx">05 / EVALUATION</div><h3>评测与可观测性</h3><p>Trace、证据覆盖、失败恢复、成本和业务价值。</p></div>
+  <div class="card"><div class="idx">06 / DELIVERY</div><h3>分阶段实施</h3><p>单 Agent 只读、多 Agent 影子协同、人工确认和受控动作评估。</p></div>
+ </div>
+</section>
+
+<section id="principles">
+ <span class="eyebrow">01 · Principles & Boundaries</span><h2>设计原则：先定义协作边界，再讨论智能程度</h2>
+ <table><thead><tr><th>原则</th><th>核心要求</th></tr></thead><tbody>
+ <tr><td>Context First</td><td>先获取任务所需 Context Package，不任意检索全企业数据</td></tr>
+ <tr><td>Contract First</td><td>每次委派有明确目标、范围、输入、输出和验收条件</td></tr>
+ <tr><td>Least Privilege</td><td>Agent、用户、工具和委派链均按最小权限授权</td></tr>
+ <tr><td>Separate Cognition & Execution</td><td>企业业务状态、认知判断和 Agent 执行状态分别建模</td></tr>
+ <tr><td>Human Accountability</td><td>高影响业务判断由明确的人类责任人承担</td></tr>
+ <tr><td>Deterministic Guardrails</td><td>权限、审批、幂等、状态迁移由确定性服务强制执行</td></tr>
+ <tr><td>Evidence Before Assertion</td><td>重要结论必须附证据、来源、时间和不确定性</td></tr>
+ <tr><td>Bounded Autonomy</td><td>限制步骤、委派深度、工具次数、时间和成本</td></tr>
+ <tr><td>Observable by Design</td><td>运行、委派、工具调用和审批使用统一 Trace</td></tr>
+ <tr><td>Reusable Capability</td><td>优先沉淀 Skill、工具、规则、任务模板和评测集</td></tr>
+ </tbody></table>
+ <h3>Agent、Skill、Tool、Workflow 不能混用</h3>
+ <div class="grid g4">
+  <div class="card"><span class="pill blue">Agent</span><h3>任务执行单元</h3><p>有角色、目标、上下文和能力边界，可进行受约束推理。</p></div>
+  <div class="card"><span class="pill teal">Skill / Capability</span><h3>可复用专业能力</h3><p>代码、规则或模型封装，如依赖路径分析、证据核验。</p></div>
+  <div class="card"><span class="pill amber">Tool</span><h3>外部接口</h3><p>查询项目状态、读取风险台账、提交待办草稿。</p></div>
+  <div class="card"><span class="pill violet">Workflow</span><h3>流程定义</h3><p>明确步骤、条件、审批和异常分支，保证流程可控。</p></div>
+ </div>
+ <div class="callout blue"><strong>架构建议：</strong>确定性规则、计算和系统操作优先做成 Skill / Tool；只有在需要语义理解、非结构化分析或动态任务拆解时才引入 Agent。不要把每个 API 都包装成一个 Agent。</div>
+</section>
+
+<section id="architecture">
+ <span class="eyebrow">02 · Reference Architecture</span><h2>四个平面：共享上下文、统一控制、专业执行、横向治理</h2>
+ <div class="diagram"><div class="flow">
+  <div class="node dark">业务人员 / 业务系统事件 / 定时任务<small>提出目标、触发任务或响应业务变化</small></div><div class="arrow">↓</div>
+  <div class="node teal">ADS 企业运行上下文平面<small>统一数据模型 · 运行认知引擎 · Context Package API</small></div><div class="arrow">↓</div>
+  <div class="node">Agent 控制平面<small>Agent Registry · Capability Registry · Orchestrator · Plan Validator · Task Broker</small></div><div class="arrow">↓</div>
+  <div class="lanes">
+   <div class="lane"><strong>专业 Agent A</strong><span>项目上下文</span><span>状态变化</span></div>
+   <div class="lane"><strong>专业 Agent B</strong><span>风险分析</span><span>影响范围</span></div>
+   <div class="lane"><strong>专业 Agent C</strong><span>依赖分析</span><span>阻塞路径</span></div>
+   <div class="lane"><strong>专业 Agent D</strong><span>决策证据</span><span>版本核验</span></div>
+  </div><div class="arrow">↓</div>
+  <div class="node violet">Verifier · 结果汇总 · 人工确认<small>结构、证据、冲突、未知和业务约束检查</small></div><div class="arrow">↓</div>
+  <div class="node teal">Tool Gateway → 正式业务系统<small>只读查询 / 草稿 / 审批后的受控动作</small></div>
+  <div class="node amber">横向治理：身份 · 策略 · 审批 · 审计 · Trace · 预算 · Kill Switch</div>
+ </div></div>
+ <div class="grid g2">
+  <div class="card"><h3>ADS Context Plane</h3><p>负责企业对象、事件、状态、关系、证据、授权和任务级上下文；不负责 Agent 自主编排。</p></div>
+  <div class="card"><h3>Agent Control Plane</h3><p>负责 Agent / Capability 注册、计划校验、委派路由、预算、生命周期和版本管理。</p></div>
+  <div class="card"><h3>Agent Execution Plane</h3><p>运行具体 Agent、模型调用、Skill 执行、工具请求和结果校验。</p></div>
+  <div class="card"><h3>Governance & Observability</h3><p>负责身份、策略、审批、审计、质量评估、成本管理、异常检测和紧急停止。</p></div>
+ </div>
+ <h3>核心数据流</h3>
+ <ol><li>用户或业务事件提出有明确目的的任务。</li><li>Orchestrator 识别任务类型，读取任务模板和 Agent Registry。</li><li>ADS 按主体、用途、对象、时间和字段范围生成 Context Package。</li><li>Plan Validator 检查计划、权限、预算和动作等级。</li><li>专业 Agent 按 Task Envelope 执行，只调用允许的工具。</li><li>Verifier 检查结果结构、证据、冲突、未知和业务规则。</li><li>人工确认高影响判断；正式动作由业务系统或受控服务完成。</li><li>执行结果回流 ADS，审计和评测记录完整链路。</li></ol>
+</section>
+
+<section id="components">
+ <span class="eyebrow">03 · Core Components</span><h2>组件职责：模型提出候选，控制服务执行规则</h2>
+ <table><thead><tr><th>组件</th><th>核心职责</th><th>边界</th></tr></thead><tbody>
+ <tr><td>Agent Registry</td><td>Agent 身份、版本、角色、能力、所有者和运行限制</td><td>不授予任意业务数据访问权</td></tr>
+ <tr><td>Capability Registry</td><td>Skill / Tool 输入输出、风险等级、依赖和版本</td><td>不替代业务权限策略</td></tr>
+ <tr><td>Orchestrator</td><td>规划、拆解、委派、汇总、超时和终止</td><td>不绕过 Policy 执行高风险动作</td></tr>
+ <tr><td>Plan Validator</td><td>校验计划结构、动作等级、预算和权限</td><td>不依赖模型自我声明安全</td></tr>
+ <tr><td>Agent Runtime</td><td>装载任务上下文、模型和能力并运行 Agent</td><td>不能自行扩大授权</td></tr>
+ <tr><td>Task Broker</td><td>任务排队、路由、并发、重试和状态更新</td><td>不改变任务业务含义</td></tr>
+ <tr><td>Tool Gateway</td><td>鉴权、参数校验、限流、幂等、审计和结果封装</td><td>Agent 不持有系统长期凭证</td></tr>
+ <tr><td>Policy / Approval</td><td>策略决策、具体动作审批和审批有效期</td><td>审批不能扩展为永久授权</td></tr>
+ <tr><td>Verifier</td><td>检查 Schema、证据、矛盾、范围和验收标准</td><td>不为无证据内容背书</td></tr>
+ <tr><td>Run Ledger / Trace</td><td>记录运行、任务、委派、工具、审批和结果</td><td>不保存不必要的隐藏推理链</td></tr>
+ </tbody></table>
+ <div class="callout">Orchestrator 可以使用模型提出任务分解建议，但任务创建、委派、授权、预算扣减、状态转换和动作提交必须由可测试的控制逻辑执行。模型输出是候选计划，不是系统命令。</div>
+ <h3>Agent Registry 最小登记项</h3>
+ <div class="grid g3">
+  <div class="card"><h3>身份与所有权</h3><p>agent_id、domain、owner、role_description、lifecycle_status。</p></div>
+  <div class="card"><h3>能力与数据边界</h3><p>supported_task_types、allowed_capabilities、denied_capabilities、data_classification_ceiling。</p></div>
+  <div class="card"><h3>运行约束</h3><p>max_risk_tier、max_delegation_depth、timeout、max_steps、tool_calls、budget。</p></div>
+  <div class="card"><h3>版本信息</h3><p>agent_version、model_profile、prompt_version、runtime_version。</p></div>
+  <div class="card"><h3>输入输出契约</h3><p>input_contract、output_contract、evaluation_profile。</p></div>
+  <div class="card"><h3>停用策略</h3><p>阻止新任务，并定义运行中任务的完成、迁移或取消方式。</p></div>
+ </div>
+</section>
+
+<section id="agents">
+ <span class="eyebrow">04 · Domain Agent Team</span><h2>项目交付 Agent 团队：一个协调者，多个专业角色</h2>
+ <div class="grid g3">
+  <div class="card"><span class="pill blue">Coordinator</span><h3>项目协调 Agent</h3><p>理解目标、拆解任务、分派专业 Agent、汇总结果和呈现待确认事项。</p></div>
+  <div class="card"><span class="pill teal">Specialist</span><h3>项目上下文 Agent</h3><p>提取项目状态、里程碑、关键变化和时间线证据。</p></div>
+  <div class="card"><span class="pill amber">Specialist</span><h3>风险分析 Agent</h3><p>识别候选风险、影响对象、触发条件和证据缺口。</p></div>
+  <div class="card"><span class="pill violet">Specialist</span><h3>依赖分析 Agent</h3><p>分析任务依赖、阻塞链、里程碑影响和关键路径。</p></div>
+  <div class="card"><span class="pill blue">Specialist</span><h3>决策与证据 Agent</h3><p>核验决策审批状态、交付物版本和证据引用。</p></div>
+  <div class="card"><span class="pill teal">Specialist</span><h3>行动项草拟 Agent</h3><p>将已核验问题转成内部行动项草稿，不直接写回。</p></div>
+  <div class="card"><span class="pill amber">Quality Gate</span><h3>Verifier Agent</h3><p>检查结构、来源、冲突、未知、范围和业务约束。</p></div>
+ </div>
+ <div class="callout blue"><strong>重要：</strong>Agent 数量不是架构目标。若某个子任务可由确定性 Skill 或 Tool 完成，应优先使用能力组件，不必创建一个新 Agent。</div>
+</section>
+
+<section id="contract">
+ <span class="eyebrow">05 · Task & Result Contract</span><h2>以结构化任务契约代替自由对话式委派</h2>
+ <p>每次委派必须说明目标、范围、上下文版本、输入、允许能力、禁止动作、输出要求、预算、截止时间、委派规则和失败策略。Task Envelope 是 Runtime、Task Broker、Policy Service 和审计系统共同执行的控制对象，不只是提示词。</p>
+ <div class="grid g3">
+  <div class="card"><h3>输入契约</h3><p>目标、对象范围、时间窗口、Context ID、完整性摘要、用途和输入数据。</p></div>
+  <div class="card"><h3>权限契约</h3><p>允许能力、禁止动作、风险等级、策略版本、审批引用和委派深度。</p></div>
+  <div class="card"><h3>输出契约</h3><p>Schema、必需字段、证据引用、冲突、未知、假设和限制说明。</p></div>
+ </div>
+ <h3>Task Envelope 示例</h3>
+ <pre class="code">{
+  "task_id": "task-dependency-014",
+  "task_type": "analyze_project_dependencies",
+  "requester": {
+    "subject_type": "agent",
+    "subject_id": "agent-project-coordinator",
+    "on_behalf_of": "user-project-manager"
+  },
+  "recipient": {
+    "agent_id": "agent-dependency-analysis",
+    "agent_version": "0.1"
+  },
+  "purpose": "prepare_project_status_review",
+  "scope": {
+    "object_refs": ["obj-project-014"],
+    "time_window": {
+      "from": "2026-11-17T00:00:00+08:00",
+      "to": "2026-11-20T00:00:00+08:00"
+    }
+  },
+  "context_package_ref": {
+    "context_id": "ctx-project-review-014",
+    "integrity_hash": "sha256:example-digest"
+  },
+  "allowed_capabilities": ["context.read", "dependency.graph.read"],
+  "prohibited_actions": ["project.write", "task.reassign", "customer.send"],
+  "risk_tier": "L0",
+  "constraints": {
+    "evidence_required": true,
+    "max_steps": 8,
+    "max_tool_calls": 10,
+    "max_delegation_depth": 0
+  },
+  "expected_output": {
+    "schema_ref": "ads-agent-result-v0.1",
+    "required_sections": ["dependency_paths", "evidence_refs", "unknowns"]
+  }
+}</pre>
+ <p class="small">完整字段、版本和机器可读约束见配套 JSON Schema。示例中的 ID 和数据均为虚构。</p>
+ <h3>Result Contract 必须包含</h3>
+ <ul><li>任务和 Agent 版本、Run ID、执行状态；</li><li>简要结果与结构化发现；</li><li>每个关键发现的 EvidenceRef；</li><li>冲突、未知、假设和限制；</li><li>建议下一步和动作提议（如有）；</li><li>耗时、工具调用和成本指标。</li></ul>
+ <div class="callout amber">Verifier 应拒绝缺少必要证据、超出任务范围、把推断写成正式事实或违反输出 Schema 的结果。</div>
+</section>
+
+<section id="patterns">
+ <span class="eyebrow">06 · Collaboration Patterns</span><h2>四种标准协作模式，默认采用混合式编排</h2>
+ <div class="grid g2">
+  <div class="card"><span class="pill blue">A · 串行流水线</span><h3>前一步是后一步的输入</h3><p>项目上下文 → 风险识别 → 行动项草稿 → 结果核验。</p></div>
+  <div class="card"><span class="pill teal">B · 并行分工与汇总</span><h3>子任务彼此独立</h3><p>状态、风险、依赖、决策证据并行分析，最后由 Coordinator 汇总。</p></div>
+  <div class="card"><span class="pill violet">C · 监督式委派</span><h3>复杂目标动态拆解</h3><p>Coordinator 委派专业 Agent，限制最大深度、并发、预算和截止时间。</p></div>
+  <div class="card"><span class="pill amber">D · 事件驱动协作</span><h3>业务变化触发候选任务</h3><p>项目状态变化、风险升级或交付物更新触发任务，再经策略和去重检查。</p></div>
+ </div>
+ <div class="callout"><strong>推荐架构：</strong>中心化控制 + 专业化执行 + 确定性工具服务。不要把 Agent 自由聊天、无限递归委派作为默认机制。</div>
+ <h3>项目评审的协作时序</h3>
+ <div class="diagram"><div class="flow">
+  <div class="node dark">项目经理提出评审目标</div><div class="arrow">↓</div>
+  <div class="node teal">Coordinator 获取 ADS Context Package</div><div class="arrow">↓</div>
+  <div class="lanes">
+   <div class="lane"><strong>状态 Agent</strong><span>项目状态与变化</span></div>
+   <div class="lane"><strong>风险 Agent</strong><span>风险与影响</span></div>
+   <div class="lane"><strong>依赖 Agent</strong><span>阻塞链与里程碑</span></div>
+   <div class="lane"><strong>证据 Agent</strong><span>决策与证据版本</span></div>
+  </div><div class="arrow">↓</div>
+  <div class="node violet">Verifier 检查证据、冲突、未知和范围</div><div class="arrow">↓</div>
+  <div class="node">Coordinator 汇总评审材料与行动项草稿</div><div class="arrow">↓</div>
+  <div class="node amber">项目经理接受 / 修正 / 驳回</div><div class="arrow">↓</div>
+  <div class="node teal">经独立审批的动作由 Tool Gateway 执行并回流结果</div>
+ </div></div>
+ <h3>并行协作的硬约束</h3>
+ <ul><li>子 Agent 使用同一 Context Package 版本，或明确记录上下文差异。</li><li>同一业务对象的关键写入默认串行化。</li><li>Agent 结果有分歧时保留冲突，不用多数票替代事实核验。</li><li>超时可返回 partial，但必须标注缺失子任务。</li><li>并行数量受租户、业务域、任务类型和成本预算共同限制。</li></ul>
+</section>
+
+<section id="lifecycle">
+ <span class="eyebrow">07 · Runtime Lifecycle</span><h2>Run、Task、Delegation 分层管理，显式表达执行状态</h2>
+ <div class="diagram"><div class="flow">
+  <div class="node">requested → authorized → planned</div><div class="arrow">↓</div>
+  <div class="node teal">running ↔ waiting（等待子任务或工具）</div><div class="arrow">↓</div>
+  <div class="lanes">
+   <div class="lane"><strong>成功</strong><span>completed</span></div>
+   <div class="lane"><strong>部分成功</strong><span>partial</span></div>
+   <div class="lane"><strong>失败</strong><span>failed / retryable</span></div>
+   <div class="lane"><strong>停止</strong><span>cancelled / expired</span></div>
+  </div>
+ </div></div>
+ <table><thead><tr><th>对象</th><th>定义</th></tr></thead><tbody>
+ <tr><td>Run</td><td>一次用户目标或业务事件触发的完整执行实例</td></tr>
+ <tr><td>Task</td><td>Run 中可独立分派、追踪和验收的工作单元</td></tr>
+ <tr><td>Delegation</td><td>父任务向子 Agent 的正式委派关系</td></tr>
+ <tr><td>ToolCall</td><td>一次工具调用及其策略决策、参数和结果</td></tr>
+ <tr><td>Approval</td><td>针对具体动作的审批记录</td></tr>
+ <tr><td>Artifact</td><td>报告、草稿、清单、证据索引等可交付结果</td></tr>
+ </tbody></table>
+ <div class="callout amber"><strong>关键区分：</strong>Run 的 completed 只表示 Agent 任务满足其执行契约，不意味着项目状态、风险、验收或其他业务事实已发生改变。</div>
+</section>
+
+<section id="tools">
+ <span class="eyebrow">08 · Tool & Action Governance</span><h2>所有工具调用经过 Tool Gateway，动作按风险分级</h2>
+ <h3>Tool Gateway 的九项职责</h3>
+ <ol><li>解析 Agent、用户和代表关系；</li><li>检查任务目的、对象、字段和数据分类；</li><li>校验工具是否在 Agent 能力清单中；</li><li>校验参数 Schema、业务规则和速率；</li><li>检查审批要求及审批是否绑定当前动作；</li><li>生成幂等键和审计记录；</li><li>调用下游服务；</li><li>保存执行状态、回执和副作用摘要；</li><li>将结果返回 Agent，并在适用时发布标准事件。</li></ol>
+ <h3>动作风险分级</h3>
+ <table><thead><tr><th>等级</th><th>动作</th><th>示例</th><th>默认策略</th></tr></thead><tbody>
+ <tr><td><span class="pill teal">L0</span></td><td>只读查询与分析</td><td>查询项目状态、分析依赖、检索证据</td><td>授权后自动执行</td></tr>
+ <tr><td><span class="pill blue">L1</span></td><td>内部草拟与建议</td><td>周报草稿、待办建议、风险提示</td><td>自动生成，人工确认后使用</td></tr>
+ <tr><td><span class="pill amber">L2</span></td><td>可逆的内部业务写入</td><td>创建内部待办草稿、更新非关键标签</td><td>逐工具审批、幂等、审计和补偿</td></tr>
+ <tr><td><span class="pill red">L3</span></td><td>高影响或外部动作</td><td>客户承诺、合同变更、费用审批、正式验收</td><td>授权人员在正式系统完成；Agent 提供材料</td></tr>
+ </tbody></table>
+ <div class="callout amber"><strong>第一阶段只开放 L0 / L1。</strong>L2 逐个工具、逐个场景评审后才可进入沙箱验证。L3 不因 Agent 任务成功或模型置信度高而自动放行。</div>
+ <h3>审批绑定具体动作</h3>
+ <p>审批至少绑定请求主体、代表关系、动作类型、目标对象、完整参数摘要、payload hash、用途、风险等级、审批人、有效期、策略版本和防重放标识。若对象、参数、金额、接收方或内容变化，原审批失效，必须重新审批。</p>
+ <h3>可靠执行要求</h3>
+ <ul><li>副作用调用必须提供 Idempotency-Key。</li><li>关键写入使用版本检查或乐观锁。</li><li>网络超时不代表下游没有执行；重试前先查询或依赖下游幂等。</li><li>跨系统操作采用 Saga / 补偿，不假设分布式原子事务。</li><li>无法安全补偿的动作提升风险等级，要求人工执行。</li></ul>
+</section>
+
+<section id="context">
+ <span class="eyebrow">09 · Context & Memory</span><h2>Agent 可以拥有任务状态，但不能各自维护企业事实孤岛</h2>
+ <table><thead><tr><th>记忆类型</th><th>作用</th><th>归属与治理</th></tr></thead><tbody>
+ <tr><td>Run Context</td><td>当前运行临时状态、子任务进度和中间结果</td><td>随 Run 生命周期归档或清理</td></tr>
+ <tr><td>Capability Memory</td><td>经验证的规则、流程、模板和能力经验</td><td>评审、版本化、指定所有者后进入能力库</td></tr>
+ <tr><td>Enterprise Runtime Context</td><td>企业对象、事件、状态、决策、风险、证据和关系</td><td>由 ADS 与业务系统责任边界管理</td></tr>
+ </tbody></table>
+ <div class="callout blue">企业业务事实回到 ADS 运行认知引擎及权威业务系统。不能因为某个 Agent 在历史对话中“记得”项目状态，就跳过 Context API 查询当前事实。</div>
+ <h3>Context Package 失效条件</h3>
+ <ul><li>上下文包过期；</li><li>用户或数据责任方撤回授权；</li><li>关键源数据更正或证据失效；</li><li>对象范围、数据分类或策略版本变化；</li><li>任务从只读分析转为写入建议或实际执行。</li></ul>
+ <p>只读任务的 Context Package 不能自动复用为写入任务的授权凭据。人工接受、修正、驳回和补充信息应形成结构化 Feedback Event，经审核后才可更新规则、Prompt、Skill 或评测集。</p>
+</section>
+
+<section id="security">
+ <span class="eyebrow">10 · Security & Adversarial Risks</span><h2>把安全控制放在服务端，不把希望寄托在提示词上</h2>
+ <table><thead><tr><th>风险</th><th>表现</th><th>控制</th></tr></thead><tbody>
+ <tr><td>Prompt Injection</td><td>文档或网页诱导 Agent 越权</td><td>检索内容视为不可信数据；工具端强制策略</td></tr>
+ <tr><td>越权委派</td><td>子 Agent 获得父任务之外的权限</td><td>权限取交集；每次委派重新 Policy Check</td></tr>
+ <tr><td>数据外泄</td><td>敏感内容流向外部工具</td><td>分类、脱敏、出口控制和工具白名单</td></tr>
+ <tr><td>工具滥用</td><td>错误参数、重复提交或异常频率</td><td>Schema、限流、幂等、预算</td></tr>
+ <tr><td>结果串线</td><td>多项目或多租户上下文混用</td><td>Tenant / Object Scope 隔离</td></tr>
+ <tr><td>伪造证据</td><td>Agent 生成不存在的引用</td><td>EvidenceRef 必须由系统解析验证</td></tr>
+ <tr><td>循环委派</td><td>反复创建子任务</td><td>最大深度、任务数、循环检测和超时</td></tr>
+ <tr><td>多 Agent 共识幻觉</td><td>多个 Agent 重复同一错误</td><td>检查证据独立性，不以多数票替代核验</td></tr>
+ </tbody></table>
+ <h3>紧急停止机制</h3>
+ <div class="grid g3">
+  <div class="card"><h3>按范围停止</h3><p>按租户、业务域、Agent、Tool 或 Run 暂停。</p></div>
+  <div class="card"><h3>撤销执行权限</h3><p>停止新任务、取消排队委派、禁用高风险工具。</p></div>
+  <div class="card"><h3>审计与恢复</h3><p>失效上下文和授权，导出 Trace，回归测试后审批恢复。</p></div>
+ </div>
+</section>
+
+<section id="observability">
+ <span class="eyebrow">11 · Observability & Metrics</span><h2>统一 Trace，既看任务成功，也看证据、治理和成本</h2>
+ <div class="grid g3">
+  <div class="metric"><div class="num">100%</div><div class="label">委派任务状态可追踪率 · 建议</div></div>
+  <div class="metric"><div class="num">100%</div><div class="label">审批动作绑定率 · 建议</div></div>
+  <div class="metric"><div class="num">0</div><div class="label">未授权动作成功次数</div></div>
+  <div class="metric"><div class="num">≥95%</div><div class="label">关键结论证据覆盖率 · 建议</div></div>
+  <div class="metric"><div class="num">≥99%</div><div class="label">Trace 关联完整率 · 建议</div></div>
+  <div class="metric"><div class="num">≥20%</div><div class="label">业务周期改善目标 · 待基线验证</div></div>
+ </div>
+ <h3>统一 Trace 至少关联</h3>
+ <p>tenant_id、request_id、trace_id、run_id、parent_run_id、task_id、parent_task_id、agent_id、agent_version、context_id、policy_version、delegation_id、tool_call_id、approval_id、artifact_id、时间、状态和错误码。</p>
+ <table><thead><tr><th>指标维度</th><th>关键指标</th><th>计算含义</th></tr></thead><tbody>
+ <tr><td>任务质量</td><td>Task Success Rate</td><td>满足任务验收标准的 Run / 已评测 Run</td></tr>
+ <tr><td>结果质量</td><td>Evidence Coverage</td><td>有有效证据的关键发现 / 全部关键发现</td></tr>
+ <tr><td>结果质量</td><td>Unsupported Claim Rate</td><td>无证据或超范围关键结论占比</td></tr>
+ <tr><td>协作效率</td><td>Delegation Completion / Rework</td><td>委派完成率、结果返工率</td></tr>
+ <tr><td>治理</td><td>Approval Compliance</td><td>需审批动作正确完成审批的比例</td></tr>
+ <tr><td>安全</td><td>Unauthorized Action Success</td><td>未授权动作成功次数，目标为 0</td></tr>
+ <tr><td>成本</td><td>Cost per Accepted Task</td><td>每个被业务接受任务的平均成本</td></tr>
+ <tr><td>业务价值</td><td>Cycle Time Reduction</td><td>同类任务周期相对基线的变化</td></tr>
+ </tbody></table>
+ <p class="small">阈值均为初始设计目标，须在试点前由业务、工程、安全和评估负责人冻结。低频高影响风险需单独测试，不能只看平均准确率。</p>
+</section>
+
+<section id="evaluation">
+ <span class="eyebrow">12 · Evaluation & Acceptance</span><h2>四层评测：组件、协作、系统、业务</h2>
+ <div class="grid g4">
+  <div class="card"><span class="pill blue">Level 1</span><h3>组件评测</h3><p>任务理解、结构化输出、证据引用和工具参数。</p></div>
+  <div class="card"><span class="pill teal">Level 2</span><h3>协作评测</h3><p>任务拆解、委派、上下文一致、冲突和汇总。</p></div>
+  <div class="card"><span class="pill violet">Level 3</span><h3>系统评测</h3><p>授权、审批、超时、幂等、重试、取消、Trace 和成本。</p></div>
+  <div class="card"><span class="pill amber">Level 4</span><h3>业务评测</h3><p>准备时间、阻塞发现、行动项闭环和团队使用意愿。</p></div>
+ </div>
+ <h3>必须覆盖的验收场景</h3>
+ <table><thead><tr><th>编号</th><th>场景</th><th>预期结果</th></tr></thead><tbody>
+ <tr><td>AG-01—02</td><td>单 Agent 只读与多 Agent 并行</td><td>只访问授权对象；上下文版本一致或差异明确</td></tr>
+ <tr><td>AG-03—04</td><td>子 Agent 越权或继续委派</td><td>拒绝越权；遵守最大委派深度</td></tr>
+ <tr><td>AG-05</td><td>多个 Agent 结果冲突</td><td>保留冲突，要求证据或人工判断</td></tr>
+ <tr><td>AG-06—07</td><td>上下文过期、审批后修改参数</td><td>阻断或重新审批</td></tr>
+ <tr><td>AG-08—09</td><td>工具超时、部分子任务失败</td><td>避免重复副作用；明确 partial</td></tr>
+ <tr><td>AG-10—11</td><td>超预算、循环委派、Prompt Injection</td><td>停止运行；外部内容不能改变权限</td></tr>
+ <tr><td>AG-12—14</td><td>跨租户访问、人工修正、Kill Switch</td><td>拒绝越界；留存修正链；紧急停止有效</td></tr>
+ <tr><td>AG-15—16</td><td>版本升级、业务系统回执不一致</td><td>回归评测；以业务系统回执为准</td></tr>
+ </tbody></table>
+ <div class="callout amber">不能单独以 Task Success Rate 作为上线依据。必须同时检查证据质量、权限安全、人工修改率、业务收益和失败恢复能力。</div>
+</section>
+
+<section id="scenario">
+ <span class="eyebrow">13 · Project Delivery Scenario</span><h2>项目经理提出一个目标，多个 Agent 共同准备评审材料</h2>
+ <div class="quote">“请基于截至今天的授权项目上下文，准备本周项目状态评审材料，重点说明延期风险、关键依赖、待确认决策和建议跟进动作。”</div>
+ <ol>
+  <li>Coordinator 识别任务类型并校验项目经理身份、项目范围和用途。</li>
+  <li>ADS Context Engine 生成指定项目和时间窗的 Context Package。</li>
+  <li>Plan Validator 校验 Agent 清单、预算、时间和允许动作。</li>
+  <li>状态、风险、依赖、决策证据 Agent 并行分析。</li>
+  <li>Verifier 检查来源、时效、冲突、未知和任务范围。</li>
+  <li>Coordinator 汇总评审材料，明确事实、推断、冲突和未知。</li>
+  <li>Action Drafting Agent 生成内部行动项草稿。</li>
+  <li>项目经理接受、修正或驳回；正式写入仍走原系统授权流程。</li>
+  <li>若未来开放 L2 动作，必须逐项审批、校验幂等并由 Tool Gateway 执行。</li>
+  <li>业务系统回执回流 ADS，Run Ledger 归档完整链路。</li>
+ </ol>
+ <h3>最终交付内容</h3>
+ <div class="grid g3">
+  <div class="card"><h3>项目与变化</h3><p>项目概览、正式状态、认知状态、本期变化及来源。</p></div>
+  <div class="card"><h3>风险与依赖</h3><p>里程碑影响、阻塞链、责任人和待确认事项。</p></div>
+  <div class="card"><h3>决策与证据</h3><p>决策审批状态、交付物版本和证据索引。</p></div>
+  <div class="card"><h3>行动项草稿</h3><p>行动内容、负责人候选、期限候选和关联对象。</p></div>
+  <div class="card"><h3>质量说明</h3><p>未知、冲突、数据新鲜度和未完成子任务。</p></div>
+  <div class="card"><h3>人工确认</h3><p>接受、修正、驳回和后续正式系统操作记录。</p></div>
+ </div>
+ <p>业务价值与 ADS-WORK-05 基线对齐，比较评审准备时间、跨系统查找次数、风险发现周期、行动项形成耗时、事实遗漏和人工修改比例。Agent 任务数量不是业务价值。</p>
+</section>
+
+<section id="reliability">
+ <span class="eyebrow">14 · Cost & Reliability</span><h2>为每次 Run 设置预算，确保失败可恢复</h2>
+ <div class="grid g3">
+  <div class="card"><h3>时间与步骤</h3><p>最大总耗时、单任务超时、最大 Agent 步骤数。</p></div>
+  <div class="card"><h3>委派与并发</h3><p>最大委派深度、子任务数、并发数和重试次数。</p></div>
+  <div class="card"><h3>模型与成本</h3><p>模型档位、Token 预算、成本预算和降级策略。</p></div>
+ </div>
+ <h3>可靠性原则</h3>
+ <ul><li>任务队列支持持久化和状态恢复；</li><li>事件和工具调用支持幂等；</li><li>外部服务故障时明确返回 partial / unavailable；</li><li>重试采用退避并设置上限；</li><li>重要操作先查询后执行，避免超时导致重复副作用；</li><li>子任务失败不能隐藏在汇总文本中；</li><li>按 Agent、Tool、租户和业务域提供熔断和降级。</li></ul>
+ <details><summary>模型路由与缓存策略</summary><p>简单分类、格式校验和确定性计算优先使用规则或轻量模型；复杂语义理解和任务规划使用适当能力模型。模型降级不能绕过权限和证据要求。缓存必须检查租户、权限主体、上下文版本、完整性和 TTL；授权撤回、源数据更正和策略升级应触发失效。</p></details>
+</section>
+
+<section id="roadmap">
+ <span class="eyebrow">15 · Implementation Roadmap</span><h2>从单 Agent 只读，逐步走向多 Agent 受控协同</h2>
+ <div class="timeline">
+  <div class="phase"><div class="week">P0 · 1—2 周</div><strong>契约与治理</strong><p>Registry、Envelope、Result、风险策略和预算</p></div>
+  <div class="phase"><div class="week">P1 · 3—4 周</div><strong>单 Agent 只读</strong><p>一个项目 Agent 消费 Context Package</p></div>
+  <div class="phase"><div class="week">P2 · 5—6 周</div><strong>影子协同</strong><p>Coordinator + 2—4 个专业 Agent</p></div>
+  <div class="phase"><div class="week">P3 · 7—8 周</div><strong>人工确认</strong><p>Verifier、修正反馈和行动项草稿</p></div>
+  <div class="phase"><div class="week">P4 · 9—10 周</div><strong>受控动作评估</strong><p>单个低风险内部动作的沙箱评估</p></div>
+  <div class="phase"><div class="week">P5 · 后续</div><strong>扩展复用</strong><p>多项目、多团队和领域能力目录</p></div>
+ </div>
+ <div class="callout amber"><strong>P4 不是生产写入许可。</strong>任何真实 L2 写入必须单独立项、授权、审批并通过幂等、补偿、审计和安全测试。L3 外部或高影响动作仍由授权人员在正式系统完成。</div>
+ <h3>首批工程最小集</h3>
+ <ol><li>Agent Registry（静态配置起步）；</li><li>Task Envelope / Result Contract Schema；</li><li>有限状态机 Orchestrator；</li><li>Task Broker（单队列即可起步）；</li><li>复用 ADS Context API 的 Context Adapter；</li><li>只读 Tool Gateway；</li><li>Schema + 证据 + 规则 Verifier；</li><li>Run Ledger / Trace；</li><li>人工审核入口；</li><li>评测数据集与回归测试。</li></ol>
+ <p class="small">首期不需要先做 Agent 市场、可视化拖拽编排、无限自我规划或复杂自治系统。</p>
+</section>
+
+<section id="operation">
+ <span class="eyebrow">16 · Operating Model</span><h2>每个 Agent 和 Tool 都要有业务 Owner</h2>
+ <table><thead><tr><th>角色</th><th>职责</th></tr></thead><tbody>
+ <tr><td>业务发起人</td><td>业务目标、风险容忍度和价值指标</td></tr>
+ <tr><td>业务流程负责人</td><td>流程、人工责任、审批节点和例外处理</td></tr>
+ <tr><td>ADS 架构负责人</td><td>上下文模型、服务接口和跨层边界</td></tr>
+ <tr><td>Agent Platform Owner</td><td>Runtime、Orchestrator、Registry 和任务协议</td></tr>
+ <tr><td>Domain Agent Owner</td><td>专业 Agent 的任务定义、质量和版本</td></tr>
+ <tr><td>Tool Owner</td><td>工具参数、权限、下游副作用和 SLA</td></tr>
+ <tr><td>Policy / Security Owner</td><td>身份、授权、动作策略、审计和应急机制</td></tr>
+ <tr><td>Evaluation Owner</td><td>评测集、验收口径、回归和业务收益</td></tr>
+ <tr><td>Human Approver</td><td>正式业务决策和高影响动作责任</td></tr>
+ </tbody></table>
+ <p>每周检查失败任务、人工修正、策略拒绝和成本异常；每次版本发布执行离线评测与安全回归；每月复核 Agent 能力、工具权限、模型版本和业务价值；重大安全事件触发 Kill Switch 和恢复审批。</p>
+</section>
+
+<section id="decisions">
+ <span class="eyebrow">17 · Architecture Decisions</span><h2>建议形成八项架构决策记录</h2>
+ <table><thead><tr><th>ADR</th><th>推荐选择</th><th>原因</th></tr></thead><tbody>
+ <tr><td>01 协作模式</td><td>中心化 Orchestrator + 专业 Agent</td><td>权限、预算、状态和责任更易控制</td></tr>
+ <tr><td>02 Agent 通信</td><td>结构化 Task Envelope / Result Contract</td><td>可验证、可追踪、可复现</td></tr>
+ <tr><td>03 共同事实</td><td>ADS Context Package + 权威业务系统</td><td>避免 Agent 各自维护事实副本</td></tr>
+ <tr><td>04 工具访问</td><td>统一 Tool Gateway</td><td>集中鉴权、审计、幂等和限流</td></tr>
+ <tr><td>05 高风险动作</td><td>独立 Approval Service + 人工责任</td><td>避免模型自行批准自己的计划</td></tr>
+ <tr><td>06 任务状态</td><td>显式 Run / Task 状态机</td><td>处理部分成功、超时、取消和恢复</td></tr>
+ <tr><td>07 记忆策略</td><td>Run、Capability、Enterprise Context 分离</td><td>防止记忆污染和越权共享</td></tr>
+ <tr><td>08 质量评估</td><td>离线 + 影子 + 人工确认 + 业务基线</td><td>不以演示成功代替业务验证</td></tr>
+ </tbody></table>
+</section>
+
+<section id="checklist">
+ <span class="eyebrow">18 · Readiness Checklist</span><h2>立项前、上线前和扩大前的检查清单</h2>
+ <details open><summary>立项前</summary><ul><li>业务目标、首批任务和责任人明确；</li><li>Agent、Skill、Tool 边界已确认；</li><li>Context Package 和权限模型可复用；</li><li>Task Envelope 与 Result Contract 已版本化；</li><li>Tool Gateway、审批和审计设计通过评审；</li><li>L0—L3 动作等级和审批规则明确；</li><li>预算、委派深度和 Kill Switch 已定义；</li><li>真实数据处理范围获得批准。</li></ul></details>
+ <details><summary>上线前</summary><ul><li>单 Agent 和多 Agent 正常 / 异常场景通过；</li><li>越权、Prompt Injection 和跨项目隔离测试通过；</li><li>上下文过期、撤回和版本变化测试通过；</li><li>工具幂等、超时、重试和审批绑定测试通过；</li><li>Trace、审计、成本限制和 Kill Switch 通过；</li><li>业务团队确认人工责任和例外处理方式。</li></ul></details>
+ <details><summary>扩大前</summary><ul><li>多项目任务成功率和证据质量达到冻结阈值；</li><li>业务周期或质量指标出现可重复改善；</li><li>人工修正率和返工原因可解释；</li><li>失败恢复和 Kill Switch 演练完成；</li><li>Agent / Tool 版本和权限有持续维护人；</li><li>其他项目已独立复现收益；</li><li>业务、安全和架构负责人共同作出 Go / No-Go 决策。</li></ul></details>
+</section>
+
+<section id="next">
+ <span class="eyebrow">Conclusion & Next Research</span><h2>ADS 的价值不只是让 Agent 知道企业发生了什么</h2>
+ <p class="quote">更重要的是，让 Agent 在可信上下文和明确边界内，协同推进企业下一步工作。</p>
+ <div class="grid g3">
+  <div class="card"><h3>ADS Context</h3><p>让 Agent 知道企业正在发生什么，以及信息从哪里来。</p></div>
+  <div class="card"><h3>ADS Ontology</h3><p>让 Agent 理解业务对象、关系、事件和规则是什么意思。</p></div>
+  <div class="card"><h3>ADS Policy</h3><p>让 Agent 知道什么可以访问、什么可以做、什么必须审批。</p></div>
+  <div class="card"><h3>Agent Runtime</h3><p>让多个专业 Agent 按任务契约协同完成工作。</p></div>
+  <div class="card"><h3>ADS Feedback</h3><p>让执行结果、人工修正和业务验证回流，形成持续改进。</p></div>
+  <div class="card"><h3>Enterprise Capability</h3><p>将经验证的规则、工具和任务经验沉淀为可复用能力资产。</p></div>
+ </div>
+ <div class="callout"><strong>下一专题 ADS-WORK-07：</strong>《企业 Agent 能力资产化、任务经验沉淀与跨业务复用机制研究》。研究哪些经验成为 Skill，哪些规则进入领域本体，哪些反馈优化任务模板，以及如何验证能力跨项目、团队和岗位真正复用。</div>
+ <h3>配套工程文件</h3>
+ <ul>
+  <li><a href="../schemas/ads-agent-task-envelope-v0.1.schema.json">Agent Task Envelope JSON Schema</a></li>
+  <li><a href="../examples/ads-agent-project-delivery-review.json">项目交付 Agent 委派示例</a></li>
+  <li><a href="../pilot/Agent协同运行评估模板.csv">Agent 协同运行评估模板（CSV）</a></li>
+  <li><a href="05-企业运行认知基础设施试点实施方案-以项目交付为例.html">ADS-WORK-05 试点实施方案</a></li>
+ </ul>
+ <p class="small">本文件为架构与工程建议稿。Agent 角色、模型、指标、权限策略、部署方式和动作开放范围须根据 ADS 实际能力、业务流程和安全治理要求评审确认。所有示例 ID、用户、项目和时间均为虚构。</p>
+</section>
+</main>
+</div>
+<div class="footer">ADS-WORK-06 · V0.1 Architecture Proposal · 2026-11-19 · ADS 企业 Agent 协同执行体系研究</div>
+</div>
+</body>
+</html>
