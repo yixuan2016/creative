@@ -1,0 +1,31 @@
+{
+  "profile_version": "0.1",
+  "mode": "read_only",
+  "expected_schema_fingerprint": null,
+  "tables": {
+    "events": {
+      "table": "life_events",
+      "columns": {
+        "event_id": "id",
+        "event_type": "event_type",
+        "event_family": "event_family",
+        "title": "title",
+        "description": "description",
+        "occurred_from": "occurred_from",
+        "occurred_to": "occurred_to",
+        "observed_at": "observed_at",
+        "recorded_at": "recorded_at",
+        "epistemic_status": "epistemic_status",
+        "processing_state": "processing_state",
+        "verification_status": "verification_status",
+        "confidence": "confidence",
+        "project_id": "project_id",
+        "workspace_id": "workspace_id",
+        "sensitivity": "sensitivity",
+        "owner_scope": "owner_scope",
+        "ontology_version": "ontology_version",
+        "mapping_version": "mapping_version"
+      }
+    }
+  }
+}

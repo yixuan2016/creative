@@ -1,0 +1,22 @@
+flowchart TD
+  A[Confirmed Personal Events] --> B[Reflection Preview]
+  B --> C{User materializes?}
+  C -->|No| D[Read-only candidate preview]
+  C -->|Yes| E[Proposed Memory / Intent]
+  E --> F{Human review}
+  F -->|Confirm Memory| G[Active Confirmed Memory]
+  F -->|Activate Intent| H[Active Intent]
+  F -->|Reject / defer| I[Rejected or Proposed]
+  G --> J[Personal State Projector]
+  H --> J
+  A --> J
+  J --> K[Versioned State Snapshot]
+  K --> L[Authorized Agent Context]
+  G --> L
+  H --> L
+  M[Source Purge / Evidence Revocation] --> N[Invalidate Supports]
+  N --> O[Memory needs_review / Intent review_required]
+  O --> L
+  P[Purpose + Sensitivity + Expiry] --> L
+  L --> Q[Agent Read-only]
+  Q -. no writes or side effects .-> R[User approval required]
