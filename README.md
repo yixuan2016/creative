@@ -224,3 +224,17 @@
 - [PALOS / 钉钉 DWS 真实集成资料清单](docs/18-PALOS与钉钉DWS真实集成资料清单.md)
 
 V0.3.3 增加来源删除预览、显式确认、跨来源事件保留、专属事件与证据清理、RDF 投影失效、状态快照失效和上下文包撤销。删除范围仅覆盖 EIL 本地数据库与受控文件目录，不代表远端提供方删除、备份擦除或法律合规认证。当前 PALOS 仍未连接真实数据库，DingTalk DWS CLI 仍处于 blocked 状态。
+
+### 专题 13：Personal Data Runtime V0.4.0 Alpha
+
+**从个人多源事件采集走向可治理的事件融合与多 Agent 协同**
+
+- [V0.4.0 研发进展](docs/19-PersonalDataRuntimeV0.4.0研发进展.md)
+- [Event Fusion Candidate 规范](docs/20-EventFusionCandidate规范V0.1.md)
+- [Agent Event Runtime 契约](docs/21-AgentEventRuntime契约V0.1.md)
+- [PALOS / DWS 集成边界](docs/22-PALOS与DWS集成边界V0.4.md)
+- [交互式架构总览](docs/23-PersonalDataRuntime架构总览V0.4.html)
+- [Agent Subscription JSON Schema](schemas/agent-subscription-v0.1.schema.json)
+- [Event Fusion Decision JSON Schema](schemas/event-fusion-decision-v0.1.schema.json)
+
+V0.4.0 增加跨来源事件融合候选和本地 Pull-only Agent Runtime。融合分数仅用于候选排序，必须人工裁决；确认后只建立 EventRelation，不自动合并 Event。Agent 仅能在用途、敏感度和有效期约束下拉取已确认的个人域事件。PALOS 真实 Schema 与钉钉官方 DWS CLI 仍未接入；个人数据不自动投影到企业域。
