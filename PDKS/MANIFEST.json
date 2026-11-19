@@ -16,11 +16,22 @@
   "cloud_sync_enabled_by_default": false,
   "encryption_at_rest": false,
   "test_summary": {
-    "total": 162,
-    "passed": 160,
-    "skipped": 2,
+    "total": 164,
+    "passed": 164,
+    "skipped": 0,
     "failed": 0
   },
+  "python_test_summary": {
+    "skill_release_governance": 49,
+    "ontology_ads_prototype": 33,
+    "capture_runtime": 64
+  },
+  "node_test_summary": {
+    "total": 18,
+    "passed": 18,
+    "failed": 0
+  },
+  "mcp_apps_build": "passed_on_github_actions",
   "stage_validator": {
     "passed": 12,
     "total": 12,
@@ -850,8 +861,8 @@
     },
     {
       "path": "reports/PDKS_0.5.3_VALIDATION_REPORT.md",
-      "size_bytes": 2695,
-      "sha256": "ca0672a7da11ec5dcb2fb8e72356839df88ee689d067ad99f8ecebd10304f559"
+      "size_bytes": 2353,
+      "sha256": "2810fbee1b823831172445630461f7705358965d1d4d3ccb78ed17a60ee6dddc"
     },
     {
       "path": "reports/RUNTIME_VALIDATION_REPORT.md",
