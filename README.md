@@ -191,6 +191,7 @@
 **从 Agent Skill 到可持续留存、更新、检索、纠错和迁移的个人数据运行时**
 
 - [运行时与 ADS-WORK-09 接入设计（Markdown）](docs/12-PDKS个人数据持久化运行时与ADS-WORK-09接入设计.md)
+- [运行时架构图文阅读版（HTML）](docs/12-PDKS个人数据持久化运行时与ADS-WORK-09接入设计.html)
 
 核心议题：SQLite 本地持久化、owner 分区、revision 乐观并发、幂等写入、来源撤回传播、元数据追加审计、PDKS Event / Knowledge / Personal Context / Action 到 ADS Event Ledger / Memory / Intent 的保守映射。设备与连接器采集必须通过可信授权门禁；Agent 只能导入候选 Memory / Intent；PDKS Action 不自动创建 Agent Action Proposal；个人侧默认 personal_only。
 
