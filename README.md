@@ -185,6 +185,8 @@
 - [演示数据 JSON Schema](schemas/ads-personal-assistant-os-demo-v0.1.schema.json)
 - [设计 Token](prototype/personal-assistant-os/design-tokens.json)
 - [交互领域逻辑与 Node 测试](prototype/personal-assistant-os/core.js)
+- [30 天试点评估模板](pilot/个人助理OS30天试点评估模板.csv)
+- [用户访谈提纲](pilot/个人助理OS用户访谈提纲.md)
 
 核心议题：五大工作空间交互原型、30 天个人上下文旅程、快速记录—事件—记忆—承诺—提醒—Agent 审批闭环、记忆纠错与撤回、来源权限、隐私和自动化控制。原型只使用虚构数据，不连接真实系统、不执行外部动作。
 
