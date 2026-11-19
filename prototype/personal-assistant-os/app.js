@@ -94,6 +94,7 @@
     const nextEvent = state.events.find((x) => x.event_id === "evt-030");
     const activeGoals = state.intents.filter((x) => ["goal", "project"].includes(x.type) && x.status === "active");
     const pendingActions = state.actions.filter((x) => x.approval_status === "pending");
+    const actionsToShow = state.actions.filter((x) => x.approval_status === "pending" || x.execution_status === "draft_ready");
     const upcoming = state.events.filter((x) => x.occurred_at.slice(0, 10) === "2026-11-19").slice(-2);
     return '<div class="welcome-row"><div><div class="eyebrow">THURSDAY · 19 NOVEMBER 2026</div><h2>早上好，' + esc(state.profile.display_name) + '。</h2><p>今天有几件值得关注的事。其余信息已经为你整理好，不需要逐条处理。</p></div><div class="welcome-mark">✳</div></div>' +
       '<div class="stat-grid">' +
@@ -111,7 +112,7 @@
       (upcoming.length ? upcoming.map((e) => '<div class="schedule-row"><div class="schedule-time">' + timeLabel(e.occurred_at) + '</div><div class="schedule-marker"></div><div class="schedule-info"><strong>' + esc(e.title) + '</strong><span>' + esc(e.summary) + '</span></div><span class="schedule-source">' + esc(eventSource(e)) + '</span></div>').join("") : emptyState("今天没有新的安排", "如果日历来源已授权，新的安排会自动出现在这里。")) +
       '</section>' +
       '<section class="panel">' + panelTitle("AI 正在准备什么", "审批只代表你允许进入下一步；本原型不会执行真实外部操作。", '<button class="text-button" data-action="go-myai-actions">查看全部 <span>→</span></button>') +
-      renderActionCards(pendingActions.slice(0, 2)) + '</section></div>' +
+      renderActionCards(actionsToShow.slice(0, 3)) + '</section></div>' +
       '<aside class="stack">' +
       '<section class="panel compact-panel">' + panelTitle("快速记录", "想到什么，直接交给助理。") +
       '<textarea id="quick-capture" class="quick-input" rows="3" placeholder="例如：下周要和团队确认个人知识沉淀标准……"></textarea>' +
@@ -127,7 +128,10 @@
 
   function renderActionCards(actions) {
     if (!actions.length) return emptyState("目前没有待审批动作", "当 AI 准备执行需要授权的操作时，会先在这里向你说明。");
-    return actions.map((a) => '<div class="action-card"><div class="action-card-top"><span class="risk-tag ' + a.risk_tier.toLowerCase() + '">' + a.risk_tier + " · " + (a.risk_tier === "L3" ? "高影响" : "可逆写入") + '</span>' + statusPill(a.approval_status) + '</div><h3>' + esc(a.title) + '</h3><p>' + esc(a.summary) + '</p><div class="action-target">操作对象：' + esc(a.target) + '</div><div class="button-row"><button class="btn btn-primary btn-small" data-action="review-action" data-id="' + esc(a.action_id) + '">查看并审批</button><button class="btn btn-ghost btn-small" data-action="reject-action" data-id="' + esc(a.action_id) + '">拒绝</button></div></div>').join("");
+    return actions.map((a) => {
+      const needsApproval = a.approval_required && a.approval_status === "pending";
+      return '<div class="action-card"><div class="action-card-top"><span class="risk-tag ' + a.risk_tier.toLowerCase() + '">' + a.risk_tier + " · " + (a.risk_tier === "L3" ? "高影响" : a.risk_tier === "L2" ? "可逆写入" : "草稿") + '</span>' + statusPill(a.approval_status) + '</div><h3>' + esc(a.title) + '</h3><p>' + esc(a.summary) + '</p><div class="action-target">操作对象：' + esc(a.target) + '</div><div class="button-row"><button class="btn btn-primary btn-small" data-action="' + (needsApproval ? "review-action" : "view-action") + '" data-id="' + esc(a.action_id) + '">' + (needsApproval ? "查看并审批" : "查看草稿") + '</button>' + (needsApproval ? '<button class="btn btn-ghost btn-small" data-action="reject-action" data-id="' + esc(a.action_id) + '">拒绝</button>' : "") + '</div></div>';
+    }).join("");
   }
 
   function renderInbox() {
@@ -390,6 +394,7 @@
       showToast(action === "complete-intent" ? "已标记完成。" : "已暂停，不再作为当前优先事项。", "success"); render(); return;
     }
     if (action === "review-action") { showActionReview(id, "approve"); return; }
+    if (action === "view-action") { showActionReview(id, "details"); return;
     if (action === "reject-action") { showActionReview(id, "details"); openModal("拒绝这项操作？", $("#modal-body").innerHTML + '<p class="micro-note">拒绝后该动作不会执行。</p>', '<button class="btn btn-ghost" data-action="close-modal">返回</button><button class="btn btn-danger" data-action="confirm-action-rejection" data-id="' + esc(id) + '">确认拒绝</button>'); return; }
     if (action === "confirm-action-approval" || action === "confirm-action-rejection") {
       try {
@@ -453,12 +458,13 @@
   document.addEventListener("submit", (event) => {
     if (event.target.id === "capture-form") event.preventDefault();
   });
-  document.addEventListener("input", (event) => {
+  document.addEventListener("change", (event) => {
     if (event.target.id === "journey-range") {
       timelineDay = Number(event.target.value);
-      const old = $("#view-root").innerHTML;
       render();
     }
+  });
+  document.addEventListener("input", (event) => {
     if (event.target.id === "timeline-search") {
       timelineQuery = event.target.value;
       const pos = event.target.selectionStart;
