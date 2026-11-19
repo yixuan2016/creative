@@ -1,0 +1,6 @@
+source_id,source_system,system_owner,business_owner,object_type,property_name,source_field,canonical_field,authority_level,assertion_handling,data_classification,allowed_purpose,project_scope,access_method,refresh_expectation,retention_rule,approval_reference,mapping_version,validation_rule,notes
+SRC-001,项目管理系统,待填写,待填写,project,project.status,待填写,project.status,authoritative,confirmed_or_observed,待分类,project_delivery_status_review,指定项目,read_only_api,待确认,按组织策略,待审批,0.1,与项目系统正式状态一致,示例行需由责任人确认
+SRC-002,项目管理系统,待填写,待填写,task,task.status,待填写,task.status,authoritative,confirmed_or_observed,待分类,project_delivery_status_review,指定项目,read_only_api,待确认,按组织策略,待审批,0.1,与任务系统正式状态一致,示例行需由责任人确认
+SRC-003,OA审批系统,待填写,待填写,decision,decision.status,待填写,decision.status,authoritative,confirmed_or_observed,待分类,project_delivery_status_review,项目相关审批,read_only_api,待确认,按组织策略,待审批,0.1,只有正式审批结果可标记approved,示例行需由责任人确认
+SRC-004,文档系统,待填写,待填写,evidence,evidence.reference,待填写,evidence.source_ref,reference,observed,待分类,project_delivery_status_review,项目交付证据,metadata_and_controlled_link,待确认,按组织策略,待审批,0.1,引用必须可定位到具体版本,示例行需由责任人确认
+SRC-005,会议纪要,待填写,待填写,meeting,meeting.action,待填写,work_event.payload,signal_only,inferred_or_unconfirmed,待分类,project_delivery_status_review,指定会议,approved_record_or_manual_submission,待确认,按组织策略,待审批,0.1,不得直接覆盖权威业务状态,示例行需由责任人确认
