@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PDKS × ADS Personal Runtime 0.3.0</title>
+<style>
+:root{--ink:#172033;--muted:#68758a;--paper:#f4f7fb;--line:#dfe6ef;--navy:#10233f;--blue:#2864dc;--teal:#168b83;--card:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+header{background:linear-gradient(125deg,#0c1c35,#163e69 58%,#137c80);color:#fff;padding:54px 24px 66px}
+.wrap{max-width:1080px;margin:auto}.eyebrow{color:#8be0d4;font-size:11px;letter-spacing:.18em;font-weight:800}.hero h1{font-size:clamp(30px,5vw,52px);line-height:1.18;margin:15px 0}.hero p{max-width:760px;color:#d4e2f2;font-size:17px}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}.pill{font-size:12px;border:1px solid #ffffff44;background:#ffffff12;border-radius:30px;padding:6px 12px}
+main{max-width:1080px;margin:-25px auto 0;padding:0 22px;position:relative}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:27px 30px;margin-bottom:18px;box-shadow:0 10px 30px #152e5010}
+h2{font-size:22px;margin:0 0 12px;color:var(--navy)}h3{font-size:15px;margin:20px 0 8px}.k{font-size:11px;letter-spacing:.15em;color:var(--blue);font-weight:800}.lead{font-size:17px;color:#35445a}.call{border-left:4px solid var(--teal);background:#edf8f6;padding:14px 17px;border-radius:0 10px 10px 0;margin:16px 0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.stat{padding:16px;border:1px solid var(--line);border-radius:13px}.stat b{display:block;font-size:25px;color:var(--navy)}.stat span{font-size:12px;color:var(--muted)}
+.diagram{background:#f8fbff;border:1px solid var(--line);padding:16px;border-radius:14px}.diagram svg{width:100%;height:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:15px 0}th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:#edf3fa;color:#29415e}
+code{background:#edf2f8;padding:2px 5px;border-radius:4px;font-size:12px}pre{background:#101d31;color:#d9e9fb;padding:16px;border-radius:12px;overflow:auto;font-size:12px;line-height:1.7}
+.note{background:#fff6e8;border:1px solid #f0dfbd;border-radius:12px;padding:14px 16px;color:#79551f;font-size:13px}
+footer{text-align:center;padding:25px;color:#8491a3;font-size:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.card{padding:22px 18px}header{padding-top:38px}table{min-width:600px}.scroll{overflow:auto}}
+</style>
+</head>
+<body>
+<header><div class="wrap hero"><div class="eyebrow">PDKS × ADS · PERSONAL RUNTIME</div><h1>让个人知识不只被理解，<br>还能够持续存在。</h1><p>PDKS 负责统一表达，ADS-WORK-08 负责语义与授权桥接，ADS-WORK-09 负责个人运行时。本阶段把内存逻辑原型推进到本地可持久化、可纠错、可审计的运行环境。</p><div class="pills"><span class="pill">PDKS Standard 0.1</span><span class="pill">Agent Skill 0.2</span><span class="pill">Runtime Prototype 0.3</span><span class="pill">SQLite Adapter</span></div></div></header>
+<main>
+<section class="card"><div class="k">01 / POSITIONING</div><h2>从 Agent 会整理，走向个人数据会持续积累</h2><p class="lead">0.2 解决 Agent 如何理解和处理个人数据；0.3 解决数据如何可靠留存、更新、检索、纠错和迁移。</p><div class="call"><b>核心判断：</b>Agent 可以更换，模型可以更换，但个人数据、知识关系和历史积累不应该丢失。</div><div class="grid"><div class="stat"><b>PDKS</b><span>跨 Agent 的个人数据统一语言</span></div><div class="stat"><b>ADS-WORK-08</b><span>语义、身份与授权桥梁</span></div><div class="stat"><b>ADS-WORK-09</b><span>事件账本、记忆与 Intent 运行时</span></div></div></section>
+<section class="card"><div class="k">02 / ARCHITECTURE</div><h2>运行时在整体架构中的位置</h2><div class="diagram"><svg viewBox="0 0 860 510" role="img" aria-label="PDKS到ADS个人运行时架构"><defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#17385f"/><stop offset="1" stop-color="#236c83"/></linearGradient><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="none" stroke="#8294aa" stroke-width="1.4"/></marker></defs><rect x="125" y="12" width="610" height="58" rx="13" fill="url(#g)"/><text x="430" y="37" fill="white" text-anchor="middle" font-size="16" font-weight="700">多源输入 · PDKS Agent Skill</text><text x="430" y="55" fill="#d4e2f2" text-anchor="middle" font-size="11">语音 / 聊天 / 文档 / 邮件 / 手工记录</text><path d="M430 70V94" stroke="#8294aa" stroke-width="2" marker-end="url(#a)"/><rect x="80" y="101" width="700" height="75" rx="13" fill="#eaf1fb" stroke="#cbd8e8"/><text x="430" y="131" fill="#1c3c64" text-anchor="middle" font-size="15" font-weight="700">PDKS 统一记录与证据链</text><text x="430" y="153" fill="#50647e" text-anchor="middle" font-size="11">Entity · Source · Evidence · Event · Assertion · Knowledge · Context · Action · Relation</text><path d="M430 176V202" stroke="#8294aa" stroke-width="2" marker-end="url(#a)"/><rect x="125" y="210" width="610" height="65" rx="13" fill="#e8f7f4" stroke="#b9e3da"/><text x="430" y="237" fill="#126b63" text-anchor="middle" font-size="15" font-weight="700">PDKS → ADS 语义与授权适配器</text><text x="430" y="257" fill="#4e817b" text-anchor="middle" font-size="11">Schema · 来源解析 · owner 校验 · consent gate</text><path d="M430 275V302M430 302H210V320M430 302H650V320" stroke="#8294aa" stroke-width="2" fill="none" marker-end="url(#a)"/><rect x="65" y="328" width="290" height="66" rx="12" fill="#fff4df" stroke="#eed5a7"/><text x="210" y="356" fill="#885a17" text-anchor="middle" font-size="14" font-weight="700">Personal Event Ledger</text><text x="210" y="376" fill="#987746" text-anchor="middle" font-size="11">发生记录 · 来源可追溯</text><rect x="505" y="328" width="290" height="66" rx="12" fill="#eef0ff" stroke="#d0d4fa"/><text x="650" y="356" fill="#464e9a" text-anchor="middle" font-size="14" font-weight="700">Candidate Memory + Intent</text><text x="650" y="376" fill="#6d73a6" text-anchor="middle" font-size="11">待确认认知 · 个人目标与承诺</text><path d="M210 394V416H430V431M650 394V416H430" stroke="#8294aa" stroke-width="2" fill="none" marker-end="url(#a)"/><rect x="125" y="438" width="610" height="60" rx="13" fill="#132b49"/><text x="430" y="463" fill="white" text-anchor="middle" font-size="15" font-weight="700">ADS-WORK-09 Personal Runtime · SQLite</text><text x="430" y="483" fill="#bfd3eb" text-anchor="middle" font-size="11">持久化 · 幂等 · revision · 审计 · Context Builder</text></svg></div><p>PDKS 投影不会自动创建 Agent Action Proposal，也不会自动生成企业投影。</p></section>
+<section class="card"><div class="k">03 / STORAGE</div><h2>本地持久化模型</h2><div class="scroll"><table><thead><tr><th>表</th><th>保存内容</th><th>作用</th></tr></thead><tbody><tr><td>owners</td><td>owner_ref、revision</td><td>个人分区与并发版本</td></tr><tr><td>events</td><td>Personal Event Ledger</td><td>个人事件账本</td></tr><tr><td>memories</td><td>Memory Items</td><td>候选与确认记忆</td></tr><tr><td>intents</td><td>Intent Objects</td><td>目标、承诺和任务</td></tr><tr><td>actions</td><td>Agent Action Proposals</td><td>审批和执行状态</td></tr><tr><td>suppressed_sources</td><td>被抑制来源事件 ID</td><td>阻止再次派生</td></tr><tr><td>audit_log</td><td>操作元数据与摘要</td><td>追加式审计，不复制正文</td></tr></tbody></table></div><div class="note">SQLite 文件未实现加密或身份认证。它是本地参考实现，不是生产安全边界；owner_ref 是数据分区键，不是身份认证。</div></section>
+<section class="card"><div class="k">04 / SAFETY RULES</div><h2>关键运行约束</h2><ol><li>每次写入使用原子事务和 owner revision；旧版本写入被拒绝并要求 refresh。</li><li>Event ID 与 idempotency_key 防止重复写入。</li><li>Agent 默认只能写入 candidate Memory / inferred_candidate Intent；确认态必须由 owner 明确操作。</li><li>personal_sensitive 默认不进入上下文；候选记录默认不进入日常上下文。</li><li>来源撤回后派生 Memory 撤回，依赖来源的 Intent 暂停并要求 owner review。</li><li>device_capture 与 connector_sync 必须经过可信授权引用验证。</li></ol><p><b>重要：</b>来源 suppression 不等于物理删除原始事件、录音文件和备份。</p></section>
+<section class="card"><div class="k">05 / MAPPING</div><h2>PDKS 对象如何进入 ADS-WORK-09</h2><div class="scroll"><table><thead><tr><th>PDKS 对象</th><th>ADS 目标</th><th>映射策略</th></tr></thead><tbody><tr><td>Event</td><td>Personal Event Ledger</td><td>需要发生时间、Source Asset 和合规采集方式</td></tr><tr><td>Knowledge Asset</td><td>Memory Item</td><td>关联成功投影事件，默认 candidate</td></tr><tr><td>Personal Context</td><td>Memory Item</td><td>校验 owner，推断保持 candidate</td></tr><tr><td>Action</td><td>Intent Object</td><td>表达人的计划，不触发 Agent 执行</td></tr><tr><td>Assertion</td><td>保留在 PDKS</td><td>不自动升级为事实</td></tr><tr><td>Entity / Source / Evidence / Relation</td><td>引用或语义层</td><td>不自动合并主数据，不复制原始文件</td></tr></tbody></table></div></section>
+<section class="card"><div class="k">06 / QUICK START</div><h2>本地 CLI 试用</h2><pre>python -m pip install -r requirements-dev.txt
+
+python prototype/personal_memory_cli.py init \
+  --db ./data/personal-memory.sqlite3 --owner &lt;owner-ref&gt;
+
+python prototype/personal_memory_cli.py project-pdks \
+  --records-dir ./my-pdks-export/records --owner &lt;owner-ref&gt; \
+  --output ./data/projection.json
+
+python prototype/personal_memory_cli.py apply-projection \
+  --db ./data/personal-memory.sqlite3 --owner &lt;owner-ref&gt; \
+  --projection ./data/projection.json
+
+python prototype/personal_memory_cli.py context \
+  --db ./data/personal-memory.sqlite3 --owner &lt;owner-ref&gt; \
+  --purpose personal_planning</pre><p>授权引用必须来自可信授权解析器；模型不能自行编造授权引用。未经本人检查，不要将 active Memory 标记为 owner-confirmed。</p></section>
+<section class="card"><div class="k">07 / ROADMAP</div><h2>参考原型不等于生产底座</h2><div class="grid"><div class="stat"><b>18</b><span>SQLite 持久化测试</span></div><div class="stat"><b>14</b><span>PDKS→ADS 映射测试</span></div><div class="stat"><b>0</b><span>自动创建 Agent Action Proposal</span></div></div><p>下一步顺序：单用户单设备手工导入 → 一个只读数据源 → 正式授权服务 → 加密与删除闭环 → 多端同步 → 自动感知与企业投影。</p><p>尚未实现：数据库加密、owner 身份认证、正式授权服务、钉钉/录音连接器、多端同步、物理删除传播和生产级防篡改审计。</p></section>
+</main><footer>PDKS × ADS · Personal Data Runtime · Architecture Research & Reference Prototype</footer>
+</body></html>
