@@ -147,7 +147,7 @@
 
 本仓库的连续研究主线是：
 
-**多源工作感知 → 个人工作记忆 → 授权与语义映射 → 企业数智资产 → 企业工作上下文 → 统一数据模型与运行认知引擎 → 标准数据契约与上下文服务 → 企业 Agent 协同 → 能力资产化与跨人跨岗位复用验证 → 工作本体与事件驱动协同 → 个人持续记忆与事件账本 → 个人运行模型与受约束 Agent → Personal Assistant OS 产品体验与多端协同 → 主动智能与长期目标推进 → 个人、企业与领域数智底座安全协同。**
+**多源工作感知 → 个人工作记忆 → 授权与语义映射 → 企业数智资产 → 企业工作上下文 → 统一数据模型与运行认知引擎 → 标准数据契约与上下文服务 → 企业 Agent 协同 → 能力资产化与跨人跨岗位复用验证 → 工作本体与事件驱动协同 → 个人持续记忆与事件账本 → 个人数据持久化运行时与跨 Agent 数据交换 → 个人运行模型与受约束 Agent → Personal Assistant OS 产品体验与多端协同 → 主动智能与长期目标推进 → 个人、企业与领域数智底座安全协同。**
 
 其中，个人数智底座负责个人工作信息的自主沉淀；企业数智底座融合企业既有业务系统、知识和经授权的协同信息，并形成标准业务数据、运行上下文和能力资产；业务领域中心数智底座通过共同语义、联邦资产目录、授权协调和跨域治理提供支撑。工作上下文基础设施与运行认知引擎是企业数智底座内部的能力体系，不是新增的第四级底座，也不是员工持续监控系统。
 
@@ -184,3 +184,14 @@
 - [PDKS → ADS 投影示例](examples/pdks-ads-bridge-projection-v0.1.json)
 
 核心议题：PDKS 个人数据统一表达、ADS-WORK-08 语义与授权桥接、ADS-WORK-09 个人事件账本/持续记忆/Intent 运行时、ADS-WORK-10 Personal Assistant OS。PDKS Action 映射为 Intent，不自动生成 Agent Action Proposal；个人侧默认 personal_only，企业投影须独立授权。
+
+
+### 专题 12：PDKS 个人数据持久化运行时与 ADS-WORK-09 接入
+
+**从 Agent Skill 到可持续留存、更新、检索、纠错和迁移的个人数据运行时**
+
+- [运行时与 ADS-WORK-09 接入设计（Markdown）](docs/12-PDKS个人数据持久化运行时与ADS-WORK-09接入设计.md)
+
+核心议题：SQLite 本地持久化、owner 分区、revision 乐观并发、幂等写入、来源撤回传播、元数据追加审计、PDKS Event / Knowledge / Personal Context / Action 到 ADS Event Ledger / Memory / Intent 的保守映射。设备与连接器采集必须通过可信授权门禁；Agent 只能导入候选 Memory / Intent；PDKS Action 不自动创建 Agent Action Proposal；个人侧默认 personal_only。
+
+本阶段是单机本地参考原型，不代表已具备数据库加密、身份认证、正式授权服务、钉钉/录音连接器、多端同步或物理删除能力。
