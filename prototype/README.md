@@ -8,6 +8,7 @@
 - `test_ads_context_engine.py`：原型行为测试。
 - `test_contract_schemas.py`：使用 JSON Schema 校验模拟数据和生成的上下文包。
 - `test_capability_asset_schema.py`：校验 Capability Manifest 契约、项目风险初筛样例及关键治理约束。
+- `test_work_ontology_contracts.py`：校验五层本体目录、类与关系引用、个人事件 Schema、企业 WorkEvent 投影和隐私边界。
 - `../examples/project-delivery-seed-data.json`：虚构项目交付场景数据。
 
 ## 2. 运行环境
@@ -49,7 +50,10 @@ python -m unittest -v
 - JSON Schema 定义本身有效；
 - 模拟事件、业务对象、授权记录及生成的上下文包符合 Schema；
 - Capability Asset Schema 与候选能力样例符合契约；
-- 未声明适用边界、越权扩展字段等不合规能力定义会被拒绝。
+- Work Ontology Catalog 与 Manifest Schema 符合契约，五层概念、父类、关系域和值域引用均可解析；
+- 个人工作与生活事件符合 Personal Context Event Schema；
+- 个人到企业的投影符合既有 WorkEvent 契约，且未把生活事件和私人备注带入企业侧；
+- 缺少有效授权的投影会被拒绝。
 
 ## 5. 核心规则
 
