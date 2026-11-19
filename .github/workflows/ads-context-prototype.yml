@@ -6,6 +6,7 @@ on:
       - "prototype/**"
       - "examples/project-delivery-seed-data.json"
       - "schemas/ads-work-context-v0.1.schema.json"
+      - "requirements-dev.txt"
       - ".github/workflows/ads-context-prototype.yml"
   pull_request:
     paths:
@@ -24,7 +25,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Run prototype acceptance tests
+      - name: Install development validation tools
+        run: python -m pip install -r requirements-dev.txt
+      - name: Run prototype and schema acceptance tests
         run: python -m unittest discover -s prototype -v
       - name: Run end-to-end demo
         run: python prototype/ads_context_engine.py
