@@ -490,6 +490,32 @@
       ],
       "default_classification": "confidential",
       "identity_policy": "绑定 trace、task、agent、capability、policy 和上下文版本。"
+    },
+    {
+      "class_id": "core.CaptureSession",
+      "namespace": "core",
+      "label": "采集会话",
+      "parent_class": null,
+      "definition": "一次由设备、连接器或用户触发的信号采集过程，记录采集范围、来源和时间。",
+      "instance_scopes": [
+        "personal",
+        "enterprise"
+      ],
+      "default_classification": "confidential",
+      "identity_policy": "按采集主体、来源设备或连接器和时间范围建立会话 ID。"
+    },
+    {
+      "class_id": "core.ExtractionRun",
+      "namespace": "core",
+      "label": "抽取运行",
+      "parent_class": null,
+      "definition": "对来源记录执行转写、OCR、解析、事件识别或实体抽取的一次处理运行。",
+      "instance_scopes": [
+        "personal",
+        "enterprise"
+      ],
+      "default_classification": "confidential",
+      "identity_policy": "绑定 source record、模型或规则版本、处理时间和结果版本。"
     }
   ],
   "relations": [
