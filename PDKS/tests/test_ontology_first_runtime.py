@@ -216,6 +216,14 @@ class OntologyFirstRuntimeTests(unittest.TestCase):
         self.assertEqual(report["status"],"breaking")
         self.assertTrue(any(x["term"]=="urn:pdks:ontology:0.1#Event" for x in report["breaking_changes"]))
 
+    def test_semantic_diff_recognizes_broader_domain_as_review_not_breaking(self):
+        baseline=Graph().parse(self.runtime.assets_dir/"pdks-core-ontology-0.1.ttl",format="turtle")
+        report=compare_ontology_versions(baseline,self.runtime.ontology_graph)
+        self.assertNotEqual(report["status"],"breaking",report)
+        self.assertEqual(report["breaking_changes"],[])
+        self.assertTrue(any(x["kind"]=="domain_constraint_broadened" and x["term"].endswith("#assertedBy")
+                            for x in report["relaxed_constraints_requiring_review"]))
+
     def test_semantic_diff_detects_newly_restrictive_property_domain(self):
         baseline=Graph().parse(self.runtime.assets_dir/"pdks-core-ontology-0.1.ttl",format="turtle")
         candidate=Graph()
@@ -226,14 +234,13 @@ class OntologyFirstRuntimeTests(unittest.TestCase):
         self.assertEqual(report["status"],"breaking")
         self.assertTrue(any(x["kind"]=="domain_constraint_tightened" and x["term"].endswith("#ownedBy") for x in report["breaking_changes"]))
 
-    def test_relationship_attribution_does_not_infer_assertion(self):
+    def test_relationship_retains_asserting_agent(self):
         records=load_scenario("voice-meeting")
         relationship=next(x for x in records if x["object_type"]=="relationship")
         graph=self.runtime.project_record(relationship)
         subject=URIRef(relationship["object_id"])
         actor=URIRef(relationship["payload"]["asserted_by_ref"])
-        self.assertIn((subject,PDKS.attributedTo,actor),graph)
-        self.assertNotIn((subject,PDKS.assertedBy,actor),graph)
+        self.assertIn((subject,PDKS.assertedBy,actor),graph)
 
     def test_shacl_runtime_status_and_conformance(self):
         records=load_scenario("voice-meeting")

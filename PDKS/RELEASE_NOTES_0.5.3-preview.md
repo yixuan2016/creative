@@ -42,6 +42,6 @@ Do not use this preview for sensitive personal data.
 ## Ontology 0.2.1 — non-breaking SHACL conformance corrections
 
 - Align SHACL scheme-membership checks with the actual controlled vocabulary scheme IRI and Event Taxonomy scheme IRI.
-- Keep `assertedBy` specific to Assertion records; project the asserting agent on QualifiedRelationship through the generic `attributedTo` property so RDFS does not infer that a relationship is an Assertion.
+- Broaden the `assertedBy` domain from `Assertion` to its superclass `InformationObject` so both assertions and qualified relationships can retain their asserting agent. The compatibility checker now recognizes this as a non-breaking domain broadening rather than a restriction.
 - Correct the voice-meeting personal-context example so `evidence_refs` point to an EvidenceSegment rather than to an Event and KnowledgeAsset.
 - These are corrective consistency fixes within the frozen Ontology 0.2.1 baseline; no new ontology version or new terms are introduced.

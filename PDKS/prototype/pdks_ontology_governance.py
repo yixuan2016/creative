@@ -86,16 +86,35 @@ def check_runtime_term_coverage(runtime, runtime_source: str | Path | None = Non
     }
 
 
+def _is_subclass_of(graph: Graph, child, parent) -> bool:
+    """Return whether child is parent or a transitive rdfs:subClassOf of parent."""
+    if child == parent:
+        return True
+    seen = set()
+    pending = [child]
+    while pending:
+        current = pending.pop()
+        if current in seen:
+            continue
+        seen.add(current)
+        for superclass in graph.objects(current, RDFS.subClassOf):
+            if superclass == parent:
+                return True
+            if superclass not in seen:
+                pending.append(superclass)
+    return False
+
+
 def compare_ontology_versions(baseline: Graph, candidate: Graph) -> dict[str, Any]:
     """Compare declared terms and property constraints with an explicit bridge requirement.
 
     Removing a legacy term without an equivalence bridge is breaking. Adding a
-    domain/range constraint is breaking; removing one is a semantic relaxation
-    that requires review but does not invalidate old data by itself.
+    narrower domain/range constraint is breaking. Replacing a class constraint
+    with one of its superclasses broadens the constraint and is recorded for
+    review rather than incorrectly classified as a breaking change.
     """
     old_terms = declared_terms(baseline)
     new_terms = declared_terms(candidate)
-    changes: list[dict[str, Any]] = []
     breaking: list[dict[str, Any]] = []
     relaxed: list[dict[str, Any]] = []
     bridged: list[dict[str, Any]] = []
@@ -117,18 +136,27 @@ def compare_ontology_versions(baseline: Graph, candidate: Graph) -> dict[str, An
                 new_values = set(candidate.objects(target, predicate))
                 added = new_values - old_values
                 removed = old_values - new_values
-                if added:
-                    issue = {
+                broadened = {
+                    new_value for new_value in added
+                    if any(_is_subclass_of(candidate, old_value, new_value) for old_value in removed)
+                }
+                tightened = added - broadened
+                if tightened:
+                    breaking.append({
                         "kind": f"{label}_constraint_tightened", "term": str(old_uri),
-                        "target": str(target), "added": sorted(map(str, added)),
-                    }
-                    breaking.append(issue)
+                        "target": str(target), "added": sorted(map(str, tightened)),
+                    })
+                if broadened:
+                    relaxed.append({
+                        "kind": f"{label}_constraint_broadened", "term": str(old_uri),
+                        "target": str(target), "added": sorted(map(str, broadened)),
+                        "replaces": sorted(map(str, removed)),
+                    })
                 if removed:
-                    issue = {
+                    relaxed.append({
                         "kind": f"{label}_constraint_relaxed", "term": str(old_uri),
                         "target": str(target), "removed": sorted(map(str, removed)),
-                    }
-                    relaxed.append(issue)
+                    })
 
     old_targets = {_map_legacy_uri(term) for term in old_terms}
     additions = sorted(str(term) for term in new_terms if term not in old_targets and not str(term).startswith("urn:pdks:ontology:0.1#"))
