@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ads/schemas/ads-personal-context-event-v0.1.schema.json",
+  "title": "ADS Personal Context Event",
+  "description": "A user-controlled event record for personal work, life, learning and commitment context. It is not an enterprise event and is private by default.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "personal_event_id",
+    "subject_ref",
+    "event_class",
+    "event_type",
+    "event_schema_version",
+    "occurred_at",
+    "observed_at",
+    "recorded_at",
+    "actor_refs",
+    "object_refs",
+    "payload",
+    "source_ref",
+    "assertion_status",
+    "classification",
+    "purpose_tags",
+    "ontology_version",
+    "sharing_policy",
+    "lifecycle_status"
+  ],
+  "properties": {
+    "personal_event_id": {
+      "$ref": "#/$defs/Identifier"
+    },
+    "subject_ref": {
+      "$ref": "#/$defs/Identifier"
+    },
+    "event_class": {
+      "enum": [
+        "personal.PersonalContextEvent",
+        "personal.WorkEvent",
+        "personal.LifeEvent",
+        "personal.LearningEvent",
+        "personal.CommitmentEvent",
+        "personal.ReflectionEvent"
+      ]
+    },
+    "event_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*\\.[a-z][a-z0-9_-]*$"
+    },
+    "event_schema_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actor_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ActorRef"
+      }
+    },
+    "object_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Identifier"
+      }
+    },
+    "payload": {
+      "type": "object"
+    },
+    "source_ref": {
+      "$ref": "#/$defs/SourceRef"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Identifier"
+      }
+    },
+    "assertion_status": {
+      "enum": [
+        "confirmed",
+        "observed",
+        "inferred",
+        "disputed",
+        "rejected",
+        "stale",
+        "unknown"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "classification": {
+      "enum": [
+        "personal",
+        "personal_sensitive",
+        "internal",
+        "confidential",
+        "restricted"
+      ]
+    },
+    "purpose_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ontology_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sharing_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_scope",
+        "projection_allowed",
+        "authorized_purposes",
+        "authorization_ref",
+        "expires_at"
+      ],
+      "properties": {
+        "default_scope": {
+          "enum": [
+            "personal_only",
+            "user_selected",
+            "eligible_for_review"
+          ]
+        },
+        "projection_allowed": {
+          "type": "boolean"
+        },
+        "authorized_purposes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authorization_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "expires_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "correction_of": {
+      "$ref": "#/$defs/Identifier"
+    },
+    "lifecycle_status": {
+      "enum": [
+        "active",
+        "superseded",
+        "withdrawn",
+        "expired",
+        "archived"
+      ]
+    },
+    "extensions": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "sharing_policy": {
+            "properties": {
+              "projection_allowed": {
+                "const": true
+              }
+            },
+            "required": [
+              "projection_allowed"
+            ]
+          }
+        },
+        "required": [
+          "sharing_policy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "sharing_policy": {
+            "properties": {
+              "authorization_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "authorized_purposes": {
+                "minItems": 1
+              },
+              "expires_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "Identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "ActorRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor_type",
+        "actor_id"
+      ],
+      "properties": {
+        "actor_type": {
+          "enum": [
+            "person",
+            "role",
+            "agent",
+            "system",
+            "unknown"
+          ]
+        },
+        "actor_id": {
+          "$ref": "#/$defs/Identifier"
+        }
+      }
+    },
+    "SourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_system",
+        "native_record_id"
+      ],
+      "properties": {
+        "source_system": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "native_record_id": {
+          "$ref": "#/$defs/Identifier"
+        },
+        "record_version": {
+          "type": "string"
+        },
+        "content_hash": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
