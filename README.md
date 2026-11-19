@@ -172,3 +172,15 @@
 ## 研究边界
 
 本仓库中的研究文件属于架构研究、工程规范草案和逻辑验证原型，不等同于已批准的生产部署规格、法律意见或生产级安全能力。涉及个人信息、员工工作记录、第三方信息和企业数据的采集、处理与共享，须另行通过组织制度、安全和适用法律审查。
+
+
+### 专题 11：PDKS 与 ADS 个人数智底座融合
+
+**PDKS 与 ADS 个人数智底座融合架构**
+
+- [融合架构研究报告（Markdown）](docs/11-PDKS与ADS个人数智底座融合架构.md)
+- [融合架构交互式 HTML 阅读版](docs/11-PDKS与ADS个人数智底座融合架构.html)
+- [PDKS → ADS 互操作映射规范](schemas/ads-pdks-interoperability-mapping-v0.1.json)
+- [PDKS → ADS 投影示例](examples/pdks-ads-bridge-projection-v0.1.json)
+
+核心议题：PDKS 个人数据统一表达、ADS-WORK-08 语义与授权桥接、ADS-WORK-09 个人事件账本/持续记忆/Intent 运行时、ADS-WORK-10 Personal Assistant OS。PDKS Action 映射为 Intent，不自动生成 Agent Action Proposal；个人侧默认 personal_only，企业投影须独立授权。
