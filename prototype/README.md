@@ -7,6 +7,7 @@
 - `ads_context_engine.py`：事件接入、幂等去重、权威状态重建、冲突保留、授权校验、上下文包生成。
 - `test_ads_context_engine.py`：原型行为测试。
 - `test_contract_schemas.py`：使用 JSON Schema 校验模拟数据和生成的上下文包。
+- `test_capability_asset_schema.py`：校验 Capability Manifest 契约、项目风险初筛样例及关键治理约束。
 - `../examples/project-delivery-seed-data.json`：虚构项目交付场景数据。
 
 ## 2. 运行环境
@@ -46,7 +47,9 @@ python -m unittest -v
 - 未知对象引用拒绝；
 - 租户边界检查；
 - JSON Schema 定义本身有效；
-- 模拟事件、业务对象、授权记录及生成的上下文包符合 Schema。
+- 模拟事件、业务对象、授权记录及生成的上下文包符合 Schema；
+- Capability Asset Schema 与候选能力样例符合契约；
+- 未声明适用边界、越权扩展字段等不合规能力定义会被拒绝。
 
 ## 5. 核心规则
 
