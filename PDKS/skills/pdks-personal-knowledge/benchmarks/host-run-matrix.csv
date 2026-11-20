@@ -1,3 +1,0 @@
-host_id,host_name,host_version,model_name,model_version,skill_version,skill_package_sha256,install_method,enabled_tools,connectors_enabled,run_count,started_at_utc,operator,notes
-HOST-A,,,,0.3.3,,,,,,,,,
-HOST-B,,,,0.3.3,,,,,,,,,

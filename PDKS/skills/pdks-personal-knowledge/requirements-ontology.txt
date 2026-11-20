@@ -1,3 +1,0 @@
-# Optional: RDF/Turtle/JSON-LD/SPARQL support and SHACL runtime validation
-rdflib>=7.0,<8
-pyshacl>=0.25,<1

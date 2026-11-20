@@ -1,1 +1,0 @@
--r pdks_capture_runtime/requirements.txt

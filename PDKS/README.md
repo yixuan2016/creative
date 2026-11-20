@@ -1,35 +1,48 @@
 # PDKS — Personal Data Knowledge System
 
-**Release:** 0.5.3 Node-native Agent Bootstrap Preview  
-**Stage:** `transitional_skill_development`  
-**Maturity:** Experimental / Preview  
-**Ontology baseline:** 0.2.1 (frozen)
+> **0.5.3 · Node-native Agent Bootstrap Preview**  
+> Development stage: `transitional_skill_development` · Maturity: Experimental / Preview
 
-PDKS is a transition-stage personal data and knowledge system. This release makes initialization Agent-native and local-first while retaining the established ontology, Skills, capture runtime, connectors, storage adapters, examples, tests and architecture research.
+PDKS is the personal data and knowledge substrate being developed as a transitional foundation toward a future Personal AI Life OS. It is designed around a user-controlled, local-first, File-first Vault, a governed personal ontology, and agent-native setup and access.
 
-## Repository contents
+## Positioning
 
-- `releases/PDKS_0.5.3_完整综合工程包.zip` — complete source package, including the full directory tree, Markdown/HTML/DOCX documentation, source code, Ontology, examples, tests and reports.
-- `docs/` — current implementation specifications and user guides.
-- `reports/` — validation report and known integration gaps.
-- `STAGE.md` — current maturity and version matrix.
-- `ROADMAP.md` — release evolution and next milestones.
-- `RELEASE_NOTES_0.5.3-preview.md` — preview release notes.
+PDKS is not yet the final Personal AI Life OS. It is an engineering transition stage for validating the durable data layer, ontology contracts, agent interoperability, and safe initialization workflow.
 
-The ZIP expands to a `PDKS/` directory containing `agent-native/`, `runtime/`, `skills/`, `setup/`, `docs/`, `examples/`, `prototype/`, `tests/`, `reports/`, and `.github/`.
+## Current architecture
 
-## First use
+- **Standards:** frozen PDKS 0.1.x record contract and Ontology 0.2.1 baseline.
+- **Agent-native layer:** agent bridge, MCP server / tools, and MCP Apps preview.
+- **Bootstrap:** Node-native initialization creates the Vault and copies ontology assets without requiring Python.
+- **Capture:** Python Capture Runtime remains optional and separate.
+- **Storage:** File-first local Vault with explicit export/projection boundaries.
+- **Connectors:** DWS connector remains a preview; live tenant delivery is not verified.
 
-Use a local-capable Agent with local execution enabled. Read `skills/pdks-setup/SKILL.md`, then follow the explicit sequence:
+## Safe first-use sequence
 
-`pdks_native_doctor` → `pdks_native_plan` → review the exact plan → explicit user approval → `pdks_native_apply` → `pdks_native_verify`.
+`pdks_native_doctor` → `pdks_native_plan` → explicit user approval → `pdks_native_apply` → `pdks_native_verify`.
 
-A cloud-only Agent cannot access local files unless a local bridge is explicitly configured.
+Initialization does **not** connect data sources, start capture, import historical data, install background services, or enable cloud sync.
 
-## Safety and maturity
+## Release status
 
-- Vault initialization does not connect data sources, start collection, import history, install a background service or enable cloud sync.
-- Initial Vault initialization does not require Python. The optional Capture Runtime remains Python-based and separate.
-- Local Vault files are not encrypted at rest in this preview. Do not use sensitive personal or enterprise data.
-- npm build, MCP Inspector, real DWS tenant delivery and host-by-host compatibility have not been verified.
-- This is not a production-ready Personal AI Life OS.
+See [stage](STAGE.md), [roadmap](ROADMAP.md), [release notes](RELEASE_NOTES_0.5.3-preview.md), and [validation report](reports/PDKS_0.5.3_VALIDATION_REPORT.md).
+
+## Safety
+
+The local Vault is not encrypted at rest. Do not use this preview with sensitive personal or enterprise data. Review every proposed filesystem operation before approval. Cloud-only Agents cannot access local files without an explicitly configured local bridge.
+
+## Directory map
+
+- `standards/` — ontology, schemas, field dictionary, taxonomy and contracts
+- `skills/` — setup and personal knowledge Skills
+- `agent-native/` — Agent Bridge, MCP tools and MCP Apps
+- `runtime/` — optional capture runtime and storage adapters
+- `connectors/` — source integrations and DWS preview
+- `docs/` — architecture, implementation and user guides
+- `examples/` — example records and projections
+- `tests/` — automated checks
+- `reports/` — validation and audit reports
+- `releases/` — release manifests and packages
+
+This directory is the canonical project home in `yixuan2016/creative`.

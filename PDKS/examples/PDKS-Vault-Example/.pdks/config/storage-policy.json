@@ -1,9 +1,0 @@
-{
-  "storage_mode": "file-first",
-  "default_cloud_sync": false,
-  "sqlite_role": "rebuildable_index_and_runtime_state",
-  "markdown_role": "human_readable_knowledge_assets",
-  "source_records_role": "append_only_evidence_records",
-  "secrets_storage": "os_keychain_reference_only",
-  "sample_only": true
-}

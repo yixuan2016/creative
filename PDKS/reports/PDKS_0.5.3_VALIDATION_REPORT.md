@@ -2,51 +2,36 @@
 
 Date: 2026-11-19  
 Stage: `transitional_skill_development`  
-Maturity: Experimental / Preview  
-Repository: `yixuan2016/creative`, branch `main`
+Maturity: Experimental / Preview
 
-## Final automated validation
+## Automated tests
 
-| Suite | Tests | Passed | Failed |
-|---|---:|---:|---:|
-| Skill / Release / Schema / Governance | 49 | 49 | 0 |
-| Ontology / ADS Prototype | 33 | 33 | 0 |
-| Capture Runtime / Storage / DWS adapters | 64 | 64 | 0 |
-| Node Agent Bridge / Native Bootstrap | 18 | 18 | 0 |
-| **Total** | **164** | **164** | **0** |
+| Suite | Total | Passed | Skipped | Failed |
+|---|---:|---:|---:|---:|
+| Setup / Skill / Release Smoke | 47 | 46 | 1 | 0 |
+| Ontology / ADS Prototype | 33 | 32 | 1 | 0 |
+| Capture Runtime + DWS + File Store | 64 | 64 | 0 | 0 |
+| Node Agent Bridge + Native Bootstrap | 18 | 18 | 0 | 0 |
+| **Total** | **162** | **160** | **2** | **0** |
 
 ## Additional checks
+- Stage validator: 12/12 valid.
+- Ontology 0.2.1 runtime term coverage: 98/98.
+- Ontology manifest: 8/8 files valid.
+- Node syntax checks passed for native-bootstrap.js, server.js, main.js and pdks-agent.js.
+- Native CLI doctor and plan passed in Node 22.16.0 environment.
+- Bootstrap integration tests cover approval, denial without writes, Vault creation, ontology copy, SHA-256 verification, idempotency, user Markdown preservation, symlink escape, path overlap and unmanaged directory refusal.
 
-- Transitional stage contract: 12/12 valid.
-- Ontology runtime term coverage: 98/98.
-- Ontology asset manifest: 8/8 files verified.
-- SHACL conformance: pass for the daily-work, research and voice-meeting scenarios.
-- Node-native Bootstrap tests: pass.
-- Node dependency installation: pass on GitHub Actions.
-- `npm run build` for MCP Apps: pass.
-- Release package ZIP CRC: pass.
-- Release manifest: regenerated from the final source tree with per-file SHA-256 checksums.
+## Not executed / limitations
+- npm build could not run: Vite is not installed; npm registry access unavailable.
+- MCP SDK startup, MCP Inspector protocol tests and MCP Apps rendering were not executed.
+- Claude, Cursor, Codex and WorkBuddy host-by-host compatibility was not tested.
+- Real DWS tenant delivery was not tested.
 
-## Corrective consistency changes within Ontology 0.2.1
+These are unexecuted checks, not passing checks.
 
-- SHACL scheme-membership constraints now point to the actual Event Taxonomy and controlled-vocabulary scheme IRIs.
-- `assertedBy` uses the broader `InformationObject` domain so both Assertion and QualifiedRelationship can retain their asserting agent.
-- Ontology compatibility comparison distinguishes a superclass-domain broadening from a newly restrictive domain constraint.
-- Voice-meeting personal-context `evidence_refs` now reference an `EvidenceSegment`, not an Event or KnowledgeAsset.
-- No new ontology terms or ontology version were introduced.
-
-## Build and integration boundaries
-
-- MCP Inspector end-to-end protocol validation was not executed.
-- Host-by-host compatibility for Claude, Cursor, Codex and WorkBuddy was not verified.
-- Real DWS tenant delivery was not verified.
-- Local Vault files are not encrypted at rest in this preview.
-- Initial Vault initialization is Node-native and does not require Python; optional Capture Runtime remains Python-based and separate.
-
-## Release workflow
-
-- Source tree expansion: GitHub Actions passed.
-- Manifest and ZIP packaging: GitHub Actions passed.
-- PDKS validation workflow: GitHub Actions passed (164/164 automated tests).
-
-Validation workflow run: https://github.com/yixuan2016/creative/actions/runs/44563540437
+## Outstanding
+- Build in a network-enabled release environment and validate MCP protocol and Apps.
+- Test Windows, macOS and Linux.
+- Validate supported Agent hosts and real DWS tenant integration.
+- Deliver signed installer, encryption, keychain and conflict handling.
