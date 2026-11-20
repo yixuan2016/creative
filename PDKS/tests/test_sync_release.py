@@ -1,12 +1,10 @@
 import importlib.util
 import unittest
 from pathlib import Path
-
 SCRIPT = Path(__file__).resolve().parents[1] / "tools" / "sync-release.py"
 SPEC = importlib.util.spec_from_file_location("sync_release", SCRIPT)
 MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
-
 class SafePathTests(unittest.TestCase):
     def test_accepts_project_file(self):
         self.assertTrue(MODULE.safe_relative_path("PDKS/docs/guide.md"))
@@ -24,6 +22,5 @@ class SafePathTests(unittest.TestCase):
         self.assertFalse(MODULE.safe_relative_path("PDKS/runtime/data/private.json"))
     def test_rejects_build_cache(self):
         self.assertFalse(MODULE.safe_relative_path("PDKS/agent-native/node_modules/pkg/index.js"))
-
 if __name__ == "__main__":
     unittest.main()

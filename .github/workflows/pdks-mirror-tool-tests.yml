@@ -18,7 +18,5 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Syntax check
-        run: python -m py_compile PDKS/tools/sync-release.py PDKS/tests/test_sync_release.py
-      - name: Unit tests
-        run: python PDKS/tests/test_sync_release.py
+      - run: python -m py_compile PDKS/tools/sync-release.py PDKS/tests/test_sync_release.py
+      - run: python PDKS/tests/test_sync_release.py
