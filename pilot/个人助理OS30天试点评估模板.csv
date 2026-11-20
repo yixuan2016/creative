@@ -1,0 +1,6 @@
+participant_code,day_index,scenario_code,source_type,consent_scope,event_sampled,event_correct,memory_reviewed,memory_useful,memory_corrected,commitment_candidate_reviewed,commitment_owner_correct,reminder_evaluated,reminder_useful,interruption_level,approval_understood,privacy_understood,correction_succeeded,withdrawal_requested,issue_category,followup_action
+DEMO-P01,1,quick_capture,manual_entry,personal_only,1,1,0,,,0,,,,"none",1,1,0,0,none,
+DEMO-P01,7,weekly_review,calendar,personal_only,1,1,1,1,0,1,1,1,1,"low",1,1,1,0,"source_explanation","show source provenance in more detail"
+DEMO-P01,14,memory_correction,manual_entry,personal_only,1,1,1,0,1,1,1,1,0,"low",1,1,1,1,"stale_memory","review validity and supersession"
+DEMO-P01,21,commitment_reminder,collaboration,personal_only,1,1,1,1,0,1,0,1,0,"medium",1,1,1,0,"owner_ambiguity","keep candidate pending until owner confirms"
+DEMO-P01,30,monthly_review,mixed_authorized,personal_only,1,1,1,1,0,1,1,1,1,"low",1,1,1,0,"none",""

@@ -1,0 +1,162 @@
+{
+  "capability_id": "ads.project.risk-triage",
+  "name": "项目风险初筛",
+  "type": "skill",
+  "version": "0.1.0",
+  "domain": "project_delivery",
+  "task_family": "project_risk_identification",
+  "purpose": "基于授权项目上下文识别候选风险并输出证据化分析；不替代正式风险定级或业务审批。",
+  "owner": {
+    "team": "project-delivery-domain",
+    "role": "capability_owner",
+    "owner_subject_id": null
+  },
+  "lifecycle_status": "candidate",
+  "applicability": [
+    "项目状态评审准备",
+    "项目周期性风险初筛"
+  ],
+  "non_applicability": [
+    "正式风险定级和业务审批",
+    "缺少项目范围或关键状态来源的任务",
+    "需要使用未授权客户或个人信息的任务"
+  ],
+  "preconditions": [
+    "存在有效 Context Package",
+    "项目范围和时间窗口明确",
+    "关键状态字段具有来源引用"
+  ],
+  "input_contract": {
+    "schema_ref": "ads-project-risk-input-v0.1",
+    "required": [
+      "project_ref",
+      "context_package_ref",
+      "time_window"
+    ],
+    "optional": [
+      "risk_focus",
+      "review_period"
+    ],
+    "context_requirements": [
+      "project.status",
+      "task.status",
+      "task.due_at",
+      "task.dependencies",
+      "evidence.refs"
+    ]
+  },
+  "procedure": [
+    "检查上下文有效期、授权和项目范围",
+    "识别延期、依赖变化、资源缺口和未决事项信号",
+    "将信号关联到业务对象和证据",
+    "区分已确认事实、候选风险、推断、冲突和未知",
+    "按证据要求输出候选风险及待人工确认项"
+  ],
+  "rules": [
+    "不得将候选风险直接写成正式风险状态",
+    "不得从缺失数据推断风险已经消除",
+    "不得把未经核验的口头信息标记为正式审批结果"
+  ],
+  "decision_points": [
+    "关键日期是否有权威来源",
+    "依赖任务是否存在已确认的阻塞状态",
+    "风险影响是否超出当前项目责任范围"
+  ],
+  "evidence_requirements": [
+    "每个关键风险必须关联可解析的 EvidenceRef",
+    "推断必须标注推断依据和限制",
+    "冲突来源必须并列呈现，不以多数票覆盖"
+  ],
+  "output_contract": {
+    "schema_ref": "ads-project-risk-output-v0.1",
+    "required": [
+      "candidate_risks",
+      "evidence_refs",
+      "unknowns",
+      "limitations"
+    ],
+    "optional": [
+      "affected_objects",
+      "recommended_follow_up",
+      "human_review_questions"
+    ]
+  },
+  "allowed_actions": [
+    "context.read",
+    "risk.analysis"
+  ],
+  "prohibited_actions": [
+    "risk.approve",
+    "project.write",
+    "task.reassign",
+    "customer.send"
+  ],
+  "exceptions": [
+    "Context Package 已过期",
+    "项目关键状态来源互相冲突",
+    "项目范围或责任人无法确认"
+  ],
+  "stop_conditions": [
+    "调用主体不具备项目上下文访问权限",
+    "上下文授权被撤回",
+    "关键输入缺失导致无法形成有证据的候选结论"
+  ],
+  "escalation": [
+    "正式风险定级交由项目风险责任人",
+    "跨项目影响交由项目群或领域负责人确认"
+  ],
+  "dependencies": {
+    "capabilities": [
+      "ads.evidence.reference-check"
+    ],
+    "tools": [
+      "context.read",
+      "dependency.graph.read"
+    ],
+    "ontology_versions": [
+      "ads-work-ontology-0.3"
+    ],
+    "policy_refs": [
+      "project-context-read-policy"
+    ]
+  },
+  "evaluation_profile": "project-risk-triage-eval-v0.1",
+  "portability_profile": {
+    "validated_levels": [],
+    "status": "not_yet_validated",
+    "validated_contexts": [],
+    "unvalidated_contexts": [
+      "同岗位不同人员",
+      "不同团队",
+      "相邻岗位",
+      "不同业务领域"
+    ],
+    "adaptation_requirements": []
+  },
+  "provenance": {
+    "sources": [
+      {
+        "source_type": "synthetic_test",
+        "source_ref": "synthetic-project-risk-cases-v0.1",
+        "authorized_for_derivation": true,
+        "transformation_summary": "使用合成项目交付案例构建能力候选，不包含真实客户、项目或员工信息。"
+      }
+    ],
+    "derivation_summary": "依据项目交付风险识别任务结构形成候选能力；尚未完成真实业务独立人员验证。"
+  },
+  "governance": {
+    "data_classification": "internal",
+    "sharing_scope": "team",
+    "privacy_review": "pending",
+    "ip_review": "pending",
+    "consent_ref": null,
+    "review_date": "2027-02-28"
+  },
+  "created_at": "2026-11-19T10:00:00+08:00",
+  "updated_at": "2026-11-19T10:00:00+08:00",
+  "metadata": {
+    "example_only": true,
+    "all_business_values_are_synthetic": true,
+    "not_approved_for_production": true
+  }
+}

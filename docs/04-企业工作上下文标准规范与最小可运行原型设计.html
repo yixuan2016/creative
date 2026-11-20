@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ADS-WORK-04 企业工作上下文标准规范与最小可运行原型设计">
+<title>ADS-WORK-04｜企业工作上下文标准规范与最小可运行原型设计</title>
+<style>
+:root{--ink:#18263b;--muted:#607087;--line:#dce4ee;--paper:#fff;--bg:#f3f6fa;--blue:#245b9e;--teal:#167b72;--violet:#6652a4;--soft-blue:#edf4fc;--soft-teal:#edf8f5;--soft-violet:#f3f0fa}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.78 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}.shell{max-width:1260px;margin:auto;padding:25px 22px 58px}
+.hero{color:#fff;padding:42px;border-radius:22px;background:linear-gradient(130deg,#132b4b,#1e5576 58%,#217c75);box-shadow:0 14px 36px #19395b22}
+.kicker{font-size:12px;letter-spacing:.14em;opacity:.8;text-transform:uppercase}h1{font-size:clamp(28px,4vw,42px);line-height:1.25;margin:14px 0;max-width:1000px}.subtitle{font-size:18px;color:#e3edf7;max-width:950px}.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:25px;color:#d4e3f0;font-size:13px}
+.layout{display:grid;grid-template-columns:265px minmax(0,1fr);gap:24px;margin-top:25px;align-items:start}nav{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:15px;padding:18px}nav strong{display:block;margin-bottom:10px}nav a{display:block;font-size:13px;color:#46566e;padding:4px 0}
+main{min-width:0}section,.summary{background:#fff;border:1px solid var(--line);border-radius:15px;padding:27px;margin-bottom:17px;box-shadow:0 4px 16px #203b5d08}
+h2{font-size:24px;line-height:1.35;margin:0 0 15px}h3{font-size:18px;margin:23px 0 8px}p{margin:9px 0}.lead{font-size:18px;color:#34465e}
+.callout{border-left:4px solid var(--teal);background:var(--soft-teal);padding:14px 17px;border-radius:0 10px 10px 0;margin:17px 0}.note{font-size:13px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff}.card h3{margin:0 0 7px;font-size:17px}
+table{width:100%;border-collapse:collapse;margin:13px 0;font-size:14px}th,td{border:1px solid var(--line);padding:10px 11px;text-align:left;vertical-align:top}th{background:#eff3f8;font-weight:650}
+ul,ol{padding-left:1.35em}li{margin:5px 0}pre{overflow:auto;background:#17243a;color:#eaf0f8;border-radius:10px;padding:16px;font-size:12px;line-height:1.55}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.diagram{overflow:auto;border:1px solid var(--line);border-radius:13px;padding:17px;background:#fbfcfe;margin:17px 0}.flow{min-width:600px;display:flex;align-items:center;flex-direction:column;gap:7px}.node{border:1px solid #cfdaea;background:var(--soft-blue);border-radius:9px;padding:12px;text-align:center;width:min(100%,850px)}.node.teal{background:var(--soft-teal);border-color:#cce5dc}.node.violet{background:var(--soft-violet);border-color:#dfd6f0}.arrow{font-size:21px;color:#8190a3;line-height:1}.pill{display:inline-block;border-radius:99px;background:#e9eef5;color:#405875;padding:3px 9px;font-size:12px;margin:0 5px 5px 0}
+.filelinks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.file{border:1px solid var(--line);border-radius:10px;padding:13px}.file strong{display:block}.footer{text-align:center;padding:23px;color:var(--muted);font-size:13px}
+@media(max-width:940px){.layout{grid-template-columns:1fr}nav{position:relative;top:auto;max-height:none}.cards,.filelinks{grid-template-columns:1fr}}
+@media(max-width:600px){.shell{padding:13px 11px 36px}.hero{padding:26px 21px;border-radius:16px}section,.summary{padding:19px 16px}table{display:block;overflow-x:auto}}
+@media print{body{background:#fff}.shell{max-width:none;padding:0}.hero{border-radius:0;box-shadow:none;print-color-adjust:exact}.layout{display:block}nav{display:none}section,.summary{box-shadow:none;break-inside:avoid}.footer{display:none}}
+</style></head>
+<body><div class="shell">
+<header class="hero"><div class="kicker">ADS · 工程规范与原型验证 · ADS-WORK-04</div>
+<h1>企业工作上下文标准规范与最小可运行原型设计</h1>
+<p class="subtitle">将企业工作上下文模型落实为可校验的数据契约、可调用的服务接口和可运行的验证原型。</p>
+<div class="meta"><span>版本：V0.1-Engineering Draft</span><span>日期：2026-11-19</span><span>原型场景：项目交付上下文闭环</span><span>上游：ADS-WORK-01 / 02 / 03</span></div></header>
+<div class="layout">
+<nav aria-label="专题目录"><strong>专题目录</strong>
+<a href="#summary">摘要与交付物</a><a href="#scope">1. 目标、范围与非目标</a><a href="#standards">2. 工程标准与通用约定</a><a href="#contracts">3. 首批数据契约</a><a href="#events">4. 事件目录与映射</a><a href="#state">5. 状态重建规则</a><a href="#policy">6. 授权与上下文包</a><a href="#api">7. API 规范</a><a href="#prototype">8. 最小可运行原型</a><a href="#scenario">9. 项目交付模拟场景</a><a href="#tests">10. 自动化验收测试</a><a href="#gap">11. 原型到企业试点的差距</a><a href="#roadmap">12. 实施路线</a><a href="#adr">13. 架构决策与评审</a><a href="#ads">14. 与 ADS 三级底座关系</a><a href="#conclusion">15. 结论</a><a href="#files">工程文件</a>
+</nav>
+<main>
+<section class="summary" id="summary"><h2>摘要：从架构设计进入工程验证</h2>
+<p class="lead">前三份专题分别回答了工作信息从哪里来、企业需要理解哪些工作上下文、以及如何通过统一数据模型和运行认知引擎实现。本专题进一步定义数据契约、事件目录、接口、状态重建、授权协议和本地原型。</p>
+<div class="callout"><strong>第一阶段最小闭环：</strong>权威业务系统事件 + 经授权的协同线索 → 标准事件 → 业务对象关联 → 状态重建 → 任务级上下文包 → Agent 只读辅助 → 人工确认与反馈。</div>
+<div class="cards">
+<div class="card"><span class="pill">01</span><h3>JSON Schema</h3><p>定义事件、对象、关系、状态、证据、授权和上下文包。</p></div>
+<div class="card"><span class="pill">02</span><h3>OpenAPI</h3><p>定义事件接入、对象解析、状态查询和上下文包服务。</p></div>
+<div class="card"><span class="pill">03</span><h3>可运行原型</h3><p>演示幂等去重、权威状态重建、冲突保留和权限校验。</p></div></div>
+</section>
+
+<section id="scope"><h2>1. 目标、范围与非目标</h2>
+<h3>1.1 工程目标</h3><ul><li>事件、对象、状态和证据使用明确、可版本化的机器可读契约。</li><li>源系统通过适配器映射到统一事件信封，不要求改变源系统模型。</li><li>关键状态可解释其权威来源、支持事件、有效时间和不确定性。</li><li>Agent 通过任务级上下文包获取最小必要信息。</li><li>原型可重复运行、自动测试和审计。</li><li>试点量化准确性、时效、人工核验成本、业务收益和治理风险。</li></ul>
+<h3>1.2 第一阶段范围</h3><table><thead><tr><th>对象</th><th>用途</th><th>权威来源示例</th></tr></thead><tbody><tr><td>Project</td><td>项目主对象</td><td>项目管理系统</td></tr><tr><td>Task</td><td>项目任务</td><td>项目管理系统</td></tr><tr><td>Decision</td><td>项目决策</td><td>决策记录或审批系统</td></tr><tr><td>Risk</td><td>项目风险</td><td>风险台账或责任人确认</td></tr><tr><td>Evidence</td><td>证据引用</td><td>原始系统、文档或会议记录</td></tr><tr><td>ActorRef</td><td>人员、角色、系统或 Agent</td><td>组织身份系统或连接器身份</td></tr></tbody></table>
+<p>首批事件：project.state_changed、task.created、task.updated、task.completed、decision.proposed、decision.approved、risk.identified、evidence.attached。首轮只实现只读查询和上下文生成。</p>
+<h3>1.3 非目标</h3><ul><li>不替代项目管理系统、ERP、CRM、OA 或文档系统。</li><li>不建设全企业主数据平台，不一次覆盖所有业务领域。</li><li>不把模型置信度当作业务确认，不自动消除高影响冲突。</li><li>不默认采集员工音频、屏幕、私人通信或无关信息。</li><li>不将个人工作记忆自动转化为企业资产。</li><li>不把演示数据当作真实企业运行结论。</li></ul>
+</section>
+
+<section id="standards"><h2>2. 工程标准与通用约定</h2>
+<table><thead><tr><th>原则</th><th>工程要求</th></tr></thead><tbody><tr><td>语义统一</td><td>字段、事件类型和状态枚举有稳定定义</td></tr><tr><td>源系统自治</td><td>保留源系统 ID、原始状态和记录版本</td></tr><tr><td>可追溯</td><td>事件和状态均可定位来源</td></tr><tr><td>时间明确</td><td>区分发生、观察、记录和业务有效时间</td></tr><tr><td>不确定性显式</td><td>confirmed、observed、inferred、disputed、stale、unknown 分开表达</td></tr><tr><td>版本可控</td><td>Schema、本体、策略和 API 版本化</td></tr><tr><td>最小权限</td><td>按主体、用途、对象、字段、动作和时间校验授权</td></tr><tr><td>可纠错</td><td>通过更正事件和替代关系纠错，不静默覆盖</td></tr><tr><td>可重放</td><td>状态投影可以由事件和规则重建</td></tr></tbody></table>
+<h3>2.1 命名与时间</h3><ul><li>JSON 字段使用 snake_case；枚举使用小写英文。</li><li>事件类型使用稳定领域命名；本专题示例为 task.updated。</li><li>时间使用带时区的 RFC 3339 / ISO 8601，内部建议统一 UTC。</li><li>金额和数量必须记录 currency 或 unit。</li><li>扩展字段放入 extensions，不随意增加顶层字段。</li></ul>
+<table><thead><tr><th>时间字段</th><th>语义</th></tr></thead><tbody><tr><td>occurred_at</td><td>业务事件实际发生时间</td></tr><tr><td>observed_at</td><td>连接器或来源观察到事件的时间</td></tr><tr><td>recorded_at</td><td>统一事件账本接收并记录的时间</td></tr><tr><td>valid_from / valid_to</td><td>状态或关系在业务世界中的有效区间</td></tr><tr><td>evaluated_at</td><td>认知引擎计算当前视图的时间</td></tr></tbody></table>
+<p class="note">不得用 recorded_at 代替 occurred_at。源系统没有发生时间时，应记录推定规则和时间质量。</p>
+</section>
+
+<section id="contracts"><h2>3. 首批数据契约</h2>
+<p>完整机器可读定义见 <a href="../schemas/ads-work-context-v0.1.schema.json">JSON Schema 文件</a>，采用 JSON Schema Draft 2020-12。</p>
+<h3>3.1 ObjectRef：业务对象引用</h3><pre><code>{
+  "object_id": "obj_project_014",
+  "object_type": "project",
+  "tenant_id": "tenant_demo",
+  "source_system": "project-system",
+  "source_object_id": "PRJ-2026-014",
+  "resolution_status": "confirmed"
+}</code></pre>
+<p>object_id 是上下文层稳定标识；source_object_id 是源系统主键。候选匹配不得直接成为确定性业务关系。 统一 WorkEvent 的 object_refs 使用已解析的上下文 object_id 列表；源系统主键由对象注册表和 SourceRef 保留。ObjectRef 描述源对象到上下文对象的解析结果。</p>
+<h3>3.2 WorkEvent：工作事件</h3><pre><code>{
+  "event_id": "evt_project_014_002",
+  "tenant_id": "tenant_demo",
+  "event_type": "project.state_changed",
+  "event_schema_version": "0.1",
+  "occurred_at": "2026-11-18T09:30:00+08:00",
+  "observed_at": "2026-11-18T09:30:04+08:00",
+  "recorded_at": "2026-11-18T09:30:05+08:00",
+  "object_refs": ["obj_project_014"],
+  "payload": {
+    "property": "project.status",
+    "old_value": "in_progress",
+    "new_value": "blocked"
+  },
+  "source_ref": {
+    "source_system": "project-system",
+    "native_record_id": "PRJ-2026-014",
+    "record_version": "42"
+  },
+  "assertion_status": "observed",
+  "classification": "internal",
+  "purpose_tags": ["project_delivery_context"],
+  "ontology_version": "ads-common-0.1/domain-project-0.1",
+  "lifecycle_status": "active"
+}</code></pre>
+<h3>3.3 ContextPackage：任务级上下文包</h3><p>上下文包包含 task_id、requester_ref、purpose、scope、included_refs、unresolved_items、allowed_actions、authorization_refs、policy_version、ontology_version、created_at、expires_at 和 lifecycle_status。生成后不应静默改变内容；更新时生成新版本或新 context_id。 为支持 Agent 直接消费，规范允许上下文包携带经授权的 objects、current_states 和 timeline 投影；included_refs 保留稳定引用以便追溯。</p>
+<h3>3.4 其他核心实体</h3><p>StateAssertion 表达对象属性的时间化状态；Relation 表达带类型和来源的业务关系；EvidenceRef 指向支持事实的证据位置；AuthorizationGrant 定义主体、目的、范围、分类、动作和有效期。</p>
+</section>
+
+<section id="events"><h2>4. 事件类型目录与映射规范</h2>
+<table><thead><tr><th>事件类型</th><th>触发时机</th><th>关键 payload</th><th>默认可信来源</th></tr></thead><tbody>
+<tr><td>project.state_changed</td><td>项目状态变化</td><td>property、old_value、new_value、reason</td><td>项目管理系统</td></tr><tr><td>task.created</td><td>新任务创建</td><td>title、assignee、due_at、parent_project</td><td>项目管理系统</td></tr><tr><td>task.updated</td><td>任务字段变化</td><td>changed_fields、old_values、new_values</td><td>项目管理系统</td></tr><tr><td>task.completed</td><td>任务完成</td><td>completed_at、acceptance_status、evidence_refs</td><td>项目系统或验收记录</td></tr><tr><td>decision.proposed</td><td>提出决策建议</td><td>statement、alternatives、rationale_refs</td><td>经授权会议或文档</td></tr><tr><td>decision.approved</td><td>正式决策获批</td><td>decision_ref、approver_ref、effective_at</td><td>审批系统或授权确认</td></tr><tr><td>risk.identified</td><td>发现风险线索</td><td>description、impact、likelihood</td><td>风险台账或候选线索</td></tr><tr><td>evidence.attached</td><td>证据关联对象</td><td>evidence_ref、target_refs、verification_status</td><td>原始系统或人工核验</td></tr></tbody></table>
+<div class="callout">权威来源不是全局固定排名。应按 object_type + property + domain_id 配置。例如 project.status 以项目管理系统为准，会议纪要只能提供线索。</div>
+<p>连接器需登记源事件类型、字段映射、时间和时区规则、状态映射、对象 ID 解析、数据分类、purpose_tags、Schema 版本、映射版本和责任人。幂等键建议由 tenant_id、source_system、native_record_id、record_version 和 event_type 组成。</p>
+</section>
+
+<section id="state"><h2>5. 状态重建规则</h2>
+<h3>5.1 建议算法</h3><ol><li>识别 object_id 和 property。</li><li>查询该对象属性的权威来源配置。</li><li>过滤未授权、撤回、替代或无效事件。</li><li>按业务有效时间和源系统版本识别顺序。</li><li>存在有效权威来源记录时，以权威记录形成当前值。</li><li>其他来源的不同值保留为 conflict，不覆盖权威值。</li><li>没有权威记录时输出 observed / inferred / unknown，不伪造确定状态。</li><li>检查新鲜度，过期值标记 stale。</li><li>输出 supporting_refs、conflicts、unknowns、authority_source、evaluated_at 和 rule_version。</li></ol>
+<h3>5.2 冲突输出示例</h3><pre><code>{
+  "object_id": "obj_project_014",
+  "property": "project.status",
+  "value": "blocked",
+  "assertion_status": "confirmed",
+  "authority_source": "project-system",
+  "supporting_refs": ["evt_project_014_002"],
+  "conflicts": [{
+    "source_system": "meeting-notes",
+    "value": "on_track",
+    "assertion_status": "inferred",
+    "event_id": "evt_project_014_003"
+  }],
+  "unknowns": ["客户验收日期尚未确认"],
+  "rule_version": "project-state-rules-0.1"
+}</code></pre>
+<p><strong>业务状态与认知状态分离：</strong>权威系统记录的 in_progress 与引擎推断的 at_risk 可以并存，必须呈现各自语义、来源和可信级别。</p>
+</section>
+
+<section id="policy"><h2>6. 授权与上下文包生成协议</h2>
+<h3>6.1 授权校验维度</h3><p>每次生成都校验 subject、on_behalf_of、purpose、tenant_id、object_scope、classification_scope、allowed_actions、valid_from / expires_at 和 policy_version。访问每个对象和字段时仍需校验用途与数据范围。</p>
+<h3>6.2 上下文生成流程</h3><div class="diagram"><div class="flow">
+<div class="node">接收 requester · purpose · task · object_scope</div><div class="arrow">↓</div><div class="node">主体身份与有效授权检查</div><div class="arrow">↓</div><div class="node">对象 / 字段 / 分类 / 时间范围校验</div><div class="arrow">↓</div><div class="node teal">检索授权事件 · 重建状态 · 识别冲突和未知</div><div class="arrow">↓</div><div class="node teal">最小必要裁剪 · 证据引用 · 来源与可信标注</div><div class="arrow">↓</div><div class="node violet">Context Package · TTL · 审计记录</div>
+</div></div>
+<h3>6.3 失效条件</h3><ul><li>授权到期或撤回；</li><li>数据责任方撤回共享；</li><li>关键证据失效；</li><li>策略版本变化且要求重算；</li><li>超过上下文包 TTL；</li><li>源数据更正或删除影响任务结论。</li></ul>
+<h3>6.4 Agent 动作边界</h3><p>第一阶段允许 summarize、identify_missing_information、draft_follow_up 和 propose_task_update（只提出建议）。更新项目状态、重新分配任务、批准决策、发送客户承诺和修改合同订单必须经过独立审批和授权执行服务。</p>
+</section>
+
+<section id="api"><h2>7. API 规范草案</h2>
+<p>完整接口定义见 <a href="../openapi/ads-work-context-v0.1.yaml">OpenAPI 3.1 文件</a>。</p>
+<table><thead><tr><th>方法</th><th>路径</th><th>用途</th></tr></thead><tbody>
+<tr><td>POST</td><td>/v1/events:ingest</td><td>接入标准工作事件</td></tr><tr><td>POST</td><td>/v1/objects:resolve</td><td>解析源系统对象</td></tr><tr><td>GET</td><td>/v1/objects/{object_id}/state</td><td>查询对象状态</td></tr><tr><td>GET</td><td>/v1/objects/{object_id}/timeline</td><td>查询对象时间线</td></tr><tr><td>POST</td><td>/v1/context-packages:build</td><td>生成任务级上下文包</td></tr><tr><td>GET</td><td>/v1/context-packages/{context_id}</td><td>读取上下文包</td></tr><tr><td>POST</td><td>/v1/context-packages/{context_id}:revoke</td><td>撤销上下文包</td></tr><tr><td>POST</td><td>/v1/actions:propose</td><td>提交动作建议</td></tr></tbody></table>
+<h3>7.1 通用约定</h3><ul><li>HTTPS；生产采用组织批准的 OAuth2/OIDC 或等效身份体系。</li><li>写请求使用 Idempotency-Key。</li><li>响应返回 trace_id、schema_version 和 policy_version。</li><li>错误包含 code、message、trace_id 和安全可暴露的 details。</li><li>生产环境补充速率限制、超时、重试、熔断和审计。</li></ul>
+<h3>7.2 主要错误码</h3><p><span class="pill">400 INVALID_SCHEMA</span><span class="pill">401 UNAUTHENTICATED</span><span class="pill">403 POLICY_DENIED</span><span class="pill">404 RESOURCE_NOT_FOUND</span><span class="pill">409 STATE_CONFLICT</span><span class="pill">410 CONTEXT_EXPIRED</span><span class="pill">422 SEMANTIC_VALIDATION_FAILED</span><span class="pill">429 RATE_LIMITED</span></p>
+</section>
+
+<section id="prototype"><h2>8. 最小可运行原型设计</h2>
+<h3>8.1 原型验证内容</h3><ol><li>接收并校验标准事件；</li><li>使用幂等键避免重复事件；</li><li>根据权威来源规则重建状态；</li><li>保留非权威来源冲突线索；</li><li>根据授权范围生成任务级上下文包。</li></ol>
+<h3>8.2 组件与生产替换方向</h3><table><thead><tr><th>组件</th><th>本地原型</th><th>生产方向</th></tr></thead><tbody>
+<tr><td>Event Ingest</td><td>Python 函数</td><td>API Gateway + Connector</td></tr><tr><td>Event Ledger</td><td>内存字典 / JSON</td><td>追加式事件存储</td></tr><tr><td>Object Registry</td><td>JSON 映射</td><td>身份解析服务</td></tr><tr><td>Authority Registry</td><td>本地配置</td><td>领域规则目录</td></tr><tr><td>State Engine</td><td>确定性规则</td><td>可重放状态投影</td></tr><tr><td>Policy Gate</td><td>简化 grant</td><td>IAM / ABAC / Policy Engine</td></tr><tr><td>Context Builder</td><td>JSON 上下文包</td><td>上下文服务</td></tr><tr><td>Audit</td><td>本地记录</td><td>集中审计</td></tr></tbody></table>
+<h3>8.3 本地运行</h3><p>要求 Python 3.10 或以上版本。引擎运行只依赖 Python 标准库；Schema 合同测试使用根目录 requirements-dev.txt 中的 jsonschema 开发依赖。</p><pre><code>cd prototype
+python ads_context_engine.py
+python -m unittest -v</code></pre>
+<h3>8.4 原型限制</h3><p>原型不连接真实企业系统，不执行真实写回。它不是生产安全边界；生产环境还需补充身份认证、字段级权限、密钥管理、持久化、并发控制、分布式幂等、加密、备份、监控和渗透测试。</p><h3>8.5 持续集成</h3><p>仓库已配置 <a href="../.github/workflows/ads-context-prototype.yml">GitHub Actions 工作流</a>，在原型代码、模拟数据、Schema 或工作流定义变更时自动执行 12 项测试（7 项引擎行为测试、5 项 Schema 合同测试）和端到端演示。该工作流验证原型逻辑，不代表生产部署验收。</p>
+</section>
+
+<section id="scenario"><h2>9. 项目交付模拟场景</h2>
+<div class="callout">虚构项目 PRJ-2026-014 在项目系统中的状态为 blocked，原因是前置依赖未完成。会议纪要出现“整体仍可按计划推进”的观点，但未经项目负责人确认。Agent 被要求准备状态评审材料。</div>
+<ul><li>权威状态：blocked；</li><li>状态来源：project-system；</li><li>冲突线索：meeting-notes 提供 on_track；</li><li>未知项：客户验收日期尚未确认；</li><li>允许动作：summarize、draft_follow_up；</li><li>禁止直接执行：update_project_status、send_customer_commitment。</li></ul>
+<h3>9.1 端到端流程</h3><ol><li>项目系统产生状态变化事件；</li><li>经授权会议记录提供推断线索；</li><li>连接器标准化并关联 Project；</li><li>事件账本按幂等键保存；</li><li>状态引擎按权威来源规则计算；</li><li>非权威不同值保留为冲突；</li><li>授权服务校验主体、目的和项目范围；</li><li>生成短时上下文包；</li><li>Agent 生成摘要和跟进草稿；</li><li>项目负责人确认后，才进入正式业务更新流程。</li></ol>
+</section>
+
+<section id="tests"><h2>10. 自动化验收测试</h2>
+<table><thead><tr><th>编号</th><th>测试场景</th><th>预期结果</th></tr></thead><tbody>
+<tr><td>T-01</td><td>合法事件接入</td><td>accepted 并记录事件</td></tr><tr><td>T-02</td><td>重复事件投递</td><td>duplicate，不重复改变状态</td></tr><tr><td>T-03</td><td>缺少 event_id 或 source_ref</td><td>Schema 校验失败</td></tr><tr><td>T-04</td><td>引用不存在对象</td><td>待解析或拒绝</td></tr><tr><td>T-05</td><td>权威与非权威状态冲突</td><td>权威值保留，冲突显式输出</td></tr><tr><td>T-06</td><td>无权威来源</td><td>observed / inferred / unknown</td></tr><tr><td>T-07</td><td>事件撤回</td><td>不参与当前状态重建</td></tr><tr><td>T-08</td><td>事件晚到</td><td>可重算并保留版本</td></tr><tr><td>T-09</td><td>对象超出授权范围</td><td>POLICY_DENIED</td></tr><tr><td>T-10</td><td>目的不匹配</td><td>POLICY_DENIED</td></tr><tr><td>T-11</td><td>上下文包超过 TTL</td><td>后续读取被阻断</td></tr><tr><td>T-12</td><td>受限分类事件</td><td>不进入未授权上下文包</td></tr><tr><td>T-13</td><td>Agent 请求高风险动作</td><td>只提议或要求审批</td></tr><tr><td>T-14</td><td>上下文包撤销</td><td>后续读取被阻断</td></tr><tr><td>T-15</td><td>Agent 输出引用</td><td>可追溯 context_id、event_id、policy_version</td></tr></tbody></table>
+<h3>10.1 试点指标</h3><p>事件接入成功率、重复事件抑制率、对象关联准确率、权威状态一致率、证据引用完整率、上下文可用延迟、Agent 人工修改率、业务汇总耗时变化、越权成功次数（目标为 0）和单任务综合成本。指标采样方法与阈值必须在试点前确定。</p>
+</section>
+
+<section id="gap"><h2>11. 从本地原型到企业试点的差距</h2>
+<table><thead><tr><th>能力</th><th>本地原型</th><th>企业试点必须补充</th></tr></thead><tbody>
+<tr><td>身份</td><td>固定 requester</td><td>组织身份、Agent 身份、委托关系</td></tr><tr><td>授权</td><td>简化 grant</td><td>IAM、ABAC、用途策略和撤回传播</td></tr><tr><td>事件接入</td><td>JSON 文件</td><td>Webhook、API、消息订阅和连接器管理</td></tr><tr><td>存储</td><td>内存</td><td>持久化、事务、备份和恢复</td></tr><tr><td>幂等</td><td>进程内键集合</td><td>跨实例幂等和并发控制</td></tr><tr><td>对象解析</td><td>预置映射</td><td>别名、候选匹配和人工确认</td></tr><tr><td>状态</td><td>单字段规则</td><td>领域规则目录、有效时间和重放</td></tr><tr><td>审计</td><td>本地记录</td><td>集中审计、不可抵赖和告警</td></tr><tr><td>运维</td><td>命令行</td><td>监控、日志、指标、追踪和 SLO</td></tr><tr><td>Agent</td><td>结果展示</td><td>模型网关、工具权限、提示注入防护和评测</td></tr></tbody></table>
+</section>
+
+<section id="roadmap"><h2>12. 实施路线与阶段门</h2>
+<table><thead><tr><th>阶段</th><th>交付物</th><th>阶段门</th></tr></thead><tbody>
+<tr><td>1. 契约评审</td><td>Schema、事件目录、对象目录、权威字段清单、授权模型</td><td>业务、数据和安全责任人确认</td></tr><tr><td>2. 本地原型</td><td>模拟数据、事件接入、状态重建、上下文生成、测试</td><td>关键冲突和越权测试通过</td></tr><tr><td>3. 只读企业试点</td><td>一个项目系统连接器、受控协同来源、只读 API、Agent 摘要</td><td>准确率与治理指标达标</td></tr><tr><td>4. 人工确认闭环</td><td>确认界面、纠错事件、审计、反馈和撤销</td><td>授权撤回和源数据更正影响派生上下文</td></tr><tr><td>5. 受控动作与复用</td><td>动作提议、审批、受控写回、第二场景验证</td><td>独立场景证明收益大于维护成本</td></tr></tbody></table>
+</section>
+
+<section id="adr"><h2>13. 架构决策与评审问题</h2>
+<table><thead><tr><th>编号</th><th>决策</th><th>本版建议</th><th>评审问题</th></tr></thead><tbody>
+<tr><td>ADR-01</td><td>Schema</td><td>JSON Schema Draft 2020-12</td><td>组织级标准格式</td></tr><tr><td>ADR-02</td><td>API 描述</td><td>OpenAPI 3.1</td><td>统一 API 网关规范</td></tr><tr><td>ADR-03</td><td>事件模式</td><td>追加式事件 + 更正事件</td><td>事件总线与回放</td></tr><tr><td>ADR-04</td><td>对象身份</td><td>上下文 ID 与源 ID 分离</td><td>对象映射责任人</td></tr><tr><td>ADR-05</td><td>状态来源</td><td>按对象属性配置权威来源</td><td>权威字段责任人</td></tr><tr><td>ADR-06</td><td>上下文包</td><td>短时、可撤销、不可静默变更</td><td>TTL 和刷新规则</td></tr><tr><td>ADR-07</td><td>Agent 权限</td><td>第一阶段只读</td><td>人工审批动作清单</td></tr><tr><td>ADR-08</td><td>数据驻留</td><td>三级责任边界分离</td><td>可跨域共享的元数据</td></tr><tr><td>ADR-09</td><td>原型技术</td><td>Python 标准库</td><td>生产技术栈选型时点</td></tr><tr><td>ADR-10</td><td>试点场景</td><td>项目交付</td><td>真实项目与业务负责人</td></tr></tbody></table>
+<h3>13.1 评审前必须明确</h3><ol><li>项目系统中哪些字段是正式权威字段？</li><li>哪类会议或协同信息允许进入企业上下文？</li><li>会议推断如何由项目负责人确认或否认？</li><li>员工、客户和第三方信息如何分类、裁剪和授权？</li><li>上下文包过期、撤回和源记录删除如何联动？</li><li>Agent 摘要、建议和正式业务动作如何分权？</li><li>试点业务价值由谁确认，基线如何采集？</li></ol>
+</section>
+
+<section id="ads"><h2>14. 与 ADS 三级数智底座的关系</h2>
+<table><thead><tr><th>层级</th><th>本专题涉及的责任</th></tr></thead><tbody>
+<tr><td>个人数智底座</td><td>保留个人原始工作信息和个人控制权；只按明确授权共享必要记录或引用</td></tr>
+<tr><td>企业数智底座</td><td>建设事件接入、对象映射、状态重建、运行上下文和企业 Agent 上下文服务</td></tr>
+<tr><td>业务领域中心数智底座</td><td>提供共同语义、标准版本、联邦目录、跨域授权协同和审计规则</td></tr></tbody></table>
+<p>本专题成果归属企业数智底座内部能力，不形成新的底座层级。个人工作信息进入企业上下文必须经过授权、目的限定、必要性审查和业务责任人确认。</p>
+</section>
+
+<section id="conclusion"><h2>15. 结论：用一个真实流程证明上下文基础设施的价值</h2>
+<p class="lead">工作感知 → 统一事件 → 业务对象映射 → 状态重建 → 证据与冲突 → 任务级上下文包 → Agent 辅助 → 人工确认 → 反馈改进。</p>
+<div class="callout">第一阶段只选一个项目交付流程，只接入一个权威业务系统和少量经授权来源，只实现五类核心对象和八类事件；先只读、后建议、再审批写回；先本地原型、后企业试点；先验证准确性和治理，再讨论规模化。</div>
+<p><strong>真正需要验证的不是 AI 能否总结更多信息，而是企业能否通过统一上下文让 Agent 在正确权限下更准确地理解正在发生什么，并实实在在降低业务协作与管理成本。</strong></p>
+</section>
+
+<section id="files"><h2>工程文件</h2>
+<div class="filelinks">
+<div class="file"><strong>JSON Schema</strong><a href="../schemas/ads-work-context-v0.1.schema.json">查看标准数据契约</a></div>
+<div class="file"><strong>OpenAPI 3.1</strong><a href="../openapi/ads-work-context-v0.1.yaml">查看 API 定义</a></div>
+<div class="file"><strong>模拟数据</strong><a href="../examples/project-delivery-seed-data.json">查看项目交付数据</a></div>
+<div class="file"><strong>原型代码</strong><a href="../prototype/ads_context_engine.py">查看 Python 引擎</a></div>
+<div class="file"><strong>原型行为测试</strong><a href="../prototype/test_ads_context_engine.py">查看测试用例</a></div>
+<div class="file"><strong>Schema 合同测试</strong><a href="../prototype/test_contract_schemas.py">查看 Schema 测试</a></div>
+<div class="file"><strong>开发测试依赖</strong><a href="../requirements-dev.txt">查看依赖清单</a></div>
+<div class="file"><strong>运行说明</strong><a href="../prototype/README.md">查看原型运行手册</a></div>
+</div>
+<p class="note">版本声明：ADS-WORK-04 V0.1 为工程标准草案和原型设计稿。Schema、API、枚举、权威来源规则和验收阈值需经业务、ADS 架构、数据治理和安全负责人评审。原型用于逻辑验证，不构成生产级安全或可用性承诺。</p>
+</section>
+</main></div><div class="footer">ADS-WORK-04 · V0.1-Engineering Draft · 2026-11-19</div></div></body></html>

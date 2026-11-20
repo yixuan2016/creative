@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="ADS-WORK-08 企业工作本体与事件驱动的个人、企业、业务领域协同标准研究">
+<title>ADS-WORK-08｜工作本体与事件驱动协同</title>
+<style>
+:root{
+ --ink:#172b40;--muted:#667b91;--line:#dce5ed;--paper:#fff;--canvas:#f2f5f8;
+ --navy:#10283f;--blue:#286b9f;--teal:#18796e;--violet:#6a58a3;--amber:#a16b20;--red:#a64e4e;
+ --bluebg:#edf5fb;--tealbg:#edf8f5;--violetbg:#f4f1fa;--amberbg:#fff7e9;--redbg:#fff0ef;
+ --shadow:0 12px 32px rgba(24,48,75,.065)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;background:var(--canvas);color:var(--ink);font:15px/1.78 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.shell{max-width:1480px;margin:auto;padding:22px 24px 60px}
+.hero{position:relative;overflow:hidden;border-radius:27px;padding:48px 52px;color:#fff;background:linear-gradient(118deg,#10243b 0%,#174b70 48%,#16796f 100%);box-shadow:0 22px 50px rgba(13,39,66,.18)}
+.hero:before,.hero:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.14);border-radius:50%;pointer-events:none}
+.hero:before{width:600px;height:600px;right:-150px;top:-370px;box-shadow:0 0 0 54px rgba(255,255,255,.035),0 0 0 110px rgba(255,255,255,.025)}
+.hero:after{width:260px;height:260px;right:250px;bottom:-220px;box-shadow:0 0 0 36px rgba(255,255,255,.035)}
+.kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#c6dce8}
+.hero h1{position:relative;z-index:1;max-width:1050px;margin:16px 0 14px;font-size:clamp(32px,4vw,49px);line-height:1.2;letter-spacing:-.04em}
+.subtitle{position:relative;z-index:1;max-width:960px;color:#e1edf3;font-size:18px;line-height:1.75}
+.meta{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:26px;color:#c9dce7;font-size:12px}
+.tag{display:inline-flex;border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:4px 10px;background:rgba(255,255,255,.08)}
+.hero-insight{position:relative;z-index:1;margin-top:28px;max-width:950px;border-left:3px solid #9ed8c9;padding:10px 16px;background:rgba(255,255,255,.08);border-radius:0 10px 10px 0;font-size:14px;color:#f1f7f8}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:22px;margin-top:22px;align-items:start}
+nav{position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto;padding:18px 16px;background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.nav-title{font-weight:780;font-size:14px;margin-bottom:10px}
+nav a{display:block;padding:5px 8px;border-radius:7px;color:#4f6278;font-size:12px;line-height:1.5}
+nav a:hover,nav a.active{background:#edf3f8;color:var(--blue);text-decoration:none}
+.nav-group{margin-top:11px;padding:10px 8px 3px;border-top:1px solid #edf1f5;color:#8b99a8;font-size:10px;letter-spacing:.13em;text-transform:uppercase}
+main{min-width:0}
+section,.intro{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:29px 32px;margin-bottom:17px;box-shadow:0 5px 18px rgba(25,48,77,.035)}
+h2{font-size:23px;line-height:1.35;margin:0 0 15px;letter-spacing:-.025em}
+h3{font-size:17px;line-height:1.45;margin:23px 0 8px}
+h4{font-size:14px;margin:16px 0 6px}
+p{margin:8px 0}
+.lead{font-size:17px;line-height:1.82;color:#344b63}
+.small{font-size:12px;color:var(--muted)}
+.eyebrow{display:block;font-size:10px;letter-spacing:.17em;color:#8293a6;margin-bottom:7px;text-transform:uppercase}
+.callout{margin:16px 0;padding:14px 17px;border-left:4px solid var(--teal);background:var(--tealbg);border-radius:0 10px 10px 0}
+.callout.blue{border-left-color:var(--blue);background:var(--bluebg)}
+.callout.amber{border-left-color:#c28a33;background:var(--amberbg)}
+.callout.purple{border-left-color:var(--violet);background:var(--violetbg)}
+.callout.red{border-left-color:var(--red);background:var(--redbg)}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card,.metric{border:1px solid var(--line);border-radius:13px;padding:15px;background:#fff}
+.card h3{margin:0 0 6px;font-size:15px}
+.card p{font-size:13px;color:#5d6e82;margin:0}
+.num{font-size:27px;line-height:1.2;font-weight:790;color:var(--navy);letter-spacing:-.04em}
+.metric .label{font-size:12px;color:var(--muted);margin-top:5px}
+.idx{font-size:10px;color:var(--blue);font-weight:800;letter-spacing:.14em;margin-bottom:7px}
+.pill{display:inline-block;border-radius:99px;padding:3px 9px;font-size:11px;background:#edf1f6;color:#465a72;margin:2px 4px 2px 0}
+.pill.teal{background:var(--tealbg);color:#17685f}.pill.blue{background:var(--bluebg);color:#245c94}.pill.amber{background:var(--amberbg);color:#8a5a19}.pill.violet{background:var(--violetbg);color:#655198}.pill.red{background:var(--redbg);color:#994848}
+table{width:100%;border-collapse:collapse;margin:13px 0;font-size:12.5px}
+th,td{border:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+th{background:#eff3f8;color:#34465c;font-weight:740}
+tbody tr:nth-child(even){background:#fbfcfe}
+ul,ol{padding-left:1.3em;margin:9px 0}
+li{margin:5px 0}
+.diagram{border:1px solid var(--line);border-radius:14px;padding:18px;background:#fbfcfe;margin:16px 0;overflow-x:auto}
+.layer-stack{min-width:640px;display:grid;gap:8px}
+.layer-row{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:stretch;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:#fff;cursor:pointer;transition:.16s}
+.layer-row:hover,.layer-row.selected{border-color:#5487b4;box-shadow:0 5px 15px rgba(40,102,156,.1);transform:translateY(-1px)}
+.layer-label{display:flex;flex-direction:column;justify-content:center;align-items:center;background:#eaf2f9;color:#245c88;padding:10px}
+.layer-label b{font-size:22px;line-height:1.2}
+.layer-label span{font-size:10px;letter-spacing:.08em}
+.layer-content{padding:10px 14px}
+.layer-content strong{display:block;font-size:14px}
+.layer-content p{font-size:12px;color:#66788c;margin:3px 0 0}
+.layer-row[data-layer="L2"] .layer-label{background:#e9f6f2;color:#1a756a}
+.layer-row[data-layer="L3"] .layer-label{background:#f1eff9;color:#62539a}
+.layer-row[data-layer="L4"] .layer-label{background:#fff5e5;color:#98661f}
+.layer-row[data-layer="L5"] .layer-label{background:#e9eef5;color:#294c6a}
+.layer-detail{border:1px solid #cddce9;border-radius:12px;padding:15px 17px;background:#f5f9fc;min-height:105px;margin-top:10px}
+.layer-detail strong{display:block;color:#1f4566;margin-bottom:5px}
+.layer-detail p{margin:0;font-size:13px;color:#53677c}
+.scope-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.scope{border:1px solid var(--line);border-radius:13px;padding:14px;background:#fff;min-height:160px}
+.scope .scope-tag{font-size:10px;letter-spacing:.13em;font-weight:800;color:var(--blue)}
+.scope h3{margin:6px 0;font-size:15px}
+.scope p{font-size:12px;color:#617287;margin:0}
+.scope.personal{border-top:4px solid var(--violet)}
+.scope.enterprise{border-top:4px solid var(--blue)}
+.scope.domain{border-top:4px solid var(--teal)}
+.scope-foot{margin-top:10px;padding:9px 11px;border-radius:9px;background:#f4f7fa;color:#50657a;font-size:12px}
+.concept-selector{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.concept-selector button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 12px;font:inherit;font-size:12px;color:#53667b;cursor:pointer}
+.concept-selector button.selected{background:var(--bluebg);border-color:#9dbbd4;color:#245d8e}
+.concept-detail{padding:15px;border:1px solid #d4e1eb;border-radius:12px;background:#f7fafc;min-height:110px}
+.concept-detail strong{display:block;color:#1d4567;margin-bottom:5px}
+.concept-detail p{margin:0;color:#586d82;font-size:13px}
+.compare{display:grid;grid-template-columns:1fr 46px 1fr;gap:10px;align-items:stretch;margin:15px 0}
+.compare-box{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}
+.compare-box h3{font-size:14px;margin:0 0 7px}
+.compare-box ul{font-size:12px;color:#5e7185;margin:5px 0}
+.compare-arrow{display:flex;align-items:center;justify-content:center;color:#7b8ea1;font-size:22px}
+.flowline{display:flex;align-items:stretch;gap:6px;min-width:780px}
+.flowstep{flex:1;min-width:90px;border:1px solid var(--line);border-radius:10px;padding:10px 8px;background:#fff;text-align:center}
+.flowstep b{display:block;color:#245f8e;font-size:11px;margin-bottom:5px}
+.flowstep span{display:block;font-size:10px;line-height:1.45;color:#65788d}
+.flowarrow{display:flex;align-items:center;color:#8b9bac}
+.guardrails{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:14px 0}
+.guardrail{border:1px solid var(--line);border-radius:9px;padding:9px 6px;background:#fff;text-align:center}
+.guardrail b{display:block;font-size:11px;color:var(--teal)}
+.guardrail span{display:block;font-size:10px;color:#738398;line-height:1.35;margin-top:4px}
+.timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:15px 0}
+.phase{border:1px solid var(--line);border-radius:10px;padding:11px 10px;min-height:132px;background:#fff}
+.phase .step{font-size:10px;color:var(--blue);font-weight:800;letter-spacing:.1em}
+.phase strong{display:block;font-size:12px;margin:7px 0}
+.phase p{font-size:10.5px;color:var(--muted);margin:0}
+.quote{font-size:19px;line-height:1.7;font-weight:700;color:#1d3b57;padding:8px 0}
+pre{white-space:pre-wrap;overflow:auto;background:#17283d;color:#e7eff7;border-radius:11px;padding:16px;font-size:11px;line-height:1.6}
+details{border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:9px 0;background:#fff}
+summary{cursor:pointer;font-weight:720;color:#2a4058}
+details p,details ul{font-size:13px;color:#53657a}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.links a{display:inline-flex;border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-size:12px;background:#fff}
+.footer{text-align:center;color:#8391a3;font-size:12px;padding:22px}
+@media(max-width:1080px){.layout{grid-template-columns:1fr}nav{position:relative;top:auto;max-height:none}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.timeline{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:720px){.shell{padding:11px 10px 32px}.hero{padding:28px 22px;border-radius:17px}.hero h1{font-size:30px}.subtitle{font-size:15px}section,.intro{padding:20px 16px}.g2,.g3,.g4,.scope-grid{grid-template-columns:1fr}.compare{grid-template-columns:1fr}.compare-arrow{transform:rotate(90deg)}.guardrails{grid-template-columns:repeat(4,minmax(0,1fr))}.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}table{display:block;overflow-x:auto}}
+@media print{body{background:#fff}.shell{max-width:none;padding:0}.hero{border-radius:0;box-shadow:none;print-color-adjust:exact}.layout{display:block}nav{display:none}section,.intro{box-shadow:none;break-inside:avoid}.footer{display:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="hero" id="top">
+ <div class="kicker">ADS · WORK ONTOLOGY · EVENT-DRIVEN COLLABORATION</div>
+ <h1>企业工作本体与事件驱动的<br>个人—企业—领域协同标准研究</h1>
+ <p class="subtitle">让 AI 理解一个人的工作与生活，让企业 AI 理解企业如何运行，再通过共同语义、本体映射和授权投影，让不同责任边界之间可以安全协同。</p>
+ <div class="meta"><span class="tag">ADS-WORK-08</span><span>V0.1 Research & Ontology Proposal</span><span>2026-11-19</span><span>首个验证领域：项目交付</span></div>
+ <div class="hero-insight"><strong>核心主张：</strong>工作事件是观测入口，本体是语义骨架，上下文是任务视图，能力资产是可复用方法，Agent 是受约束的执行单元。</div>
+</header>
+<div class="layout">
+<nav aria-label="专题导航">
+ <div class="nav-title">专题导航</div>
+ <a href="#summary">摘要与核心判断</a>
+ <div class="nav-group">Ontology Model</div>
+ <a href="#why">1. 为什么需要工作本体</a>
+ <a href="#scopes">2. 三级底座与本体边界</a>
+ <a href="#layers">3. 五层工作本体模型</a>
+ <a href="#semantics">4. 核心概念语义</a>
+ <a href="#personal">5. 个人工作与生活本体</a>
+ <a href="#enterprise">6. 企业与领域本体</a>
+ <div class="nav-group">Event & Projection</div>
+ <a href="#eventflow">7. 事件驱动机制</a>
+ <a href="#projection">8. 个人到企业的语义投影</a>
+ <a href="#registry">9. Registry 与工程服务</a>
+ <a href="#versioning">10. 版本与兼容性</a>
+ <div class="nav-group">Pilot & Governance</div>
+ <a href="#pilot">11. 项目交付试点</a>
+ <a href="#roadmap">12. 实施路线</a>
+ <a href="#decisions">13. 架构决策</a>
+ <a href="#checklist">14. 验收清单</a>
+ <a href="#next">结论与下一专题</a>
+</nav>
+<main>
+<section class="intro" id="summary">
+ <span class="eyebrow">Executive Summary</span>
+ <h2>从“把信息存下来”走向“理解工作世界”</h2>
+ <p class="lead">如果个人 AI 只记住对话，企业 AI 只搜索文档，Agent 只调用工具，那么它们仍然缺少一套共同的语义结构：谁在做什么、事情发生在哪里、影响哪个对象、形成了什么状态、依据是什么、谁有权确认。</p>
+ <div class="callout"><strong>本体的价值：</strong>为个人、企业和业务领域提供共同概念、关系和约束；不意味着把所有实例数据放在同一个地方。</div>
+ <div class="grid g4">
+  <div class="metric"><div class="num">5</div><div class="label">工作本体逻辑层</div></div>
+  <div class="metric"><div class="num">3</div><div class="label">个人、企业、领域责任边界</div></div>
+  <div class="metric"><div class="num">33</div><div class="label">首版机器可读概念类</div></div>
+  <div class="metric"><div class="num">17</div><div class="label">首版关系谓词</div></div>
+ </div>
+ <h3>本专题形成的六项成果</h3>
+ <div class="grid g3">
+  <div class="card"><div class="idx">01 / MODEL</div><h3>五层工作本体</h3><p>信号、事件、对象、上下文、能力与执行，治理贯穿全层。</p></div>
+  <div class="card"><div class="idx">02 / PERSONAL</div><h3>个人工作与生活语义</h3><p>个人是主体；生活事件是一等概念，默认由个人控制。</p></div>
+  <div class="card"><div class="idx">03 / EVENT</div><h3>事件语义与类型目录</h3><p>区分事件、活动、任务、承诺、决策、状态和证据。</p></div>
+  <div class="card"><div class="idx">04 / MAPPING</div><h3>跨边界语义投影</h3><p>个人工作事件经目的、授权、字段最小化和确认后进入企业。</p></div>
+  <div class="card"><div class="idx">05 / REGISTRY</div><h3>Ontology Registry</h3><p>概念、关系、命名空间、映射、版本和责任人可治理。</p></div>
+  <div class="card"><div class="idx">06 / ENGINEERING</div><h3>工程契约与测试</h3><p>新增本体目录 Schema、个人事件 Schema、投影样例和合同测试。</p></div>
+ </div>
+</section>
+
+<section id="why">
+ <span class="eyebrow">01 · Why Ontology</span><h2>本体不是知识图谱的别名，也不是再建一个数据库</h2>
+ <table><thead><tr><th>概念</th><th>解决的问题</th><th>ADS 中的职责</th></tr></thead><tbody>
+ <tr><td>Ontology</td><td>概念是什么、彼此有什么关系？</td><td>共同语义、领域语义、约束和版本</td></tr>
+ <tr><td>Schema</td><td>数据有哪些字段和类型？</td><td>约束 WorkEvent、BusinessObject 等结构</td></tr>
+ <tr><td>Event Stream</td><td>何时发生了什么变化？</td><td>追加事件、重放和审计</td></tr>
+ <tr><td>Knowledge Graph</td><td>如何存储和查询实体关系？</td><td>可选的关系存储实现</td></tr>
+ <tr><td>MDM</td><td>哪个客户、项目或产品是权威对象？</td><td>主数据身份和源系统映射</td></tr>
+ <tr><td>Context</td><td>当前任务需要哪些信息？</td><td>按任务和授权组织最小必要信息</td></tr>
+ </tbody></table>
+ <div class="callout blue"><strong>关键区分：</strong>本体定义语义，Schema 定义结构，事件流记录变化，主数据解决身份，Context 组织任务信息。它们互相引用，但不能互相替代。</div>
+ <h3>AI 真正需要理解的工作关系</h3>
+ <div class="grid g3">
+  <div class="card"><h3>主体</h3><p>谁发起、参与、负责或确认？人、角色、Agent 还是系统？</p></div>
+  <div class="card"><h3>事件</h3><p>发生了什么？是观察、讨论、承诺、决策还是正式状态变化？</p></div>
+  <div class="card"><h3>对象</h3><p>影响哪个项目、客户、产品、任务、交付物或个人目标？</p></div>
+  <div class="card"><h3>时间</h3><p>什么时候发生、何时观察、何时记录、何时生效？</p></div>
+  <div class="card"><h3>依据</h3><p>来源在哪里？是权威记录、人工确认还是模型推断？</p></div>
+  <div class="card"><h3>责任</h3><p>谁有权确认、修改、共享和采取下一步行动？</p></div>
+ </div>
+</section>
+
+<section id="scopes">
+ <span class="eyebrow">02 · Three Responsibility Scopes</span><h2>三级数智底座是责任边界，不是三个数据副本</h2>
+ <div class="scope-grid">
+  <div class="scope personal"><div class="scope-tag">PERSONAL</div><h3>个人数智底座</h3><p>理解个人工作、生活、学习、目标和资源。个人实例默认私有，由个人控制。</p><div class="scope-foot">共享语义 ≠ 共享个人记忆</div></div>
+  <div class="scope enterprise"><div class="scope-tag">ENTERPRISE</div><h3>企业数智底座</h3><p>理解企业项目、客户、产品、任务、决策、风险、证据和协同过程。</p><div class="scope-foot">企业数据按业务目的和组织策略治理</div></div>
+  <div class="scope domain"><div class="scope-tag">DOMAIN FEDERATION</div><h3>业务领域中心数智底座</h3><p>维护 ADS 共同语义、领域概念、映射规则、版本和联邦目录。</p><div class="scope-foot">优先共享语义与目录，不集中原始数据</div></div>
+ </div>
+ <div class="diagram">
+  <div class="flowline">
+   <div class="flowstep"><b>个人侧</b><span>工作事件<br>生活事件<br>个人目标</span></div><div class="flowarrow">⇄</div>
+   <div class="flowstep"><b>共同核心本体</b><span>Actor / Event<br>Task / Decision<br>Evidence / Time</span></div><div class="flowarrow">⇄</div>
+   <div class="flowstep"><b>企业侧</b><span>项目 / 客户<br>任务 / 风险<br>状态 / 证据</span></div><div class="flowarrow">⇄</div>
+   <div class="flowstep"><b>领域联邦</b><span>领域术语<br>映射规则<br>版本目录</span></div>
+  </div>
+  <p class="small">图中连线代表受控语义映射和任务级协同，不代表原始事件双向同步。</p>
+ </div>
+ <div class="callout amber">个人生活事件默认不进入企业侧。个人工作事件也不自动等于企业正式业务事件。员工使用个人 AI，不意味着企业获得其完整个人记忆。</div>
+</section>
+
+<section id="layers">
+ <span class="eyebrow">03 · Five-Layer Work Ontology</span><h2>五层本体模型：从观察信号到受约束执行</h2>
+ <p>点击任意一层，查看该层的概念、职责和边界。治理作为横向控制面贯穿所有层。</p>
+ <div class="diagram">
+  <div class="layer-stack">
+   <div class="layer-row" data-layer="L5"><div class="layer-label"><b>L5</b><span>CAPABILITY</span></div><div class="layer-content"><strong>能力与执行层</strong><p>Capability · Skill · Rule · Workflow · Agent · Tool · Approval · Run · Feedback</p></div></div>
+   <div class="layer-row" data-layer="L4"><div class="layer-label"><b>L4</b><span>CONTEXT</span></div><div class="layer-content"><strong>上下文与决策层</strong><p>Context · Goal · Constraint · Decision · Risk · Dependency · Uncertainty</p></div></div>
+   <div class="layer-row" data-layer="L3"><div class="layer-label"><b>L3</b><span>SEMANTICS</span></div><div class="layer-content"><strong>语义对象与状态层</strong><p>Actor · Organization · Project · Customer · Product · State · Relation · Identity Mapping</p></div></div>
+   <div class="layer-row selected" data-layer="L2"><div class="layer-label"><b>L2</b><span>EVENT</span></div><div class="layer-content"><strong>事件与活动层</strong><p>Event · Activity · Task · Commitment · Interaction · Decision Event · Outcome</p></div></div>
+   <div class="layer-row" data-layer="L1"><div class="layer-label"><b>L1</b><span>OBSERVATION</span></div><div class="layer-content"><strong>信号与观察层</strong><p>Source · Observation · Capture · Document · Message · Audio · System Record</p></div></div>
+  </div>
+  <div class="layer-detail" id="layerDetail" aria-live="polite"><strong>L2 · 事件与活动层</strong><p>描述现实发生了什么、主体正在做什么。事件、活动、任务和承诺不能混为一谈；抽取完成也不代表业务确认。</p></div>
+ </div>
+ <div class="callout purple"><strong>横向治理：</strong>Identity、Authorization、Provenance、Time、Classification、Policy、Version、Audit。每一层都必须可追溯、可授权、可纠错。</div>
+</section>
+
+<section id="semantics">
+ <span class="eyebrow">04 · Semantic Precision</span><h2>事件、活动、任务、承诺、决策：五个概念必须分开</h2>
+ <p>选择一个概念，查看它的定义、必要语义和常见误判。</p>
+ <div class="concept-selector" role="group" aria-label="核心语义概念">
+  <button class="selected" data-concept="event">Event 事件</button>
+  <button data-concept="activity">Activity 活动</button>
+  <button data-concept="task">Task 任务</button>
+  <button data-concept="commitment">Commitment 承诺</button>
+  <button data-concept="decision">Decision 决策</button>
+ </div>
+ <div class="concept-detail" id="conceptDetail" aria-live="polite"><strong>Event · 发生了什么？</strong><p>某个时点或时间区间内发生的变化或可观察事实候选。需要类型、主体、对象、时间、来源和断言状态。常见误判：把讨论内容直接当成已确认决定。</p></div>
+ <table><thead><tr><th>概念</th><th>必须回答</th><th>关键字段</th></tr></thead><tbody>
+ <tr><td>Event</td><td>发生了什么？</td><td>类型、主体、对象、时间、来源、状态</td></tr>
+ <tr><td>Activity</td><td>一段时间内在做什么？</td><td>目标、参与者、时间区间、过程、结果</td></tr>
+ <tr><td>Task</td><td>谁需要完成什么？</td><td>目标、负责人、期限、状态、完成条件</td></tr>
+ <tr><td>Commitment</td><td>谁承诺了什么？</td><td>承诺主体、对象、期限、确认依据、履约状态</td></tr>
+ <tr><td>Decision</td><td>谁在什么权限下确定了哪个选择？</td><td>选项、依据、约束、审批、生效范围</td></tr>
+ </tbody></table>
+ <div class="callout amber">不能从“有人提到某项工作”推断“任务已经创建”；不能从“可以考虑”推断“决策已批准”；不能从“检测到延期信号”推断“责任人已经承认延期”。</div>
+ <h3>时间语义不能压成一个时间戳</h3>
+ <div class="grid g4">
+  <div class="card"><h3>Occurred</h3><p>事情实际发生的时间。</p></div>
+  <div class="card"><h3>Observed</h3><p>系统感知到事情的时间。</p></div>
+  <div class="card"><h3>Recorded</h3><p>事件写入系统的时间。</p></div>
+  <div class="card"><h3>Valid</h3><p>状态或关系在业务世界中生效的时间。</p></div>
+ </div>
+</section>
+
+<section id="personal">
+ <span class="eyebrow">05 · Personal Context Ontology</span><h2>个人数智底座理解的是“一个人”，而不是“一个员工”</h2>
+ <div class="diagram">
+  <div class="grid g4">
+   <div class="card"><span class="pill violet">WORK</span><h3>个人工作上下文</h3><p>工作事件、项目参与、会议、任务、承诺、决策、协作和工作成果。</p></div>
+   <div class="card"><span class="pill amber">LIFE</span><h3>个人生活上下文</h3><p>个人日程、生活安排、承诺、日常活动、目标和资源。</p></div>
+   <div class="card"><span class="pill blue">GROWTH</span><h3>学习与成长上下文</h3><p>学习活动、反思、技能成长、目标进展和个人知识。</p></div>
+   <div class="card"><span class="pill teal">RESOURCES</span><h3>个人资源与偏好</h3><p>个人时间、工具偏好、工作习惯和可由本人管理的资源。</p></div>
+  </div>
+ </div>
+ <div class="compare">
+  <div class="compare-box"><span class="pill violet">PERSONAL WORK EVENT</span><h3>个人侧完整上下文</h3><ul><li>个人备注和判断</li><li>会议背景与提醒</li><li>个人工作目标</li><li>来源和个人记忆链接</li></ul><p class="small">由个人助理管理，默认个人私有。</p></div>
+  <div class="compare-arrow">→</div>
+  <div class="compare-box"><span class="pill blue">ENTERPRISE PROJECTION</span><h3>企业侧最小必要记录</h3><ul><li>经确认的项目行动项</li><li>责任人和截止时间</li><li>企业项目对象引用</li><li>授权、来源和转换版本</li></ul><p class="small">企业侧生成新 ID，独立治理和审计。</p></div>
+ </div>
+ <div class="callout red"><strong>边界原则：</strong>个人生活事件是个人本体的一等对象，但不是企业工作本体的默认字段。企业不应为了“理解员工”而读取个人生活时间线，也不应将个人生活数据默认用于绩效评价。</div>
+ <details><summary>个人本体是否应该允许用户自定义？</summary><p>应该。个人生活和工作方式存在差异，个人本体需要支持本地类别、别名、关系和记录策略。ADS Core 只提供稳定语义锚点，不应要求每个人采用完全相同的个人分类表。</p></details>
+</section>
+
+<section id="enterprise">
+ <span class="eyebrow">06 · Enterprise & Domain Ontology</span><h2>共同核心保持稳定，业务领域保留专业差异</h2>
+ <div class="grid g3">
+  <div class="card"><span class="pill blue">ADS CORE</span><h3>共同核心本体</h3><p>Actor、Event、Task、Decision、Evidence、Resource、Time、Authorization。</p></div>
+  <div class="card"><span class="pill teal">ENTERPRISE</span><h3>企业工作本体</h3><p>企业组织、项目、客户、产品、流程、任务、风险和业务规则。</p></div>
+  <div class="card"><span class="pill violet">DOMAIN</span><h3>业务领域本体</h3><p>项目交付、客户服务、研发、供应链、财务等专业概念。</p></div>
+ </div>
+ <h3>语义映射状态</h3>
+ <table><thead><tr><th>状态</th><th>含义</th><th>处理方式</th></tr></thead><tbody>
+ <tr><td>exact</td><td>语义和约束一致</td><td>按契约自动映射</td></tr>
+ <tr><td>equivalent</td><td>近似等价但有适用条件</td><td>保留映射说明和抽样复核</td></tr>
+ <tr><td>broader / narrower</td><td>上下位概念关系</td><td>不得直接无损替换</td></tr>
+ <tr><td>related</td><td>相关但不等价</td><td>建立关联，不合并</td></tr>
+ <tr><td>candidate / unresolved</td><td>候选或无法可靠映射</td><td>保留原值，等待确认</td></tr>
+ <tr><td>conflict</td><td>不同领域定义冲突</td><td>并列保留并升级治理</td></tr>
+ </tbody></table>
+ <div class="callout blue">同名不代表同义。项目交付中的“验收”、研发中的“发布”、供应链中的“交付”不应只因词面相似就合并。领域扩展使用命名空间和 Owner 治理。</div>
+ <h3>身份解析的六步</h3>
+ <ol><li>保留源系统、租户和原生对象 ID。</li><li>根据类型、权威映射和组织范围生成候选。</li><li>记录匹配依据、置信度和解析状态。</li><li>无法唯一确认时返回 candidate 或 unresolved。</li><li>由有权业务人员确认后建立 IdentityMapping。</li><li>合并、拆分和纠错均保留历史映射。</li></ol>
+</section>
+
+<section id="eventflow">
+ <span class="eyebrow">07 · Event-Driven Semantics</span><h2>从多源信号到 Agent 上下文的事件驱动链路</h2>
+ <div class="diagram">
+  <div class="flowline">
+   <div class="flowstep"><b>01 Signal</b><span>消息 / 会议<br>文档 / 系统记录</span></div><div class="flowarrow">→</div>
+   <div class="flowstep"><b>02 Observation</b><span>解析、转写<br>抽取、去重</span></div><div class="flowarrow">→</div>
+   <div class="flowstep"><b>03 Candidate</b><span>事件候选<br>主体与对象</span></div><div class="flowarrow">→</div>
+   <div class="flowstep"><b>04 Mapping</b><span>身份解析<br>语义映射</span></div><div class="flowarrow">→</div>
+   <div class="flowstep"><b>05 Policy</b><span>授权检查<br>人工确认</span></div><div class="flowarrow">→</div>
+   <div class="flowstep"><b>06 Context</b><span>状态、关系<br>证据和未知</span></div><div class="flowarrow">→</div>
+   <div class="flowstep"><b>07 Agent</b><span>能力调用<br>执行和反馈</span></div>
+  </div>
+ </div>
+ <h3>处理状态与业务断言状态必须分开</h3>
+ <div class="grid g2">
+  <div class="card"><span class="pill blue">PIPELINE STATUS</span><h3>处理状态</h3><p>received → parsed → mapped → awaiting_review → accepted / rejected → corrected / superseded → archived</p></div>
+  <div class="card"><span class="pill teal">ASSERTION STATUS</span><h3>业务断言状态</h3><p>confirmed、observed、inferred、disputed、rejected、stale、unknown</p></div>
+ </div>
+ <div class="callout amber">模型完成抽取，不代表业务事实已经确认；数据通过 Schema 校验，也不代表语义正确。重要状态必须保留来源、有效时间和确认责任。</div>
+ <h3>事件追加与纠错</h3>
+ <p>事件采用追加式原则。原始来源和已接收事件不应被静默覆盖。纠错通过更正事件、撤回事件、supersedes 或 correction_of 关系表达；状态视图可以重建，但历史事件和来源引用必须可追溯。</p>
+</section>
+
+<section id="projection">
+ <span class="eyebrow">08 · Personal-to-Enterprise Projection</span><h2>个人到企业不是原始记录同步，而是受控语义投影</h2>
+ <div class="guardrails">
+  <div class="guardrail"><b>Purpose</b><span>业务目的</span></div>
+  <div class="guardrail"><b>Scope</b><span>对象与字段</span></div>
+  <div class="guardrail"><b>Authority</b><span>授权依据</span></div>
+  <div class="guardrail"><b>Minimum</b><span>最小必要</span></div>
+  <div class="guardrail"><b>Confirm</b><span>人工确认</span></div>
+  <div class="guardrail"><b>Lineage</b><span>派生追溯</span></div>
+  <div class="guardrail"><b>Revoke</b><span>撤回处理</span></div>
+ </div>
+ <h3>投影决策矩阵</h3>
+ <table><thead><tr><th>个人侧内容</th><th>默认策略</th><th>企业侧处理</th></tr></thead><tbody>
+ <tr><td>个人生活事件</td><td><span class="pill red">personal_only</span></td><td>不投影</td></tr>
+ <tr><td>个人工作线索</td><td><span class="pill violet">personal_only</span></td><td>由本人选择提交审核</td></tr>
+ <tr><td>明确项目行动项</td><td><span class="pill amber">review_required</span></td><td>确认项目、责任人、期限和业务目的后投影</td></tr>
+ <tr><td>会议中的候选决策</td><td><span class="pill amber">review_required</span></td><td>确认决策状态和审批权限</td></tr>
+ <tr><td>企业正式状态</td><td><span class="pill blue">enterprise_authoritative</span></td><td>引用权威业务系统，不用个人记录覆盖</td></tr>
+ <tr><td>个人工作方法</td><td><span class="pill teal">candidate</span></td><td>抽象、去标识化、授权和独立验证后成为能力候选</td></tr>
+ </tbody></table>
+ <div class="callout red"><strong>不可逆的边界错误：</strong>未授权个人生活信息进入企业上下文；企业通过派生引用反向读取个人原始记录；把个人 AI 推断直接写成企业正式任务或决策。</div>
+ <h3>撤回不是一句“删除”，需要处理派生链</h3>
+ <p>撤回后停止新的读取、投影和下游调用；对已派生记录，由数据 Owner、隐私责任方和业务责任方按制度判断删除、限制、替换或保留审计。若能力资产由多来源抽象形成，也要重新评估来源授权和可保留性。</p>
+</section>
+
+<section id="registry">
+ <span class="eyebrow">09 · Ontology Registry</span><h2>本体 Registry 管理语义，而不直接承载所有实例数据</h2>
+ <div class="grid g3">
+  <div class="card"><h3>Ontology Registry</h3><p>共同、个人、企业和领域本体的版本与状态。</p></div>
+  <div class="card"><h3>Vocabulary Service</h3><p>术语、别名、定义、多语言名称和标签。</p></div>
+  <div class="card"><h3>Schema Registry</h3><p>事件、对象、任务和能力资产的数据契约。</p></div>
+  <div class="card"><h3>Identity Resolution</h3><p>人、组织、项目、客户和产品的身份解析。</p></div>
+  <div class="card"><h3>Mapping Service</h3><p>源字段、事件类型、领域概念和目标语义映射。</p></div>
+  <div class="card"><h3>Policy Service</h3><p>主体、目的、范围、分类、动作和授权校验。</p></div>
+  <div class="card"><h3>Event Gateway</h3><p>事件接收、Schema 校验、幂等和路由。</p></div>
+  <div class="card"><h3>Context Builder</h3><p>面向任务生成最小必要上下文包。</p></div>
+  <div class="card"><h3>Audit & Evaluation</h3><p>记录映射、调用、人工修正和评测结果。</p></div>
+ </div>
+ <div class="callout blue">首期不必把每个组件拆成微服务。先用模块化单体、关系数据库、事件日志和对象存储实现语义契约；只有在规模和责任边界明确后再拆分。</div>
+ <h3>五种版本必须分开管理</h3>
+ <p>ontology_version、event_schema_version、mapping_version、policy_version 和 source_record_version 各自承担不同职责。能力资产还要绑定其依赖的本体版本和评测集版本。</p>
+</section>
+
+<section id="versioning">
+ <span class="eyebrow">10 · Versioning & Compatibility</span><h2>本体变化不能静默改变历史事件的含义</h2>
+ <table><thead><tr><th>版本变化</th><th>允许变化</th><th>兼容要求</th></tr></thead><tbody>
+ <tr><td>Patch</td><td>定义修正、别名补充、非语义错误修复</td><td>不改变既有含义</td></tr>
+ <tr><td>Minor</td><td>新增类、关系、事件类型或可选属性</td><td>不破坏既有事件解释</td></tr>
+ <tr><td>Major</td><td>删除、重命名、改变基数或语义定义</td><td>迁移计划、双版本读取和回归评测</td></tr>
+ </tbody></table>
+ <h3>命名空间建议</h3>
+ <div class="grid g2">
+  <div class="card"><h3>ads.core.*</h3><p>跨领域稳定概念：Actor、Event、Task、Decision、Evidence。</p></div>
+  <div class="card"><h3>ads.personal.*</h3><p>个人工作、生活、学习和资源上下文。</p></div>
+  <div class="card"><h3>ads.enterprise.*</h3><p>企业组织、业务对象和工作流程概念。</p></div>
+  <div class="card"><h3>ads.domain.* / ads.local.*</h3><p>业务领域与企业本地扩展，必须有 Owner 和映射规则。</p></div>
+ </div>
+ <p>逻辑语义统一不要求所有系统采用同一种数据库。JSON Schema 继续约束当前契约；JSON-LD 可用于语义交换；RDF / OWL / SHACL 可作为复杂推理和约束验证的候选技术，而不是首期前置条件。</p>
+</section>
+
+<section id="pilot">
+ <span class="eyebrow">11 · Project Delivery Pilot</span><h2>用项目交付验证事件、对象、关系和授权投影是否真正有效</h2>
+ <table><thead><tr><th>事件类型</th><th>主要对象</th><th>确认要求</th></tr></thead><tbody>
+ <tr><td>project.task_created</td><td>Project / Task</td><td>正式创建需业务系统确认</td></tr>
+ <tr><td>project.task_status_changed</td><td>Task</td><td>以权威状态源为准</td></tr>
+ <tr><td>project.dependency_blocked</td><td>Task / Dependency</td><td>关键阻塞需确认</td></tr>
+ <tr><td>project.risk_signal_observed</td><td>Project / Task / Risk</td><td>候选风险不得直接变正式风险</td></tr>
+ <tr><td>project.risk_confirmed</td><td>Project / Risk</td><td>风险责任人确认</td></tr>
+ <tr><td>project.decision_recorded</td><td>Project / Decision</td><td>核验权限和决策状态</td></tr>
+ <tr><td>project.deliverable_submitted</td><td>Project / Deliverable</td><td>保留版本和来源</td></tr>
+ <tr><td>project.acceptance_confirmed</td><td>Project / Deliverable</td><td>必须来自权威验收记录</td></tr>
+ </tbody></table>
+ <h3>关键质量指标</h3>
+ <div class="grid g3">
+  <div class="card"><h3>Event Precision / Recall</h3><p>事件抽取准确率和召回率，按事件类型与复杂度分层。</p></div>
+  <div class="card"><h3>Entity Resolution</h3><p>对象关联正确率；高影响对象采用更严格门槛。</p></div>
+  <div class="card"><h3>Relation Accuracy</h3><p>责任、依赖、影响等关系准确率。</p></div>
+  <div class="card"><h3>Temporal Accuracy</h3><p>发生、观察、记录和有效时间的正确率。</p></div>
+  <div class="card"><h3>Projection Leakage</h3><p>不应投影字段进入企业侧的比例，关键边界零容忍。</p></div>
+  <div class="card"><h3>Authorization False Allow</h3><p>无授权却允许访问或投影的次数，目标为零。</p></div>
+ </div>
+ <div class="callout amber">准确率不能抵消治理违规。只要出现未授权生活信息投影或高影响错误对象合并，就应暂停相关链路。</div>
+</section>
+
+<section id="roadmap">
+ <span class="eyebrow">12 · Implementation Roadmap</span><h2>先冻结语义，再建设映射和事件服务</h2>
+ <div class="timeline">
+  <div class="phase"><div class="step">WEEK 01—02</div><strong>语义边界冻结</strong><p>五层模型、个人 / 企业 / 领域边界、核心术语和首个领域。</p></div>
+  <div class="phase"><div class="step">WEEK 03—04</div><strong>本体目录与映射</strong><p>命名空间、类、关系、事件类型、身份解析和 Owner。</p></div>
+  <div class="phase"><div class="step">WEEK 05—06</div><strong>个人事件与投影</strong><p>个人私有事件、最小字段投影、授权校验和撤回处理。</p></div>
+  <div class="phase"><div class="step">WEEK 07—08</div><strong>项目交付接入</strong><p>项目对象、事件时间线、状态视图、Context Package 和只读 Agent。</p></div>
+  <div class="phase"><div class="step">WEEK 09+</div><strong>跨团队验证</strong><p>迁移损失、领域扩展、版本治理和回归评测。</p></div>
+ </div>
+ <p class="small">时间为规划建议，不应为了按期交付跳过授权审查、语义确认或高风险测试。</p>
+</section>
+
+<section id="decisions">
+ <span class="eyebrow">13 · Architecture Decisions</span><h2>建议冻结的十二项架构决策</h2>
+ <table><thead><tr><th>ADR</th><th>建议决策</th></tr></thead><tbody>
+ <tr><td>01</td><td>共同核心 + 个人 + 企业 + 领域分层，避免单一本体吞并所有业务语义。</td></tr>
+ <tr><td>02</td><td>个人本体覆盖工作与生活，个人是主体而不是员工身份。</td></tr>
+ <tr><td>03</td><td>个人生活事件默认 personal_only。</td></tr>
+ <tr><td>04</td><td>个人事件和企业投影事件使用不同 ID 和生命周期。</td></tr>
+ <tr><td>05</td><td>映射支持候选、未解析和冲突，不强迫统一。</td></tr>
+ <tr><td>06</td><td>复用 ADS-WORK-04 WorkEvent 契约，不再造不兼容信封。</td></tr>
+ <tr><td>07</td><td>关系必须有类型、方向、有效时间和来源。</td></tr>
+ <tr><td>08</td><td>本体、Schema、映射和 Policy 分别版本化。</td></tr>
+ <tr><td>09</td><td>个人到企业采用目的绑定、最小必要的单向投影。</td></tr>
+ <tr><td>10</td><td>先冻结语义和契约，再决定图数据库或 OWL 技术。</td></tr>
+ <tr><td>11</td><td>领域扩展使用命名空间和 Owner 治理。</td></tr>
+ <tr><td>12</td><td>Capability Manifest 显式引用本体版本。</td></tr>
+ </tbody></table>
+</section>
+
+<section id="checklist">
+ <span class="eyebrow">14 · Readiness Checklist</span><h2>本体、投影和试点验收清单</h2>
+ <details open><summary>本体与语义</summary><ul><li>五层模型定义明确，层间职责不混淆。</li><li>个人、企业和业务领域本体范围清晰。</li><li>Event、Activity、Task、Commitment、Decision、StateAssertion 和 Evidence 定义可区分。</li><li>核心概念有稳定 ID、定义、命名空间和 Owner。</li><li>关系具有方向、时间、来源和适用范围。</li></ul></details>
+ <details><summary>个人与企业边界</summary><ul><li>个人工作与生活事件都能在个人侧表达。</li><li>个人生活事件默认不进入企业侧。</li><li>个人工作事件不自动成为企业正式事件。</li><li>企业投影有目的、字段、接收者、有效期和授权引用。</li><li>企业侧无法通过投影引用读取个人原始记录。</li><li>授权撤回和派生记录处理规则可执行。</li></ul></details>
+ <details><summary>事件与映射</summary><ul><li>来源、发生时间、观察时间和记录时间保留。</li><li>对象身份解析支持 candidate 和 unresolved。</li><li>映射支持 exact、equivalent、related、candidate、unresolved 和 conflict。</li><li>冲突和未知不会被模型自动覆盖。</li><li>事件更正和历史版本可追溯。</li></ul></details>
+ <details><summary>工程与运营</summary><ul><li>Ontology Registry、Schema Registry 和 Mapping Registry 有明确责任人。</li><li>本体版本与 WorkEvent、ContextPackage 和 Capability Manifest 兼容。</li><li>项目交付试点有人工标注集和质量评测。</li><li>投影泄漏和未授权访问纳入零容忍安全门槛。</li><li>本体变更有评审、回归、迁移和退役流程。</li></ul></details>
+</section>
+
+<section id="next">
+ <span class="eyebrow">Conclusion & Next Research</span><h2>让个人数智底座理解人，让企业数智底座理解业务</h2>
+ <p class="quote">不是把所有人的信息汇总到一个地方，而是让不同责任边界拥有共同语义，并在明确授权下形成协同。</p>
+ <div class="grid g3">
+  <div class="card"><h3>个人层</h3><p>理解个人工作与生活的连续上下文，形成个人可控制的事件、记忆、目标和资源。</p></div>
+  <div class="card"><h3>企业层</h3><p>理解企业运行状态、任务、决策、风险、证据和协同过程。</p></div>
+  <div class="card"><h3>领域中心层</h3><p>通过共同核心本体、领域本体、映射规则和联邦目录连接不同领域。</p></div>
+ </div>
+ <div class="callout"><strong>下一专题 ADS-WORK-09：</strong>《个人数智底座的持续记忆、事件账本与自主智能体架构研究》。重点研究个人工作与生活事件如何形成可持续、可纠错的个人记忆；本地优先、多端同步、目标与承诺管理；个人 Agent 如何形成行动建议并避免把推断当事实；以及个人 Agent 与企业 Agent 如何围绕任务契约协作。</div>
+ <h3>配套工程文件</h3>
+ <div class="links">
+  <a href="../schemas/ads-work-ontology-v0.1.schema.json">Ontology Manifest Schema</a>
+  <a href="../ontologies/ads-work-ontology-v0.1.json">Work Ontology Catalog</a>
+  <a href="../schemas/ads-personal-context-event-v0.1.schema.json">Personal Event Schema</a>
+  <a href="../examples/ads-personal-to-enterprise-event-projection-v0.1.json">个人到企业投影样例</a>
+  <a href="../pilot/工作本体与事件映射评估模板.csv">本体映射评估模板</a>
+  <a href="../prototype/test_work_ontology_contracts.py">本体合同测试</a>
+ </div>
+ <p class="small">本文件为研究与标准草案。概念、映射、授权、留存、个人信息和企业数据处理规则，须经相应责任方评审后才能成为正式企业标准。示例使用虚构数据。</p>
+</section>
+</main>
+</div>
+<div class="footer">ADS-WORK-08 · V0.1 Research & Ontology Proposal · 2026-11-19</div>
+</div>
+<script>
+(function(){
+ const layerCopy={
+  L1:['L1 · 信号与观察层','记录系统从哪里观察到什么：SourceRecord、Observation、CaptureSession、ExtractionRun。它回答系统看到了什么、何时看到、经过什么处理，不直接宣称业务事实。'],
+  L2:['L2 · 事件与活动层','描述现实发生了什么、主体正在做什么。Event、Activity、Task、Commitment 和 Outcome 必须区分；抽取完成不代表业务确认。'],
+  L3:['L3 · 语义对象与状态层','把事件关联到稳定对象身份和业务语义。支持 Actor、Organization、Project、Customer、Product、Relation、StateAssertion 和 IdentityMapping。'],
+  L4:['L4 · 上下文与决策层','将对象、事件、状态、关系和证据组织为任务视图。明确目标、约束、决策、风险、依赖、冲突和未知。'],
+  L5:['L5 · 能力与执行层','把经过验证的工作方法连接到 CapabilityAsset、Skill、Rule、Workflow、Agent、Tool、Approval、Run 和 Feedback。调用仍受策略约束。']
+ };
+ document.querySelectorAll('.layer-row').forEach(function(btn){
+  btn.addEventListener('click',function(){
+   document.querySelectorAll('.layer-row').forEach(function(x){x.classList.remove('selected')});
+   btn.classList.add('selected');
+   const item=layerCopy[btn.dataset.layer];
+   document.getElementById('layerDetail').innerHTML='<strong>'+item[0]+'</strong><p>'+item[1]+'</p>';
+  });
+ });
+ const concepts={
+  event:['Event · 发生了什么？','某个时点或时间区间内发生的变化或可观察事实候选。需要类型、主体、对象、时间、来源和断言状态。常见误判：把讨论内容直接当成已确认决定。'],
+  activity:['Activity · 一段时间内在做什么？','为实现目标而持续进行的一组行动，可包含多个事件和任务。需要目标、参与者、时间区间、过程和结果。常见误判：把一次会议摘要当成完整活动过程。'],
+  task:['Task · 谁需要完成什么？','有预期结果、责任主体、期限、状态和完成条件的工作单元。常见误判：把一句建议或提议自动创建为正式任务。'],
+  commitment:['Commitment · 谁承诺了什么？','主体对未来行动或结果作出的承诺。需要承诺主体、对象、期限、确认依据和履约状态。常见误判：把模糊意向当作明确承诺。'],
+  decision:['Decision · 谁在什么权限下确定了哪个选择？','在约束和备选方案下作出的选择，需有决策主体、依据、审批、生效范围和时间。常见误判：把会议讨论、模型建议或未审批方案标记为正式决策。']
+ };
+ document.querySelectorAll('.concept-selector button').forEach(function(btn){
+  btn.addEventListener('click',function(){
+   document.querySelectorAll('.concept-selector button').forEach(function(x){x.classList.remove('selected')});
+   btn.classList.add('selected');
+   const item=concepts[btn.dataset.concept];
+   document.getElementById('conceptDetail').innerHTML='<strong>'+item[0]+'</strong><p>'+item[1]+'</p>';
+  });
+ });
+ const links=[...document.querySelectorAll('nav a')];
+ const sections=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+ if('IntersectionObserver' in window){
+  const observer=new IntersectionObserver(entries=>{
+   entries.forEach(entry=>{
+    if(entry.isIntersecting){
+     links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+entry.target.id));
+    }
+   });
+  },{rootMargin:'-15% 0px -75% 0px'});
+  sections.forEach(s=>observer.observe(s));
+ }
+})();
+</script>
+</body>
+</html>

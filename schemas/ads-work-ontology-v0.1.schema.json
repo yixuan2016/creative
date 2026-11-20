@@ -1,0 +1,446 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ads/schemas/ads-work-ontology-v0.1.schema.json",
+  "title": "ADS Work Ontology Registry Manifest",
+  "description": "Machine-readable catalog contract for the ADS common, personal, enterprise and domain work ontology. It governs semantics and mappings; instance data remains in its owning responsibility boundary.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ontology_id",
+    "version",
+    "status",
+    "purpose",
+    "scope_model",
+    "layers",
+    "classes",
+    "relations",
+    "event_taxonomy",
+    "mapping_rules",
+    "governance",
+    "compatibility",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "ontology_id": {
+      "type": "string",
+      "pattern": "^ads\\.[a-z0-9][a-z0-9.-]*$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
+    },
+    "status": {
+      "enum": [
+        "candidate",
+        "in_review",
+        "approved",
+        "deprecated",
+        "retired"
+      ]
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "scope_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "personal",
+        "enterprise",
+        "domain_federated",
+        "shared_core",
+        "projection_policy"
+      ],
+      "properties": {
+        "personal": {
+          "$ref": "#/$defs/scope"
+        },
+        "enterprise": {
+          "$ref": "#/$defs/scope"
+        },
+        "domain_federated": {
+          "$ref": "#/$defs/scope"
+        },
+        "shared_core": {
+          "$ref": "#/$defs/scope"
+        },
+        "projection_policy": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "layers": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "layer_id",
+          "name",
+          "purpose",
+          "concepts"
+        ],
+        "properties": {
+          "layer_id": {
+            "enum": [
+              "L1",
+              "L2",
+              "L3",
+              "L4",
+              "L5"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1
+          },
+          "concepts": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "classes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "class_id",
+          "namespace",
+          "label",
+          "parent_class",
+          "definition",
+          "instance_scopes",
+          "default_classification",
+          "identity_policy"
+        ],
+        "properties": {
+          "class_id": {
+            "type": "string",
+            "pattern": "^[a-z][A-Za-z0-9_.-]*$"
+          },
+          "namespace": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parent_class": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "definition": {
+            "type": "string",
+            "minLength": 1
+          },
+          "instance_scopes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "enum": [
+                "personal",
+                "enterprise",
+                "domain_federated"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "default_classification": {
+            "enum": [
+              "public",
+              "internal",
+              "confidential",
+              "restricted",
+              "personal",
+              "personal_sensitive"
+            ]
+          },
+          "identity_policy": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "relations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "predicate",
+          "domain",
+          "range",
+          "direction",
+          "temporal",
+          "evidence_required",
+          "scope_rule"
+        ],
+        "properties": {
+          "predicate": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]*$"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "range": {
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "directed",
+              "symmetric"
+            ]
+          },
+          "temporal": {
+            "type": "boolean"
+          },
+          "evidence_required": {
+            "type": "boolean"
+          },
+          "scope_rule": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "event_taxonomy": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "event_type",
+          "event_class",
+          "description",
+          "default_scope",
+          "confirmation_required",
+          "shareability"
+        ],
+        "properties": {
+          "event_type": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]*\\.[a-z][a-z0-9_-]*$"
+          },
+          "event_class": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "default_scope": {
+            "enum": [
+              "personal_only",
+              "enterprise",
+              "domain_federated",
+              "source_scope"
+            ]
+          },
+          "confirmation_required": {
+            "type": "boolean"
+          },
+          "shareability": {
+            "enum": [
+              "never",
+              "review_required",
+              "authorized_projection",
+              "enterprise_native"
+            ]
+          }
+        }
+      }
+    },
+    "mapping_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "rule_id",
+          "source_pattern",
+          "target_concept",
+          "method",
+          "review_required",
+          "guardrails"
+        ],
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_pattern": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target_concept": {
+            "type": "string",
+            "minLength": 1
+          },
+          "method": {
+            "enum": [
+              "exact",
+              "dictionary",
+              "rule_based",
+              "model_assisted",
+              "human_curated",
+              "projection"
+            ]
+          },
+          "review_required": {
+            "type": "boolean"
+          },
+          "guardrails": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_personal_scope",
+        "enterprise_projection",
+        "cross_tenant_policy",
+        "revocation_behavior",
+        "provenance_requirements",
+        "retention_policy",
+        "human_review_triggers"
+      ],
+      "properties": {
+        "default_personal_scope": {
+          "const": "personal_only"
+        },
+        "enterprise_projection": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "cross_tenant_policy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revocation_behavior": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "provenance_requirements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "retention_policy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "human_review_triggers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "work_context_schema_version",
+        "capability_schema_version",
+        "projection_target",
+        "extension_strategy"
+      ],
+      "properties": {
+        "work_context_schema_version": {
+          "type": "string"
+        },
+        "capability_schema_version": {
+          "type": "string"
+        },
+        "projection_target": {
+          "type": "string"
+        },
+        "extension_strategy": {
+          "type": "string"
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "description",
+        "instance_data_policy",
+        "semantic_definition_policy"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "instance_data_policy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "semantic_definition_policy": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

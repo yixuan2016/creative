@@ -1,0 +1,418 @@
+openapi: 3.1.0
+info:
+  title: ADS Enterprise Work Context API
+  version: 0.1.0
+  description: >
+    Draft API contract for event ingestion, object resolution, state views,
+    and task-scoped context packages. This is a design artifact, not a deployed endpoint.
+servers:
+  - url: https://ads-context.example.invalid
+    description: Placeholder only; replace with the approved environment URL.
+security:
+  - bearerAuth: []
+tags:
+  - name: Events
+  - name: Objects
+  - name: Context
+  - name: Actions
+paths:
+  /v1/events:ingest:
+    post:
+      tags: [Events]
+      operationId: ingestWorkEvent
+      summary: Ingest a canonical work event
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: true
+          schema:
+            type: string
+          description: Stable key for suppressing duplicate submissions.
+        - in: header
+          name: X-Tenant-Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../schemas/ads-work-context-v0.1.schema.json#/$defs/WorkEvent
+      responses:
+        "202":
+          description: Event accepted for processing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IngestResult"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "403":
+          $ref: "#/components/responses/PolicyDenied"
+        "409":
+          description: Idempotency or source-version conflict.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v1/objects:resolve:
+    post:
+      tags: [Objects]
+      operationId: resolveBusinessObject
+      summary: Resolve a source-system object reference
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tenant_id, object_type, source_system, source_object_id]
+              properties:
+                tenant_id:
+                  type: string
+                object_type:
+                  type: string
+                source_system:
+                  type: string
+                source_object_id:
+                  type: string
+      responses:
+        "200":
+          description: Resolution result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ObjectResolution"
+        "403":
+          $ref: "#/components/responses/PolicyDenied"
+        "409":
+          description: Ambiguous object match.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v1/objects/{object_id}/state:
+    get:
+      tags: [Objects]
+      operationId: getObjectState
+      summary: Get a provenance-aware current state view
+      parameters:
+        - in: path
+          name: object_id
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: property
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: State view with provenance and uncertainty.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StateView"
+        "403":
+          $ref: "#/components/responses/PolicyDenied"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/objects/{object_id}/timeline:
+    get:
+      tags: [Objects]
+      operationId: getObjectTimeline
+      summary: Get the authorized event timeline for an object
+      parameters:
+        - in: path
+          name: object_id
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: from
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: to
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Authorized timeline.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [object_id, events, trace_id]
+                properties:
+                  object_id:
+                    type: string
+                  events:
+                    type: array
+                    items:
+                      $ref: ../schemas/ads-work-context-v0.1.schema.json#/$defs/WorkEvent
+                  trace_id:
+                    type: string
+  /v1/context-packages:build:
+    post:
+      tags: [Context]
+      operationId: buildContextPackage
+      summary: Build a task-scoped context package
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContextBuildRequest"
+      responses:
+        "201":
+          description: Context package built.
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/ads-work-context-v0.1.schema.json#/$defs/ContextPackage
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "403":
+          $ref: "#/components/responses/PolicyDenied"
+        "410":
+          description: Grant or required source context has expired.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v1/context-packages/{context_id}:
+    get:
+      tags: [Context]
+      operationId: getContextPackage
+      summary: Retrieve an active context package
+      parameters:
+        - in: path
+          name: context_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Active context package.
+          content:
+            application/json:
+              schema:
+                $ref: ../schemas/ads-work-context-v0.1.schema.json#/$defs/ContextPackage
+        "403":
+          $ref: "#/components/responses/PolicyDenied"
+        "410":
+          description: Context package expired or revoked.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v1/context-packages/{context_id}:revoke:
+    post:
+      tags: [Context]
+      operationId: revokeContextPackage
+      summary: Revoke a context package
+      parameters:
+        - in: path
+          name: context_id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason:
+                  type: string
+                authorization_ref:
+                  type: string
+      responses:
+        "202":
+          description: Revocation accepted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionResult"
+        "403":
+          $ref: "#/components/responses/PolicyDenied"
+  /v1/actions:propose:
+    post:
+      tags: [Actions]
+      operationId: proposeAgentAction
+      summary: Submit an action proposal without executing it
+      description: >
+        This endpoint records an intent only. Execution requires a separate
+        approval and an independently authorized action service.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [context_id, action, target_refs, rationale]
+              properties:
+                context_id:
+                  type: string
+                action:
+                  type: string
+                target_refs:
+                  type: array
+                  items:
+                    type: string
+                rationale:
+                  type: string
+                expected_change:
+                  type: object
+      responses:
+        "202":
+          description: Proposal recorded for review.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActionResult"
+        "403":
+          $ref: "#/components/responses/PolicyDenied"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    IngestResult:
+      type: object
+      required: [event_id, status, trace_id]
+      properties:
+        event_id:
+          type: string
+        status:
+          enum: [accepted, duplicate, pending_review, rejected]
+        trace_id:
+          type: string
+        schema_version:
+          type: string
+    ContextBuildRequest:
+      type: object
+      required: [requester_ref, tenant_id, purpose, task_id, object_ids]
+      properties:
+        requester_ref:
+          type: string
+        tenant_id:
+          type: string
+        purpose:
+          type: string
+        task_id:
+          type: string
+        object_ids:
+          type: array
+          minItems: 1
+          items:
+            type: string
+        time_window:
+          type: object
+          properties:
+            from:
+              type: string
+              format: date-time
+            to:
+              type: string
+              format: date-time
+        requested_fields:
+          type: array
+          items:
+            type: string
+        freshness_requirement:
+          enum: [latest_available, max_age_5m, max_age_1h, historical_snapshot]
+    ObjectResolution:
+      type: object
+      required: [resolution_status, candidates, trace_id]
+      properties:
+        object_id:
+          type: string
+        resolution_status:
+          enum: [exact, alias, candidate, unresolved, confirmed]
+        candidates:
+          type: array
+          items:
+            type: object
+        trace_id:
+          type: string
+    StateView:
+      type: object
+      required: [object_id, property, assertion_status, supporting_refs, evaluated_at, rule_version]
+      properties:
+        object_id:
+          type: string
+        property:
+          type: string
+        value: {}
+        assertion_status:
+          enum: [confirmed, observed, inferred, disputed, stale, unknown]
+        authority_source:
+          type: string
+        supporting_refs:
+          type: array
+          items:
+            type: string
+        conflicts:
+          type: array
+          items:
+            type: object
+        unknowns:
+          type: array
+          items:
+            type: string
+        evaluated_at:
+          type: string
+          format: date-time
+        rule_version:
+          type: string
+    ActionResult:
+      type: object
+      required: [action_id, status, trace_id]
+      properties:
+        action_id:
+          type: string
+        status:
+          enum: [proposed, pending_approval, accepted, rejected, revoked]
+        trace_id:
+          type: string
+    Error:
+      type: object
+      required: [code, message, trace_id]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        trace_id:
+          type: string
+        details:
+          type: object
+  responses:
+    BadRequest:
+      description: Invalid request or schema.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    PolicyDenied:
+      description: Access denied by authorization or purpose policy.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: Resource not found or not visible to the caller.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

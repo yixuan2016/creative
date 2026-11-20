@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Safely mirror a PDKS release ZIP into a local creative/PDKS checkout.
-
-Default is a no-write dry run. --apply copies verified files and stages PDKS.
---push is an additional explicit opt-in; it commits and pushes main.
-"""
+"""Safely mirror a PDKS release ZIP into a local creative/PDKS checkout."""
 from __future__ import annotations
 import argparse, hashlib, json, shutil, stat, subprocess, tempfile, zipfile
 from pathlib import Path, PurePosixPath

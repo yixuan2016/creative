@@ -1,0 +1,71 @@
+{
+  "example_version": "0.1.0",
+  "scenario": "synthetic manual-import fixture",
+  "projection_boundary": {
+    "target_scope": "personal",
+    "default_scope": "personal_only",
+    "enterprise_projection_created": false,
+    "agent_action_proposals_created": false
+  },
+  "mapping_report": {
+    "input_records": 11,
+    "mapped_event_count": 1,
+    "mapped_memory_count": 2,
+    "mapped_intent_count": 1,
+    "blocked_count": 0,
+    "preserved_only_count": 7,
+    "status": "mapped"
+  },
+  "event_ledger": [
+    {
+      "event_id": "urn:pdks:example:voice-meeting:event:meeting:001",
+      "subject_ref": "urn:pdks:example:voice-meeting:entity:person:owner-001",
+      "event_type": "personal.work.meeting_internal_meeting",
+      "event_schema_version": "0.1.0",
+      "occurred_at": "2026-11-18T15:00:00+08:00",
+      "observed_at": "2026-11-18T15:30:00+08:00",
+      "recorded_at": "2026-11-19T10:00:00+08:00",
+      "timezone": "+08:00",
+      "actor_refs": [
+        {
+          "actor_type": "person",
+          "actor_id": "urn:pdks:example:voice-meeting:entity:person:owner-001"
+        }
+      ],
+      "object_refs": [
+        "urn:pdks:example:voice-meeting:entity:project:ads"
+      ],
+      "payload": {
+        "summary": "语音创新产品讨论",
+        "pdks_event_type": "work.meeting.internal_meeting",
+        "pdks_event_taxonomy_version": "0.1.0"
+      },
+      "source_refs": [
+        {
+          "source_system": "manual-upload-example",
+          "native_record_id": "urn:pdks:example:voice-meeting:source:audio:meeting-001",
+          "capture_mode": "manual_import",
+          "capture_authorization_ref": null
+        }
+      ],
+      "evidence_refs": [
+        "urn:pdks:example:voice-meeting:evidence:audio:segment-001"
+      ],
+      "assertion_status": "observed",
+      "classification": "personal",
+      "purpose_tags": [
+        "work",
+        "thinking"
+      ],
+      "ontology_version": "ads.work-ontology@0.1.0",
+      "sharing_policy": {
+        "default_scope": "personal_only",
+        "projection_allowed": false,
+        "authorized_purposes": [],
+        "authorization_ref": null,
+        "expires_at": null
+      }
+    }
+  ],
+  "note": "Illustrative result excerpt. The full projection fixture is included in the downloadable PDKS Skill 0.3.0 package."
+}

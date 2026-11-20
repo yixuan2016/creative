@@ -1,0 +1,95 @@
+# ADS Work Context Reference Prototype
+
+这是 ADS-WORK-04 的本地逻辑验证原型。它使用 Python 3.10+ 标准库，不连接真实企业系统、不访问外部网络、不执行业务写回。
+
+## 1. 目录内容
+
+- `ads_context_engine.py`：事件接入、幂等去重、权威状态重建、冲突保留、授权校验、上下文包生成。
+- `test_ads_context_engine.py`：原型行为测试。
+- `test_contract_schemas.py`：使用 JSON Schema 校验模拟数据和生成的上下文包。
+- `test_capability_asset_schema.py`：校验 Capability Manifest 契约、项目风险初筛样例及关键治理约束。
+- `test_work_ontology_contracts.py`：校验五层本体目录、类与关系引用、个人事件 Schema、企业 WorkEvent 投影和隐私边界。
+- `personal_memory_engine.py`：个人事件追加、幂等、候选记忆、确认/纠正/撤回、上下文过滤和 Agent 审批的内存逻辑原型。
+- `test_personal_memory_contracts.py`：校验个人事件账本、记忆、目标/承诺和 Agent 动作契约，以及用户控制、隐私边界和 L2/L3 审批门禁。
+- `test_personal_assistant_os_contracts.py`：校验 Personal Assistant OS 今日首页 Daily Brief 的数据契约、来源可追溯、推断待确认、个人私有默认值和低打扰通知策略。
+- `../examples/project-delivery-seed-data.json`：虚构项目交付场景数据。
+
+## 2. 运行环境
+
+- Python 3.10 或以上版本
+- 引擎运行无第三方依赖；完整测试需安装根目录 requirements-dev.txt 中的 jsonschema。
+
+## 3. 运行演示
+
+在仓库根目录：
+
+~~~bash
+cd prototype
+python ads_context_engine.py
+~~~
+
+演示将输出：
+1. 各事件的接入状态；
+2. 重复事件被识别为 duplicate；
+3. 项目状态的权威来源和冲突线索；
+4. 授权范围内的任务级上下文包；
+5. 上下文生成审计记录。
+
+## 4. 运行测试
+
+~~~bash
+python -m pip install -r ../requirements-dev.txt
+python -m unittest -v
+~~~
+
+测试覆盖：
+- 事件幂等；
+- 权威状态优先和非权威冲突保留；
+- 受限数据过滤；
+- 对象范围授权；
+- 处理目的授权；
+- 未知对象引用拒绝；
+- 租户边界检查；
+- JSON Schema 定义本身有效；
+- 模拟事件、业务对象、授权记录及生成的上下文包符合 Schema；
+- Capability Asset Schema 与候选能力样例符合契约；
+- Work Ontology Catalog 与 Manifest Schema 符合契约，五层概念、父类、关系域和值域引用均可解析；
+- 个人工作与生活事件符合 Personal Context Event Schema；
+- 个人到企业的投影符合既有 WorkEvent 契约，且未把生活事件和私人备注带入企业侧；
+- 缺少有效授权的投影会被拒绝。
+
+## 5. 核心规则
+
+- 项目状态的权威来源由 seed 中的 authority_rules 显式配置。
+- meeting-notes 的推断不能覆盖 project-system 的权威状态。
+- classification 不在授权范围内的事件不会进入上下文包。
+- 请求对象必须是授权 grant 的 scope_object_ids 子集。
+- Agent 只获得 grant 中列出的 allowed_actions；高风险动作单独列入 approval_required_for。
+- 原型状态只存在于当前进程内，重新运行会从 seed 重建。
+
+## 6. 重要限制
+
+这不是生产服务，也不是安全边界。它没有实现真实身份认证、数据库持久化、并发控制、分布式幂等、字段级授权、加密、连接器、缓存撤销、模型调用或生产级审计。上线前必须由 ADS 架构、业务数据责任人、安全和合规团队评审并补齐。
+
+示例项目、事件、角色和数据均为虚构内容。
+
+
+## 7. Personal Assistant OS 交互原型
+
+ADS-WORK-10.1 的浏览器原型位于 `personal-assistant-os/`：
+- `index.html`：五大工作空间；
+- `styles.css`：响应式设计系统；
+- `demo-data.js`：虚构演示数据；
+- `core.js`：记忆、承诺、来源和审批的交互逻辑；
+- `core.test.js`：Node.js 内置逻辑测试；
+- `design-tokens.json`：设计 Token。
+
+完整说明见 [Personal Assistant OS 原型 README](personal-assistant-os/README.md)，验收规范见 [ADS-WORK-10.1](../docs/10.1-个人助理OS可交互原型与研发验收规范.md)。
+
+在仓库根目录运行：
+
+```bash
+python -m http.server 8000
+```
+
+访问 `http://localhost:8000/prototype/personal-assistant-os/`。该原型不连接真实数据源、不调用麦克风、不执行外部写入，刷新页面会恢复样例数据。

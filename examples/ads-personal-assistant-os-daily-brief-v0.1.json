@@ -1,0 +1,87 @@
+{
+  "brief_id": "daily-brief-demo-2026-11-19",
+  "subject_ref": "person-demo-001",
+  "generated_at": "2026-11-19T08:10:00+08:00",
+  "timezone": "Asia/Shanghai",
+  "summary": {
+    "headline": "今天有 3 件值得关注的事",
+    "narrative": "上午有项目评审；昨天会议中出现一项需要确认责任人的承诺候选。其他事项暂无明显变化。",
+    "no_important_change": false
+  },
+  "focus_items": [
+    {
+      "item_id": "focus-demo-001",
+      "title": "为项目评审提前查看风险清单",
+      "reason": "日历显示 10:30 有项目评审，最近一次会议提到了风险清单。",
+      "priority": "high",
+      "source_refs": ["calendar-event-demo-001", "meeting-note-demo-001"],
+      "intent_ref": "intent-project-alpha-demo"
+    },
+    {
+      "item_id": "focus-demo-002",
+      "title": "确认风险清单整理责任人",
+      "reason": "会议转写中识别到承诺候选，尚未确认负责人。",
+      "priority": "normal",
+      "source_refs": ["meeting-note-demo-001"],
+      "intent_ref": null
+    }
+  ],
+  "upcoming": [
+    {
+      "item_id": "upcoming-demo-001",
+      "title": "项目评审",
+      "start_at": "2026-11-19T10:30:00+08:00",
+      "end_at": "2026-11-19T11:15:00+08:00",
+      "source_refs": ["calendar-event-demo-001"],
+      "location_label": "线上会议",
+      "status": "scheduled"
+    }
+  ],
+  "attention_items": [
+    {
+      "item_id": "attention-demo-001",
+      "category": "commitment_due",
+      "title": "一项承诺需要确认负责人",
+      "description": "会议中出现“周五前整理项目风险清单”的表述，目前不能确认是否由你负责。",
+      "priority": "normal",
+      "confidence": 0.82,
+      "assertion_status": "inferred",
+      "due_at": "2026-11-20T17:00:00+08:00",
+      "source_refs": ["meeting-note-demo-001"],
+      "suggested_action": "确认负责人后，再加入个人目标与承诺。"
+    }
+  ],
+  "pending_confirmations": [
+    {
+      "confirmation_id": "confirm-demo-001",
+      "kind": "task_owner",
+      "statement": "你可能需要在周五前整理项目风险清单。",
+      "question": "这项工作是由你负责吗？",
+      "source_refs": ["meeting-note-demo-001"],
+      "impact": "medium",
+      "expires_at": "2026-11-20T12:00:00+08:00"
+    }
+  ],
+  "suggestions": [
+    {
+      "suggestion_id": "suggest-demo-001",
+      "title": "先打开上次会议的风险清单",
+      "rationale": "这可能帮助你为上午的项目评审做准备。",
+      "delivery_mode": "digest",
+      "requires_approval": false,
+      "action_ref": null,
+      "expires_at": "2026-11-19T10:30:00+08:00"
+    }
+  ],
+  "source_summary": {
+    "connected_sources": 2,
+    "sources_checked": ["personal-calendar-demo", "meeting-notes-demo"],
+    "last_sync_at": "2026-11-19T08:05:00+08:00"
+  },
+  "policy": {
+    "notification_mode": "digest_only",
+    "quiet_hours_enabled": true,
+    "sensitive_content_hidden": true,
+    "personal_context_default": "personal_only"
+  }
+}

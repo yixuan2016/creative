@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ads/schemas/ads-personal-intent-object-v0.1.schema.json",
+  "title": "ADS Personal Intent Object",
+  "description": "A user-owned goal, commitment, task, routine or project object for personal operating context.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "intent_id",
+    "subject_ref",
+    "intent_type",
+    "title",
+    "status",
+    "confirmation_status",
+    "source_event_refs",
+    "created_at",
+    "updated_at",
+    "classification",
+    "sharing_policy",
+    "ontology_version"
+  ],
+  "properties": {
+    "intent_id": {
+      "type": "string"
+    },
+    "subject_ref": {
+      "type": "string"
+    },
+    "intent_type": {
+      "enum": [
+        "goal",
+        "commitment",
+        "task",
+        "routine",
+        "project"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "desired_outcome": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "proposed",
+        "active",
+        "paused",
+        "blocked",
+        "completed",
+        "cancelled",
+        "expired"
+      ]
+    },
+    "confirmation_status": {
+      "enum": [
+        "user_confirmed",
+        "synced_from_authoritative_source",
+        "inferred_candidate",
+        "unknown"
+      ]
+    },
+    "owner_ref": {
+      "type": "string"
+    },
+    "counterparty_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "start_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "due_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "priority": {
+      "enum": [
+        "low",
+        "normal",
+        "high",
+        "critical"
+      ]
+    },
+    "progress": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "next_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "description",
+        "status"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "suggested",
+            "confirmed",
+            "in_progress",
+            "done",
+            "blocked"
+          ]
+        },
+        "due_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "dependency_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_event_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "external_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "system",
+          "native_id"
+        ],
+        "properties": {
+          "system": {
+            "type": "string"
+          },
+          "native_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "review_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "classification": {
+      "enum": [
+        "personal",
+        "personal_sensitive",
+        "restricted"
+      ]
+    },
+    "sharing_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_scope",
+        "shareable",
+        "authorization_ref"
+      ],
+      "properties": {
+        "default_scope": {
+          "const": "personal_only"
+        },
+        "shareable": {
+          "type": "boolean"
+        },
+        "authorization_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ontology_version": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "confirmation_status": {
+            "const": "inferred_candidate"
+          }
+        },
+        "required": [
+          "confirmation_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "enum": [
+              "proposed",
+              "paused"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

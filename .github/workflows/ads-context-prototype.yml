@@ -1,0 +1,97 @@
+name: ADS Personal OS, Work Context, Capability and Ontology Tests
+
+on:
+  push:
+    paths:
+      - "prototype/**"
+      - "examples/project-delivery-seed-data.json"
+      - "schemas/ads-work-context-v0.1.schema.json"
+      - "schemas/ads-capability-asset-v0.1.schema.json"
+      - "examples/ads-capability-project-risk-triage-v0.1.json"
+      - "schemas/ads-work-ontology-v0.1.schema.json"
+      - "schemas/ads-personal-context-event-v0.1.schema.json"
+      - "schemas/ads-personal-*.schema.json"
+      - "examples/ads-personal-memory-loop-v0.1.json"
+      - "schemas/ads-personal-assistant-daily-brief-v0.1.schema.json"
+      - "schemas/ads-personal-assistant-os-demo-v0.1.schema.json"
+      - "examples/ads-personal-assistant-os-demo-v0.1.json"
+      - "docs/10.1-个人助理OS可交互原型与研发验收规范.md"
+      - "examples/ads-personal-assistant-os-daily-brief-v0.1.json"
+      - "docs/10-个人数智底座的产品形态多终端感知入口与个人助理OS交互架构研究.md"
+      - "docs/10-个人数智底座的产品形态多终端感知入口与个人助理OS交互架构研究.html"
+      - "prototype/test_personal_assistant_os_contracts.py"
+      - "docs/09-个人数智底座的持续记忆事件账本与自主智能体架构研究.md"
+      - "docs/09-个人数智底座的持续记忆事件账本与自主智能体架构研究.html"
+      - "ontologies/**"
+      - "examples/ads-personal-to-enterprise-event-projection-v0.1.json"
+      - "pilot/工作本体与事件映射评估模板.csv"
+      - "pilot/个人助理OS30天试点评估模板.csv"
+      - "pilot/个人助理OS用户访谈提纲.md"
+      - "docs/08-企业工作本体与事件驱动的个人企业领域协同标准研究.md"
+      - "docs/08-企业工作本体与事件驱动的个人企业领域协同标准研究.html"
+      - "capabilities/**"
+      - "requirements-dev.txt"
+      - ".github/workflows/ads-context-prototype.yml"
+  pull_request:
+    paths:
+      - "prototype/**"
+      - "examples/project-delivery-seed-data.json"
+      - "examples/ads-capability-project-risk-triage-v0.1.json"
+      - "schemas/ads-work-context-v0.1.schema.json"
+      - "schemas/ads-capability-asset-v0.1.schema.json"
+      - "schemas/ads-work-ontology-v0.1.schema.json"
+      - "schemas/ads-personal-context-event-v0.1.schema.json"
+      - "schemas/ads-personal-assistant-daily-brief-v0.1.schema.json"
+      - "schemas/ads-personal-assistant-os-demo-v0.1.schema.json"
+      - "examples/ads-personal-assistant-os-demo-v0.1.json"
+      - "docs/10.1-个人助理OS可交互原型与研发验收规范.md"
+      - "examples/ads-personal-assistant-os-daily-brief-v0.1.json"
+      - "docs/10-个人数智底座的产品形态多终端感知入口与个人助理OS交互架构研究.md"
+      - "docs/10-个人数智底座的产品形态多终端感知入口与个人助理OS交互架构研究.html"
+      - "prototype/test_personal_assistant_os_contracts.py"
+      - "ontologies/**"
+      - "examples/ads-personal-to-enterprise-event-projection-v0.1.json"
+      - "pilot/工作本体与事件映射评估模板.csv"
+      - "pilot/个人助理OS30天试点评估模板.csv"
+      - "pilot/个人助理OS用户访谈提纲.md"
+      - "docs/08-企业工作本体与事件驱动的个人企业领域协同标准研究.md"
+      - "docs/08-企业工作本体与事件驱动的个人企业领域协同标准研究.html"
+      - "capabilities/**"
+      - "requirements-dev.txt"
+      - ".github/workflows/ads-context-prototype.yml"
+
+jobs:
+  contract-and-prototype-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Check Personal Assistant OS JavaScript and interaction logic
+        run: |
+          node --check prototype/personal-assistant-os/core.js
+          node --check prototype/personal-assistant-os/app.js
+          node --check prototype/personal-assistant-os/demo-data.js
+          node --test prototype/personal-assistant-os/core.test.js
+      - name: Install development validation tools
+        run: python -m pip install -r requirements-dev.txt
+      - name: Run prototype and schema acceptance tests
+        run: python -m unittest discover -s prototype -v
+      - name: Run end-to-end demo
+        run: python prototype/ads_context_engine.py
+      - name: Package Personal Assistant OS prototype
+        run: zip -r ads-personal-assistant-os-v0.1.zip README.md prototype/README.md prototype/personal-assistant-os prototype/test_personal_assistant_os_prototype.py prototype/test_personal_assistant_os_contracts.py docs/10-个人数智底座的产品形态多终端感知入口与个人助理OS交互架构研究.md docs/10-个人数智底座的产品形态多终端感知入口与个人助理OS交互架构研究.html docs/10.1-个人助理OS可交互原型与研发验收规范.md schemas/ads-personal-assistant-daily-brief-v0.1.schema.json schemas/ads-personal-assistant-os-demo-v0.1.schema.json examples/ads-personal-assistant-os-daily-brief-v0.1.json examples/ads-personal-assistant-os-demo-v0.1.json requirements-dev.txt pilot/个人助理OS30天试点评估模板.csv pilot/个人助理OS用户访谈提纲.md
+      - name: Upload Personal Assistant OS bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: ads-personal-assistant-os-v0.1
+          path: ads-personal-assistant-os-v0.1.zip
+          if-no-files-found: error
+          retention-days: 30
