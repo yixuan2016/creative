@@ -1,0 +1,24 @@
+name: PDKS Mirror Tool Tests
+on:
+  push:
+    paths:
+      - "PDKS/tools/**"
+      - "PDKS/tests/test_sync_release.py"
+      - ".github/workflows/pdks-mirror-tool-tests.yml"
+  pull_request:
+    paths:
+      - "PDKS/tools/**"
+      - "PDKS/tests/test_sync_release.py"
+      - ".github/workflows/pdks-mirror-tool-tests.yml"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Syntax check
+        run: python -m py_compile PDKS/tools/sync-release.py PDKS/tests/test_sync_release.py
+      - name: Unit tests
+        run: python PDKS/tests/test_sync_release.py
