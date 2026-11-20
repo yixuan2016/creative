@@ -5,24 +5,30 @@ Repository: https://github.com/yixuan2016/creative/tree/main/PDKS
 Development stage: `transitional_skill_development`  
 Maturity: Experimental / Preview
 
-## Important distinction
-The GitHub directory is an actively populated project home, but it does **not yet mirror every file** from the complete local release archive. Do not treat the GitHub tree as a complete source mirror yet.
+## Current state
+The GitHub project home and component entrypoints are committed. The full 0.5.3 archive has **not** yet been expanded file-by-file into this repository. Do not treat this directory as a complete source mirror.
 
-## Local release archive
+## Canonical local archive
 - File: `PDKS_0.5.3_完整综合工程包.zip`
 - Size: 1,821,997 bytes
 - ZIP entries: 374
 - SHA-256: `ad44f84d4be5749492c89d2fc3a91a0ae88ba3e75ddda96208cd1e4884b4cbc4`
-- The archive contains the full project source, Skills, ontology assets, runtime, docs, examples, tests and reports.
-- It has not been uploaded as a GitHub Release asset.
+- The archive is locally CRC-checked and its embedded per-file SHA-256 inventory was verified.
+- The archive has not been uploaded as a GitHub Release asset.
 
-## Current GitHub contents
-Project entrypoint, stage declaration, roadmap, release notes, validation report, documentation index, Agent Bridge package metadata and README, PDKS Setup Skill, and component directory entrypoints for standards, Skills, runtime, connectors, installer, storage, tests, examples and releases.
+## What is already committed
+Project entrypoint, stage declaration, roadmap, release notes, validation report, docs index, Agent Bridge package metadata/README, PDKS Setup Skill, and module entrypoints for standards, runtime, connectors, installer, storage, tests, examples and releases.
 
-## Remaining synchronization work
-The full Personal Knowledge Skill and its references/scripts/benchmarks/assets; Ontology 0.2.1 TTL, JSON-LD, mapping, migration and SHACL assets; complete Node Agent Bridge source and MCP Apps UI; Python Capture Runtime and DWS connector; all architecture/user docs in Markdown/HTML/DOCX; examples, test fixtures, automated suites and historical release manifests still need file-by-file mirroring.
+## Remaining full-mirror scope
+- Personal Knowledge Skill references, scripts, benchmarks and ontology assets.
+- Ontology 0.2.1 TTL, JSON-LD context, mappings, migration maps, SHACL and manifest.
+- Full Node Agent Bridge source, MCP server and MCP Apps UI.
+- Python Capture Runtime, DWS connector and File-first adapter.
+- Architecture/user documentation in Markdown, HTML and DOCX.
+- Examples, fixtures, automated tests and historical release artifacts.
+
+## Safe local synchronization
+Use `tools/sync-release.py` from a local clone of this repository. It verifies the archive SHA-256, ZIP integrity, path traversal safety and embedded file hashes before copying into `PDKS/`. It defaults to a dry run. Use `--apply` to stage files and `--push` only after reviewing the Git diff. It never reads or uploads a personal Vault, credentials, .env files, node_modules, build output or runtime data.
 
 ## Validation and safety
-The local archive passed ZIP CRC and per-file manifest hash verification. This does not mean the GitHub mirror is complete. The 0.5.3 report records 160 passed, 2 skipped and 0 failed automated tests; npm build, MCP Inspector, host-by-host validation and real DWS tenant integration remain unexecuted.
-
-Vault files are not encrypted at rest. Use synthetic or non-sensitive data only.
+The local archive validation is not equivalent to a GitHub mirror validation. npm build, MCP Inspector, host-by-host compatibility and real DWS tenant integration remain unexecuted. The Vault is not encrypted at rest; use synthetic or non-sensitive data only.
