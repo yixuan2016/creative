@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Auday × PDKS｜产品与技术架构解构</title>
+<style>
+:root{--bg:#f4f6f8;--paper:#fff;--ink:#17212b;--muted:#657382;--line:#e4e9ee;--blue:#2459a6;--blue2:#eaf1fb;--teal:#137c73;--teal2:#e8f5f2;--amber:#9a6417;--amber2:#fff4df;--purple:#6951a5;--purple2:#f1edfa;--shadow:0 14px 40px rgba(27,43,60,.08);--radius:18px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.72 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}.shell{max-width:1440px;margin:auto;display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh}
+aside{position:sticky;top:0;height:100vh;padding:28px 18px 24px 26px;border-right:1px solid var(--line);background:rgba(250,252,253,.92);backdrop-filter:blur(14px);overflow:auto;transition:transform .25s}
+.brand{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:750}.brand b{color:var(--blue)}.nav-title{margin:28px 0 10px;font-size:11px;color:#8a96a2;letter-spacing:.12em;text-transform:uppercase}.nav a{display:block;padding:8px 11px;margin:3px 0;border-radius:10px;color:#526171;font-size:13px}.nav a:hover,.nav a.active{background:var(--blue2);color:var(--blue);text-decoration:none}.aside-note{margin-top:28px;padding:13px;border:1px solid var(--line);border-radius:13px;background:#fff;font-size:12px;color:var(--muted)}
+main{min-width:0;padding:34px clamp(18px,4vw,64px) 70px}.topline{display:flex;align-items:center;justify-content:space-between;gap:16px;color:var(--muted);font-size:12px;margin-bottom:24px}.tag{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border-radius:99px;background:var(--blue2);color:var(--blue);font-size:11px;font-weight:750;letter-spacing:.05em}.tag:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.hero{padding:clamp(28px,5vw,58px);border-radius:26px;background:linear-gradient(130deg,#142b45 0%,#1d4c70 54%,#267c79 100%);color:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:420px;height:420px;border:1px solid rgba(255,255,255,.15);border-radius:50%;right:-90px;top:-180px;box-shadow:0 0 0 40px rgba(255,255,255,.035),0 0 0 90px rgba(255,255,255,.025)}.hero>*{position:relative;z-index:1}.hero .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#b8d4e7}.hero h1{font-size:clamp(30px,4.4vw,54px);line-height:1.15;letter-spacing:-.04em;max-width:850px;margin:18px 0}.hero p{max-width:780px;color:#d6e5ee;font-size:16px}.hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}.hero .meta span{padding:7px 11px;border:1px solid rgba(255,255,255,.2);border-radius:99px;color:#e1edf4;font-size:12px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 34px}.kpi{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:17px}.kpi strong{display:block;font-size:24px;letter-spacing:-.04em}.kpi span{font-size:12px;color:var(--muted)}
+section{scroll-margin-top:28px;margin:36px 0}.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:16px}.section-head .num{font-size:11px;letter-spacing:.15em;color:var(--teal);font-weight:800}.section-head h2{margin:3px 0 0;font-size:clamp(22px,3vw,30px);letter-spacing:-.03em}.section-head p{max-width:520px;margin:0;color:var(--muted);font-size:13px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:0 4px 16px rgba(27,43,60,.025)}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.callout{border-left:3px solid var(--teal);padding:12px 16px;background:var(--teal2);border-radius:0 12px 12px 0}.callout.warn{border-color:var(--amber);background:var(--amber2)}.callout.blue{border-color:var(--blue);background:var(--blue2)}
+.card{padding:18px;border:1px solid var(--line);border-radius:15px;background:#fff}.card h3{margin:0 0 7px;font-size:16px}.card p{margin:0;color:var(--muted);font-size:13px}.icon{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--blue2);color:var(--blue);font-weight:800;margin-bottom:10px}.teal .icon{background:var(--teal2);color:var(--teal)}.amber .icon{background:var(--amber2);color:var(--amber)}
+.flow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;align-items:stretch}.step{background:#fff;border:1px solid var(--line);border-radius:13px;padding:14px 11px;position:relative}.step:not(:last-child):after{content:"›";position:absolute;right:-9px;top:38%;z-index:2;color:#9aa8b4;font-size:22px;font-weight:800}.step small{display:block;color:var(--teal);font-weight:800;font-size:10px;letter-spacing:.08em}.step b{display:block;font-size:13px;margin:7px 0 4px}.step span{font-size:11px;color:var(--muted)}
+.layers{display:grid;gap:8px;max-width:820px;margin:auto}.layer{display:grid;grid-template-columns:70px 1fr;gap:14px;align-items:center;padding:15px 18px;border-radius:13px;border:1px solid var(--line);background:#fff}.layer .n{font-size:12px;color:var(--teal);font-weight:850}.layer b{display:block}.layer span{font-size:12px;color:var(--muted)}.layer:nth-child(1){border-left:4px solid #4b8fbd}.layer:nth-child(2){border-left:4px solid #4e9c98}.layer:nth-child(3){border-left:4px solid #8a79b9}.layer:nth-child(4){border-left:4px solid #c18d47}.layer:nth-child(5){border-left:4px solid #5978b4}.governance{margin-top:12px;padding:14px;border:1px dashed #8ba1b3;border-radius:12px;text-align:center;color:#506273;background:#f8fafb;font-size:12px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff}table{border-collapse:collapse;width:100%;min-width:780px;font-size:13px}th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}th{background:#f6f8fa;color:#566575;font-size:11px;letter-spacing:.06em;text-transform:uppercase}tr:last-child td{border-bottom:0}td:first-child{font-weight:750;white-space:nowrap}.status{display:inline-block;padding:3px 8px;border-radius:99px;font-size:10px;font-weight:800}.yes{background:var(--teal2);color:var(--teal)}.partial{background:var(--amber2);color:var(--amber)}.future{background:var(--purple2);color:var(--purple)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tab{border:1px solid var(--line);background:#fff;color:#566575;padding:8px 13px;border-radius:99px;cursor:pointer;font:inherit;font-size:12px}.tab.active{background:var(--blue);border-color:var(--blue);color:#fff}.tab-content{display:none}.tab-content.active{display:block}
+.priority{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}.priority:last-child{border-bottom:0}.priority .p{font-weight:900;font-size:12px;color:var(--teal);background:var(--teal2);padding:6px 8px;border-radius:8px;text-align:center}.priority h3{font-size:15px;margin:0 0 4px}.priority p{font-size:12px;color:var(--muted);margin:0}.priority em{font-style:normal;font-size:11px;color:var(--muted)}
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.phase{border-top:3px solid var(--blue);padding:15px;background:#fff;border-radius:0 0 13px 13px;border-left:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.phase:nth-child(2){border-top-color:var(--teal)}.phase:nth-child(3){border-top-color:var(--purple)}.phase b{display:block;margin-bottom:7px}.phase ul{padding-left:17px;margin:0;color:var(--muted);font-size:12px}
+details{border:1px solid var(--line);border-radius:12px;background:#fff;margin:8px 0}summary{cursor:pointer;padding:13px 15px;font-weight:700;font-size:13px}details .detail{padding:0 15px 15px;color:var(--muted);font-size:12px}
+.sources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.sources a{display:block;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:12px}.sources a span{display:block;color:var(--muted);margin-top:3px}
+footer{margin-top:54px;padding:20px 0;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+#navToggle{position:fixed;z-index:20;left:16px;bottom:18px;border:0;border-radius:99px;background:#173b5a;color:#fff;padding:10px 14px;box-shadow:var(--shadow);cursor:pointer;font-weight:700}
+body.nav-hidden .shell{grid-template-columns:0 minmax(0,1fr)}body.nav-hidden aside{transform:translateX(-100%);padding:0;border:0}
+@media(max-width:1050px){.shell{grid-template-columns:220px minmax(0,1fr)}.flow{grid-template-columns:repeat(3,1fr)}.step:nth-child(3):after{display:none}}
+@media(max-width:760px){.shell{display:block}aside{position:fixed;z-index:15;left:0;top:0;width:270px;transform:translateX(-100%);box-shadow:var(--shadow)}body.nav-open aside{transform:translateX(0)}main{padding:18px 14px 55px}.kpis{grid-template-columns:repeat(2,1fr)}.grid2,.grid3,.timeline,.sources{grid-template-columns:1fr}.flow{grid-template-columns:repeat(2,1fr)}.step:after{display:none!important}.section-head{display:block}.section-head p{margin-top:8px}.hero{border-radius:18px}.layer{grid-template-columns:48px 1fr}}
+</style>
+</head>
+<body>
+<button id="navToggle" type="button">☰ 导航</button>
+<div class="shell">
+<aside id="sideNav">
+  <div class="brand"><b>PDKS</b> / RESEARCH NOTE</div>
+  <div class="nav-title">报告导航</div>
+  <nav class="nav">
+    <a href="#summary">01 执行摘要</a>
+    <a href="#product">02 Auday 产品解构</a>
+    <a href="#skill">03 Auday Skill</a>
+    <a href="#compare">04 与 PDKS 对照</a>
+    <a href="#borrow">05 借鉴与边界</a>
+    <a href="#architecture">06 PDKS 架构增强</a>
+    <a href="#standards">07 标准建设建议</a>
+    <a href="#pilot">08 实测与路线</a>
+    <a href="#sources">09 资料来源</a>
+  </nav>
+  <div class="aside-note">研究基准：2026-11-22<br>公开资料与代码静态调研<br>非实机测试报告</div>
+</aside>
+<main>
+  <div class="topline"><span>PERSONAL DATA & KNOWLEDGE SYSTEM</span><span>V1.0 · 2026.11.22</span></div>
+  <header class="hero">
+    <div class="eyebrow">PRODUCT / ARCHITECTURE / REFERENCE STUDY</div>
+    <h1>Auday 产品与技术架构解构<br>及 PDKS 创新设计借鉴</h1>
+    <p>Auday 展示了个人上下文如何从日常采集走向可回顾、可检索、可持续使用的 AI 记忆。PDKS 要在此基础上，建立跨来源的事件、证据、记忆与行动基础设施。</p>
+    <div class="meta"><span>PDKS-REF-AUDAY-001</span><span>Research V1.0</span><span>2026-11-22</span><span>公开资料静态调研</span></div>
+  </header>
+  <div class="kpis">
+    <div class="kpi"><strong>1.1.0</strong><span>Auday 当前 App Store 版本 · 11/14</span></div>
+    <div class="kpi"><strong>15 min</strong><span>FAQ 所述通常同步准备节奏，非 SLA</span></div>
+    <div class="kpi"><strong>80 bit</strong><span>Skill 本地连接生成密钥熵</span></div>
+    <div class="kpi"><strong>0.5.3</strong><span>PDKS 当前工程预览版本</span></div>
+  </div>
+
+  <section id="summary">
+    <div class="section-head"><div><div class="num">01 / EXECUTIVE SUMMARY</div><h2>先给结论：借鉴产品链路，不复制产品边界</h2></div><p>Auday 是一个值得纳入 PDKS 样本库的个人上下文产品，但它不是跨来源个人数智底座的完整答案。</p></div>
+    <div class="grid3">
+      <div class="card"><div class="icon">01</div><h3>采集不再等于录音</h3><p>真正有价值的是把录音放回时间、活动、地点和上下文中，让 AI 能够回顾真实经历。</p></div>
+      <div class="card teal"><div class="icon">02</div><h3>记忆必须回到证据</h3><p>从 Highlights、摘要和记忆可以回到原话、时间段与来源，降低 AI 记忆不可解释的风险。</p></div>
+      <div class="card amber"><div class="icon">03</div><h3>Agent 接入是关键一步</h3><p>桌面 Skill 将手机里的个人上下文变成可授权读取的工作流资源，而不只是导出文档。</p></div>
+    </div>
+    <div class="callout" style="margin-top:14px"><b>核心判断：</b>Auday 证明“个人上下文可以被持续采集并交给 AI 使用”；PDKS 要进一步解决“多源上下文如何成为可信事件、可纠错记忆、可推进目标和可治理的个人智能资产”。</div>
+  </section>
+
+  <section id="product">
+    <div class="section-head"><div><div class="num">02 / PRODUCT DECONSTRUCTION</div><h2>Auday 产品链路：从 Watch 到个人记忆</h2></div><p>重点关注采集、同步、转录、上下文、记忆和检索各阶段的独立状态。</p></div>
+    <div class="flow">
+      <div class="step"><small>01 / CAPTURE</small><b>Apple Watch</b><span>录音、标记重要时刻</span></div>
+      <div class="step"><small>02 / TRANSFER</small><b>iPhone 接收</b><span>缓存、同步、确认接收</span></div>
+      <div class="step"><small>03 / PROCESS</small><b>本地转录</b><span>时间对齐、索引、声纹</span></div>
+      <div class="step"><small>04 / CONTEXT</small><b>上下文关联</b><span>活动、健康、近似地点</span></div>
+      <div class="step"><small>05 / MEMORY</small><b>AI 理解</b><span>Highlights、反思、记忆</span></div>
+      <div class="step"><small>06 / RETRIEVE</small><b>搜索与回顾</b><span>原文回溯、语义检索</span></div>
+    </div>
+    <div class="grid2" style="margin-top:14px">
+      <div class="panel"><h3>1.1.0 的关键变化</h3><ul><li>闹钟、Siri、来电中断结束后可按配置自动接续录音。</li><li>与睡眠计划、专注模式和快捷指令联动。</li><li>改进后台转录与任务恢复。</li><li>已保存记忆可独立于原始录音继续使用。</li></ul></div>
+      <div class="panel"><h3>不要误读“全天候”</h3><ul><li>用户仍需在 Watch 启动录音。</li><li>FAQ 描述通常每约 15 分钟准备同步，受连接和后台调度影响。</li><li>连续录音不等于实时逐字转录。</li><li>设备电量、存储、系统中断都会影响覆盖率。</li></ul></div>
+    </div>
+    <div class="callout warn" style="margin-top:14px"><b>上下文边界：</b>心率和 HRV 可作为生理状态线索，不等于情绪识别；地点是近似区域，不是精确路线；相关性不能证明因果。</div>
+  </section>
+
+  <section id="skill">
+    <div class="section-head"><div><div class="num">03 / DESKTOP AGENT SKILL</div><h2>Auday Skill：从个人 App 到 Agent 数据源</h2></div><p>本地加密连接、只读授权、增量同步和维护型文件库，是最值得拆解的工程实践。</p></div>
+    <div class="panel">
+      <div class="layers">
+        <div class="layer"><div class="n">DEVICE</div><div><b>iPhone / Auday</b><span>用户选择“全部文字”或“文字与音频”；授权范围只读。</span></div></div>
+        <div class="layer"><div class="n">LINK</div><div><b>Local encrypted link</b><span>同一 Wi-Fi；生成通信密钥；TLS 1.2 ECDHE-PSK / ChaCha20-Poly1305；无 Auday 云中继。</span></div></div>
+        <div class="layer"><div class="n">CACHE</div><div><b>SQLite + Markdown Library</b><span>固定快照、增量同步、哈希校验；records、notes、archive、conflicts 分区。</span></div></div>
+        <div class="layer"><div class="n">SEARCH</div><div><b>Keyword + local semantic search</b><span>本地 EmbeddingGemma 向量索引；结果保留来源 ID、时间和文本定位。</span></div></div>
+        <div class="layer"><div class="n">AGENT</div><div><b>Desktop AI Agent</b><span>项目简报、历史决策回顾、行动项提取和按需本地录音分析。</span></div></div>
+      </div>
+      <div class="governance">横向约束：只读权限 · 来源可追溯 · 本地密钥管理 · 音频按需获取 · 不将云端 Agent 误认为本地推理</div>
+    </div>
+    <div class="grid3" style="margin-top:14px">
+      <div class="card"><h3>可借鉴：增量同步</h3><p>先比对清单，再传变化内容；单次同步固定快照，不追逐不断变化的实时数据。</p></div>
+      <div class="card teal"><h3>可借鉴：用户文件区</h3><p>系统生成记录与用户自己的 notes 分开，修改冲突有保护，文件可被 Obsidian 等工具读取。</p></div>
+      <div class="card amber"><h3>必须补强：安全边界</h3><p>公开协议尚无逐台电脑撤销；桌面文件库不独立加密；合成测试不等于实机无线验收。</p></div>
+    </div>
+  </section>
+
+  <section id="compare">
+    <div class="section-head"><div><div class="num">04 / GAP ANALYSIS</div><h2>Auday 与 PDKS：能力对照</h2></div><p>区分 Auday 已实现的产品能力、PDKS 当前预览能力，以及 PDKS 架构研究目标。</p></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>维度</th><th>Auday / Skill</th><th>PDKS 当前基线</th><th>判断</th></tr></thead>
+        <tbody>
+          <tr><td>采集入口</td><td>Apple Watch 音频为核心，辅以可选健康/位置上下文</td><td>手动输入、连接器和可选 Capture Runtime；多端感知是架构方向</td><td><span class="status yes">PDKS 更广</span></td></tr>
+          <tr><td>采集可靠性</td><td>已做中断恢复、传输恢复和后台任务优化</td><td>Node-native 初始化不包含后台采集；Runtime 仍为独立预览组件</td><td><span class="status partial">Auday 经验更具体</span></td></tr>
+          <tr><td>事件语义</td><td>以记录、转录、Highlights 和时间线组织</td><td>已有 Record Schema、Event Taxonomy、Ontology；区分 Event / Activity / Task / Commitment / Decision</td><td><span class="status yes">PDKS 更完整</span></td></tr>
+          <tr><td>记忆血缘</td><td>记忆可脱离原始录音保留，来源与删除关系需用户理解</td><td>已有记忆状态与纠错/删除传播设计</td><td><span class="status partial">需落到标准</span></td></tr>
+          <tr><td>存储</td><td>SQLite + 维护型 Markdown + 本地向量索引</td><td>File-first Vault、Markdown/YAML、JSON/JSONL、附件；SQLite 属可选 Runtime</td><td><span class="status yes">设计互补</span></td></tr>
+          <tr><td>Agent 接入</td><td>Auday 专用桌面 Skill，只读接入</td><td>Node MCP Bridge、Agent Skills、可选 MCP Apps</td><td><span class="status yes">PDKS 更通用</span></td></tr>
+          <tr><td>受控行动</td><td>主要是检索、分析和内容加工</td><td>已有 L0—L3 风险分级、审批和执行核验架构设计</td><td><span class="status future">PDKS 可深化</span></td></tr>
+          <tr><td>安全成熟度</td><td>本地传输加密；设备撤销和静态加密有边界</td><td>授权模型已有设计，但当前 Vault 未静态加密，真实租户验证未完成</td><td><span class="status partial">双方都需补强</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout blue" style="margin-top:14px"><b>当前 PDKS 工程状态：</b>0.5.3 是 Experimental / Preview；Node-native Bootstrap 可以初始化 Vault，但不会自动连接数据源、导入历史或启动后台采集。DWS 真实租户验证和历史回填仍未完成。</div>
+  </section>
+
+  <section id="borrow">
+    <div class="section-head"><div><div class="num">05 / DESIGN DECISIONS</div><h2>哪些要吸收，哪些不能照搬</h2></div><p>产品借鉴必须服从 PDKS 的跨来源、用户自主和企业治理定位。</p></div>
+    <div class="tabs">
+      <button class="tab active" data-tab="borrow-yes">值得吸收</button>
+      <button class="tab" data-tab="borrow-no">不应照搬</button>
+    </div>
+    <div class="tab-content active" id="borrow-yes">
+      <div class="grid2">
+        <div class="card"><h3>低摩擦采集</h3><p>可见采集状态、快捷启动、重要时刻标记、中断恢复和设备状态监控。</p></div>
+        <div class="card"><h3>分阶段处理</h3><p>录音、同步、转录、索引、AI 生成各自显示状态，不把一个阶段的成功冒充全链路完成。</p></div>
+        <div class="card"><h3>证据回溯</h3><p>从摘要、记忆和建议回到原始来源、片段时间和处理过程。</p></div>
+        <div class="card"><h3>增量与快照</h3><p>清单、哈希、断点恢复、固定快照和按需拉取，降低重复同步。</p></div>
+        <div class="card"><h3>可读文件库</h3><p>系统生成区与用户笔记区分离，支持 Markdown 工具和冲突保护。</p></div>
+        <div class="card"><h3>Agent 原生接入</h3><p>用标准 Skill / MCP 接口向不同 Agent 提供最小必要上下文。</p></div>
+      </div>
+    </div>
+    <div class="tab-content" id="borrow-no">
+      <div class="grid2">
+        <div class="card amber"><h3>单一设备依赖</h3><p>Apple Watch 是一种入口，不应成为 PDKS 必须购买或佩戴的硬件。</p></div>
+        <div class="card amber"><h3>默认持续录音</h3><p>不能以隐蔽或无边界采集换覆盖率；必须有可见状态、告知、暂停和撤销。</p></div>
+        <div class="card amber"><h3>敏感信号过度解释</h3><p>生理变化不等于情绪，地点相关不等于因果，模型推断不等于事实。</p></div>
+        <div class="card amber"><h3>记忆脱离血缘</h3><p>来源删除后，派生记忆是否保留必须由用户可理解的策略决定。</p></div>
+        <div class="card amber"><h3>个人数据企业化</h3><p>工作事件也不自动成为企业正式事件，生活上下文默认留在个人侧。</p></div>
+        <div class="card amber"><h3>内部协议强耦合</h3><p>不依赖未承诺稳定的产品内部数据库或协议；优先采用导出格式和明确接口契约。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="architecture">
+    <div class="section-head"><div><div class="num">06 / PDKS ARCHITECTURE</div><h2>PDKS 建议架构：七层能力 + 横向控制面</h2></div><p>与 ADS-WORK-08 的五层本体、ADS-WORK-09 的七层架构和 ADS-WORK-10 的产品闭环保持兼容。</p></div>
+    <div class="panel">
+      <div class="layers">
+        <div class="layer"><div class="n">L1</div><div><b>多源感知与采集</b><span>手动输入、日历、任务、文档、邮件、会议、语音设备和已授权系统。</span></div></div>
+        <div class="layer"><div class="n">L2</div><div><b>Source Vault + Personal Event Ledger</b><span>原始证据与事件账本分开保存，追加式记录、可定位、可核验。</span></div></div>
+        <div class="layer"><div class="n">L3</div><div><b>身份、时间与语义解析</b><span>人物、对象、事件类型、时间区间、时区和冲突解析。</span></div></div>
+        <div class="layer"><div class="n">L4</div><div><b>持续记忆与知识视图</b><span>情景、语义、程序、偏好、关系和项目记忆；保留来源依赖。</span></div></div>
+        <div class="layer"><div class="n">L5</div><div><b>个人运行模型</b><span>Goal、Commitment、Task、Routine、Project 与下一步行动。</span></div></div>
+        <div class="layer"><div class="n">L6</div><div><b>Context Plane</b><span>按任务、目的和授权选择最小必要事实、证据、冲突和未知。</span></div></div>
+        <div class="layer"><div class="n">L7</div><div><b>Personal Agent / Skills</b><span>建议、草稿、审批、执行、结果核验和事件回写。</span></div></div>
+      </div>
+      <div class="governance"><b>横向治理控制面：</b>Consent & Scope · Provenance · Coverage & Quality · Device Trust · Security · Retention & Deletion · Audit · Schema/Ontology Version</div>
+    </div>
+  </section>
+
+  <section id="standards">
+    <div class="section-head"><div><div class="num">07 / STANDARD BACKLOG</div><h2>建议优先补齐的标准</h2></div><p>优先处理影响数据可信度、删除语义和设备安全的基础契约，再扩展智能功能。</p></div>
+    <div class="panel">
+      <div class="priority"><div class="p">P0</div><div><h3>Capture Source Contract</h3><p>统一 source、device、capture session、permission scope、同步状态、保留策略和撤销状态。</p></div><em>采集入口标准化</em></div>
+      <div class="priority"><div class="p">P0</div><div><h3>Coverage & Gap Semantics</h3><p>区分静音省略、无语音、中断、待同步、传输失败、转录待处理和权限关闭。</p></div><em>避免“缺失即未发生”</em></div>
+      <div class="priority"><div class="p">P0</div><div><h3>Evidence & Provenance Contract</h3><p>记录源 ID、音频片段定位、时间偏移、哈希、处理链、模型版本和断言状态。</p></div><em>让 AI 结论可回溯</em></div>
+      <div class="priority"><div class="p">P0</div><div><h3>Memory Lineage & Deletion Policy</h3><p>明确来源删除、记忆保留、级联删除、脱离来源后复核和删除传播状态。</p></div><em>让“忘记”可执行</em></div>
+      <div class="priority"><div class="p">P0</div><div><h3>Device Trust & Local Link Contract</h3><p>逐设备身份、密钥轮换、撤销、静态加密、快照和增量同步。</p></div><em>补齐本地优先安全</em></div>
+      <div class="priority"><div class="p">P1</div><div><h3>Context Enrichment Contract</h3><p>健康、活动和位置独立授权，保留精度与不确定性，禁止将相关性直接解释为因果。</p></div><em>多模态上下文</em></div>
+      <div class="priority"><div class="p">P1</div><div><h3>Agent Context & Action Contract</h3><p>最小必要上下文、事实来源、候选任务、动作审批、执行核验与事件回写。</p></div><em>从理解走向推进</em></div>
+    </div>
+  </section>
+
+  <section id="pilot">
+    <div class="section-head"><div><div class="num">08 / VALIDATION PLAN</div><h2>先实测，再冻结标准</h2></div><p>公开文档提供设计线索；真正的采集可靠性和语义质量必须用真实设备与人工标注验证。</p></div>
+    <div class="timeline">
+      <div class="phase"><b>阶段 A · 采集可靠性 / 约 1 周</b><ul><li>连续录音与中断恢复</li><li>Watch 到 iPhone 同步延迟</li><li>电量、存储和缺口记录</li><li>中文多人对话转录质量</li></ul></div>
+      <div class="phase"><b>阶段 B · 事件与记忆 / 约 1—2 周</b><ul><li>转录到原音片段回溯</li><li>事件、承诺、决策候选区分</li><li>语义检索与本人声纹误差</li><li>记忆删除和来源独立性</li></ul></div>
+      <div class="phase"><b>阶段 C · PDKS 接入 / 后续迭代</b><ul><li>批量导出导入适配器</li><li>事件 Schema 映射</li><li>证据链和缺口语义</li><li>Agent Context Package 验证</li></ul></div>
+    </div>
+    <div class="panel" style="margin-top:14px"><h3>评测指标</h3><div class="grid3"><div><b>采集</b><p style="color:var(--muted);font-size:12px">覆盖率、中断恢复率、同步延迟、缺口率</p></div><div><b>理解</b><p style="color:var(--muted);font-size:12px">CER/WER、事件 Precision/Recall、误归属率</p></div><div><b>信任</b><p style="color:var(--muted);font-size:12px">证据回溯率、纠错成功率、授权理解度</p></div></div><div class="callout warn" style="margin-top:12px">不在没有人工标注和基线数据时预设“准确率已达标”。先建立可复现的测试集，再确定阈值。</div></div>
+    <details><summary>实测安全要求</summary><div class="detail">仅使用用户有权记录的场景；录制他人前遵守告知与同意要求。首轮使用非敏感或合成数据。明确云端 AI、第三方转录、位置地理编码、设备丢失、导出文件和桌面 Agent 的数据边界。</div></details>
+  </section>
+
+  <section id="sources">
+    <div class="section-head"><div><div class="num">09 / SOURCES</div><h2>资料来源与继续阅读</h2></div><p>所有产品能力描述以公开资料为基础；PDKS 对照以仓库当前研究文档和工程说明为基线。</p></div>
+    <div class="sources">
+      <a href="https://apps.apple.com/cn/app/auday-watch%E5%85%A8%E5%A4%A9ai%E5%BD%95%E9%9F%B3/id6814210373" target="_blank" rel="noreferrer">Auday 中国区 App Store<span>价格、兼容性、版本历史和功能说明</span></a>
+      <a href="https://auday.ai/faq" target="_blank" rel="noreferrer">Auday 官方 FAQ<span>同步、录音、健康、地点和转录边界</span></a>
+      <a href="https://auday.ai/privacy" target="_blank" rel="noreferrer">Auday 隐私政策<span>数据处理、第三方服务、留存和删除</span></a>
+      <a href="https://github.com/666ghj/auday-skill" target="_blank" rel="noreferrer">Auday Skill GitHub<span>桌面 Agent 接入与安装</span></a>
+      <a href="https://github.com/666ghj/auday-skill/blob/main/docs/protocol.md" target="_blank" rel="noreferrer">Auday 本地连接协议<span>TLS、配对、只读范围和快照操作</span></a>
+      <a href="https://github.com/666ghj/auday-skill/blob/main/references/library.md" target="_blank" rel="noreferrer">Auday 本地资料库<span>Markdown、notes、archive 和 conflicts</span></a>
+      <a href="https://github.com/yixuan2016/creative/blob/main/PDKS/README.md" target="_blank" rel="noreferrer">PDKS 当前工程基线<span>0.5.3 Preview 与工程边界</span></a>
+      <a href="https://github.com/yixuan2016/creative/blob/main/docs/08-企业工作本体与事件驱动的个人企业领域协同标准研究.md" target="_blank" rel="noreferrer">ADS-WORK-08<span>五层工作本体与个人—企业投影</span></a>
+      <a href="https://github.com/yixuan2016/creative/blob/main/docs/09-个人数智底座的持续记忆事件账本与自主智能体架构研究.md" target="_blank" rel="noreferrer">ADS-WORK-09<span>事件账本、持续记忆、意图与 Personal Agent</span></a>
+      <a href="https://github.com/yixuan2016/creative/blob/main/docs/10-个人数智底座的产品形态多终端感知入口与个人助理OS交互架构研究.md" target="_blank" rel="noreferrer">ADS-WORK-10<span>Personal Assistant OS 与多端自然感知</span></a>
+    </div>
+  </section>
+  <footer>PDKS-REF-AUDAY-001 · V1.0 Research · 2026-11-22<br>本报告为研究建议，不等同于已批准标准、生产安全评估或实机测试结论。</footer>
+</main>
+</div>
+<script>
+(function(){
+  var body=document.body,btn=document.getElementById('navToggle'),nav=document.getElementById('sideNav');
+  btn.addEventListener('click',function(){
+    if(window.matchMedia('(max-width:760px)').matches){body.classList.toggle('nav-open');}
+    else{body.classList.toggle('nav-hidden');}
+  });
+  document.querySelectorAll('.nav a').forEach(function(a){
+    a.addEventListener('click',function(){
+      if(window.matchMedia('(max-width:760px)').matches)body.classList.remove('nav-open');
+      document.querySelectorAll('.nav a').forEach(function(x){x.classList.remove('active')});
+      a.classList.add('active');
+    });
+  });
+  document.querySelectorAll('[data-tab]').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});
+      document.querySelectorAll('.tab-content').forEach(function(x){x.classList.remove('active')});
+      b.classList.add('active');document.getElementById(b.getAttribute('data-tab')).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
