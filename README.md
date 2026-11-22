@@ -143,6 +143,15 @@
 核心议题：Personal Assistant OS 产品定位、五个核心工作空间、全局快速入口、多终端协同、自然感知、主动服务、记忆纠错、渐进式授权、低打扰通知和 Personal Agent 审批体验。
 
 
+### 专题 11：Auday 产品与技术架构解构及 PDKS 创新设计借鉴
+
+**Auday 产品与技术架构解构及 PDKS 创新设计借鉴报告**
+
+- [研究报告（Markdown）](docs/11-Auday产品与技术架构解构及PDKS创新设计借鉴报告.md)
+- [交互式 HTML 阅读版](docs/11-Auday产品与技术架构解构及PDKS创新设计借鉴报告.html)
+
+核心议题：Auday 个人上下文采集与记忆产品、Apple Watch 录音链路、Auday Skill 桌面 Agent 接入、本地优先与增量同步、与 PDKS 现有事件本体/持续记忆/Personal Assistant OS 的映射、Capture Source Contract、Coverage & Gap、Evidence & Provenance、Memory Lineage、设备信任和实测验证计划。
+
 ## 研究主线
 
 本仓库的连续研究主线是：
