@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PALOS SQLite Read-only Adapter Profile V0.1",
+  "type": "object",
+  "required": [
+    "profile_version",
+    "mode",
+    "tables"
+  ],
+  "properties": {
+    "profile_version": {
+      "const": "0.1"
+    },
+    "mode": {
+      "const": "read_only"
+    },
+    "expected_schema_fingerprint": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "tables": {
+      "type": "object",
+      "required": [
+        "events"
+      ],
+      "properties": {
+        "events": {
+          "type": "object",
+          "required": [
+            "table",
+            "columns"
+          ],
+          "properties": {
+            "table": {
+              "type": "string",
+              "minLength": 1
+            },
+            "columns": {
+              "type": "object",
+              "required": [
+                "event_id",
+                "event_type"
+              ],
+              "properties": {
+                "event_id": {
+                  "type": "string"
+                },
+                "event_type": {
+                  "type": "string"
+                },
+                "event_family": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "occurred_from": {
+                  "type": "string"
+                },
+                "occurred_to": {
+                  "type": "string"
+                },
+                "observed_at": {
+                  "type": "string"
+                },
+                "recorded_at": {
+                  "type": "string"
+                },
+                "epistemic_status": {
+                  "type": "string"
+                },
+                "processing_state": {
+                  "type": "string"
+                },
+                "verification_status": {
+                  "type": "string"
+                },
+                "confidence": {
+                  "type": "string"
+                },
+                "project_id": {
+                  "type": "string"
+                },
+                "workspace_id": {
+                  "type": "string"
+                },
+                "sensitivity": {
+                  "type": "string"
+                },
+                "owner_scope": {
+                  "type": "string"
+                },
+                "ontology_version": {
+                  "type": "string"
+                },
+                "mapping_version": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

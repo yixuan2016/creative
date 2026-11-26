@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ADS Personal Memory Item V0.2",
+  "type": "object",
+  "required": [
+    "workspace_id",
+    "memory_type",
+    "title",
+    "content",
+    "sensitivity",
+    "purpose_scopes"
+  ],
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "default": "ws-lab"
+    },
+    "memory_type": {
+      "enum": [
+        "profile_fact",
+        "preference",
+        "principle",
+        "decision",
+        "lesson",
+        "experience",
+        "relationship",
+        "skill",
+        "commitment"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "content": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 8000
+    },
+    "sensitivity": {
+      "enum": [
+        "P0",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "default": "P1"
+    },
+    "purpose_scopes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "personal_knowledge",
+          "personal_assistant",
+          "project_context",
+          "task_support",
+          "personal_search"
+        ]
+      }
+    },
+    "valid_from": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "valid_to": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string",
+      "default": "local-user"
+    }
+  },
+  "additionalProperties": false
+}

@@ -210,3 +210,62 @@
 - [PDKS → ADS 投影示例](examples/pdks-ads-bridge-projection-v0.1.json)
 
 核心议题：PDKS 个人数据统一表达、ADS-WORK-08 语义与授权桥接、ADS-WORK-09 个人事件账本/持续记忆/Intent 运行时、ADS-WORK-10 Personal Assistant OS。PDKS Action 映射为 Intent，不自动生成 Agent Action Proposal；个人侧默认 personal_only，企业投影须独立授权。
+
+### 专题 12：AI 原生事件智能基础设施与个人多源采集运行时
+
+**Event Intelligence Lab：事件本体、PALOS 适配与 Connector Runtime**
+
+- [V0.3.2 研发进展](docs/12-AI原生事件智能基础设施V0.3.2研发进展.md)
+- [PALOS 只读 Adapter 集成契约](docs/13-PALOS只读Adapter集成契约V0.1.md)
+- [Connector Worker 运行与调度机制](docs/14-ConnectorWorker运行与调度机制V0.3.2.md)
+- [PDKS 多源个人采集运行时路线图](docs/15-PDKS多源个人采集运行时V0.3路线图.md)
+- [PALOS Adapter Profile Schema](schemas/palos-adapter-profile-v0.1.schema.json)
+- [PALOS Adapter Profile 模板](examples/palos-adapter-profile.template.json)
+
+本专题以 Event Ontology V0.1 为事件语义基线，逐步打通个人多源采集、证据定位、事件理解、持续记忆、状态重建和 Agent 上下文。V0.3.2 当前仅实现 PALOS SQLite 只读结构适配预览和单机 Connector Worker；未连接真实 PALOS 数据库，钉钉 DWS CLI 仍待实际版本、帮助信息和脱敏输出核验。
+
+
+
+### 专题 12.1：来源生命周期与证据依赖感知删除（V0.3.3 Alpha）
+
+- [V0.3.3 研发进展](docs/16-AI原生事件智能基础设施V0.3.3研发进展.md)
+- [Source Lifecycle 与 Evidence-aware Purge 规范](docs/17-SourceLifecycle与证据依赖感知删除规范.md)
+- [PALOS / 钉钉 DWS 真实集成资料清单](docs/18-PALOS与钉钉DWS真实集成资料清单.md)
+
+V0.3.3 增加来源删除预览、显式确认、跨来源事件保留、专属事件与证据清理、RDF 投影失效、状态快照失效和上下文包撤销。删除范围仅覆盖 EIL 本地数据库与受控文件目录，不代表远端提供方删除、备份擦除或法律合规认证。当前 PALOS 仍未连接真实数据库，DingTalk DWS CLI 仍处于 blocked 状态。
+
+### 专题 13：Personal Data Runtime V0.4.0 Alpha
+
+**从个人多源事件采集走向可治理的事件融合与多 Agent 协同**
+
+- [V0.4.0 研发进展](docs/19-PersonalDataRuntimeV0.4.0研发进展.md)
+- [Event Fusion Candidate 规范](docs/20-EventFusionCandidate规范V0.1.md)
+- [Agent Event Runtime 契约](docs/21-AgentEventRuntime契约V0.1.md)
+- [PALOS / DWS 集成边界](docs/22-PALOS与DWS集成边界V0.4.md)
+- [交互式架构总览](docs/23-PersonalDataRuntime架构总览V0.4.html)
+- [Agent Subscription JSON Schema](schemas/agent-subscription-v0.1.schema.json)
+- [Event Fusion Decision JSON Schema](schemas/event-fusion-decision-v0.1.schema.json)
+
+V0.4.0 增加跨来源事件融合候选和本地 Pull-only Agent Runtime。融合分数仅用于候选排序，必须人工裁决；确认后只建立 EventRelation，不自动合并 Event。Agent 仅能在用途、敏感度和有效期约束下拉取已确认的个人域事件。PALOS 真实 Schema 与钉钉官方 DWS CLI 仍未接入；个人数据不自动投影到企业域。
+
+
+### 专题 14：Personal Cognitive Runtime V0.5.0 Alpha
+
+**从个人事件账本走向持续记忆、状态与意图运行时**
+
+- [V0.5.0 研发进展](docs/24-PersonalCognitiveRuntimeV0.5.0研发进展.md)
+- [Event / Memory / State / Intent 语义边界](docs/25-EventMemoryStateIntent语义边界V0.1.md)
+- [PALOS / DWS / Agent 集成边界](docs/26-PALOS-DWS-Agent集成边界V0.5.md)
+- [交互式架构总览](docs/27-PersonalCognitiveRuntime架构总览V0.5.html)
+- [Memory / Intent / Agent API 示例](docs/28-PersonalCognitiveRuntimeAPI示例V0.5.md)
+- [V0.5 测试报告](docs/29-PersonalCognitiveRuntime测试报告V0.5.md)
+- [Personal Memory Item Schema](schemas/ads-personal-memory-item-v0.2.schema.json)
+- [Personal Intent Object Schema](schemas/ads-personal-intent-object-v0.2.schema.json)
+- [Intent Transition Schema](schemas/ads-personal-intent-transition-v0.1.schema.json)
+- [Reflection Run Schema](schemas/ads-personal-reflection-run-v0.1.schema.json)
+- [Personal Runtime 增量迁移](migrations/005_v050_personal_memory_intent_runtime.sql)
+- [Agent Personal Context 客户端示例](examples/agent-personal-context-client-v0.5.py)
+
+V0.5 增加 Memory、State、Intent、Reflection 四个个人认知运行时引擎。Reflection 仅从已确认的个人域事件生成待审核候选；Memory 可追溯来源、有效时间和修订历史；Intent 默认 proposed，只有用户显式激活后才进入 Agent 上下文；Agent 只读访问授权范围内的记忆、意图和状态。来源失效会触发派生对象复核，不自动推断人格、心理状态或执行外部动作。
+
+验证：96 automated tests passed；fresh ZIP extraction test 96 passed；Python compileall passed；UI JavaScript node --check passed；FastAPI OpenAPI 55 paths。完整 Python MVP 作为独立研发 ZIP 交付，不在本 PR 中提交全部运行时代码。
